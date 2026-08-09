@@ -3,6 +3,7 @@ import { Cinzel, Inter } from "next/font/google";
 import "./globals.css";
 import "./effects.css";
 import { ScrollReveal } from "./components/ScrollReveal";
+import { AuthProvider } from "./components/AuthProvider";
 
 const display = Cinzel({ variable: "--font-display", subsets: ["latin"] });
 const body = Inter({ variable: "--font-body", subsets: ["latin"] });
@@ -17,5 +18,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="fr"><body className={`${display.variable} ${body.variable}`}>{children}<ScrollReveal/></body></html>;
+  return <html lang="fr"><body className={`${display.variable} ${body.variable}`}><AuthProvider>{children}<ScrollReveal/></AuthProvider></body></html>;
 }
