@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Cinzel, Inter } from "next/font/google";
 import "./globals.css";
-import "./hero.css";
 
 const display = Cinzel({ variable: "--font-display", subsets: ["latin"] });
 const body = Inter({ variable: "--font-body", subsets: ["latin"] });
@@ -12,6 +11,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://solo-quest.example.com"),
   openGraph: { title: "Solo Quest", description: "Votre héros. Leur tour de jouer.", images: ["/og.png"] },
   twitter: { card: "summary_large_image", title: "Solo Quest", description: "L’aventure Dice Throne en solo.", images: ["/og.png"] },
+  icons: { icon: "/app_icon.png", shortcut: "/app_icon.png" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
