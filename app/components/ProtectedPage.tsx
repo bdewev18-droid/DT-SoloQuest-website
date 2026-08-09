@@ -6,7 +6,7 @@ export function ProtectedPage({children,admin=false}:{children:React.ReactNode;a
   const {session,profile,loading,isAdmin}=useAuth();
   const allowed=admin ? isAdmin : isAdmin || profile?.status==="approved";
   useEffect(()=>{if(!loading&&!session)location.replace(`/connexion?retour=${encodeURIComponent(location.pathname)}`)},[loading,session]);
-  if(loading||!session)return <section className="accessState"><p>Vérification de votre accès…</p></section>;
-  if(!allowed)return <section className="accessState"><span className="statusBadge">Validation en attente</span><h1>Votre candidature est en cours d’examen</h1><p>Vous pourrez accéder à cet espace dès que votre compte aura été validé.</p><a className="button light" href="/">Retour à l’accueil</a></section>;
+  if(loading||!session)return <section className="accessState"><p>Checking your access…</p></section>;
+  if(!allowed)return <section className="accessState"><span className="statusBadge">Approval pending</span><h1>Your application is being reviewed</h1><p>You will gain access as soon as your account is approved.</p><a className="button light" href="/">Back to home</a></section>;
   return <>{children}</>;
 }
