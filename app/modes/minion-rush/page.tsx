@@ -1,4 +1,4 @@
-import Image from "next/image";import Link from "next/link";import {SiteHeader} from "../../components/SiteHeader";import {GameScreen} from "../../components/GameScreen";
+import Image from "next/image";import {HardLink as Link} from "../../components/HardLink";import {SiteHeader} from "../../components/SiteHeader";import {GameScreen} from "../../components/GameScreen";
 
 const Step=({n,title,text,screen}:{n:string;title:string;text:string;screen:string})=><article className="journeyStep"><div className="stepCopy"><span>{n}</span><h2>{title}</h2><p>{text}</p></div><GameScreen src={screen} alt={title}/></article>;
 

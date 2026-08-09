@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import {HardLink as Link} from "./HardLink";
 
 export function SiteHeader(){
   return <header className="siteHeader">

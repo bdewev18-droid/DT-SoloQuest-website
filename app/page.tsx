@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import {HardLink as Link} from "./components/HardLink";
 import {SiteHeader} from "./components/SiteHeader";
 import {GameScreen} from "./components/GameScreen";
 
@@ -30,7 +30,7 @@ export default function Home(){return <main>
     </div>
   </section>
 
-  <section className="systemSection cutTop"><div className="shell"><div className="sectionTitle centered"><p className="kicker">Une séparation volontaire</p><h2>L’automate joue.<br/><span>L’IA raconte.</span></h2></div><div className="systemGrid"><article><i>01</i><h3>Automate impartial</h3><p>Il lance les dés, calcule les relances et exécute les règles. Il ne dialogue pas et ne peut pas tricher.</p></article><article><i>02</i><h3>IA interprète</h3><p>Elle lit le résultat produit par l’automate, gère les effets et transforme le tour en récit de combat.</p></article><article><i>03</i><h3>Vous décidez</h3><p>Vous déclenchez chaque phase ennemie et pouvez forcer une relance ou éditer un dé avant la résolution.</p></article></div></div></section>
+  <section className="systemSection cutTop"><div className="shell"><div className="sectionTitle centered"><p className="kicker">Une séparation volontaire</p><h2>L’automate joue.<br/><span>L’IA raconte.</span></h2></div><div className="systemStory"><GameScreen src="/screens/minion-06.jpg" alt="Combat Minion Rush avec narration en cours"/><div className="systemStoryCopy"><h3>Le combat prend vie</h3><p>Sur cet écran, le héros attaque depuis son propre plateau tandis que l’application conserve le fil du duel dans la zone de dialogue. L’automate reste responsable des dés ennemis ; l’IA transforme seulement les résultats en actions compréhensibles et en narration.</p></div></div><div className="systemGrid"><article><i>01</i><h3>Automate impartial</h3><p>Il lance les dés, calcule les relances et exécute les règles. Il ne dialogue pas et ne peut pas tricher.</p></article><article><i>02</i><h3>IA interprète</h3><p>Elle lit le résultat produit par l’automate, gère les effets et transforme le tour en récit de combat.</p></article><article><i>03</i><h3>Vous décidez</h3><p>Vous déclenchez chaque phase ennemie et pouvez forcer une relance ou éditer un dé avant la résolution.</p></article></div></div></section>
 
   <section className="heroChoice shell"><GameScreen src="/screens/perso-02.jpg" alt="Sélection parmi tous les héros Dice Throne"/><div><p className="kicker">Votre héros vous attend</p><h2>Tous les personnages.<br/>Toutes les saisons.</h2><p>Filtrez par saison, complexité ou favoris. Puis revenez à votre vrai plateau de jeu : vos cartes, vos dés et vos décisions restent entre vos mains.</p><Link className="button fire" href="/modes/minion-rush">Voir le parcours complet</Link></div></section>
 

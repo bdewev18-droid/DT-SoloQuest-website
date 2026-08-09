@@ -1,4 +1,4 @@
-import Image from "next/image";import Link from "next/link";import {SiteHeader} from "../../components/SiteHeader";import {GameScreen} from "../../components/GameScreen";
+import Image from "next/image";import {HardLink as Link} from "../../components/HardLink";import {SiteHeader} from "../../components/SiteHeader";import {GameScreen} from "../../components/GameScreen";
 
 export default function Page(){return <main className="darkPage"><SiteHeader/>
   <section className="modeHero naxHero"><Image src="/naxarus_head.png" alt="Naxarus le grand dragon" fill priority sizes="100vw"/><div className="naxOverlay"/><div className="shell"><p className="kicker">Mode boss</p><h1>Naxarus</h1><p>Un seul adversaire. Soixante-cinq points de vie. Un combat narratif où le dragon joue le premier.</p><div className="heroNumbers"><div><b>65</b><small>PV du dragon</small></div><div><b>50</b><small>PV du héros</small></div><div><b>1</b><small>duel décisif</small></div></div></div></section>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Cinzel, Inter } from "next/font/google";
 import "./globals.css";
+import "./effects.css";
+import { ScrollReveal } from "./components/ScrollReveal";
 
 const display = Cinzel({ variable: "--font-display", subsets: ["latin"] });
 const body = Inter({ variable: "--font-body", subsets: ["latin"] });
@@ -15,5 +17,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="fr"><body className={`${display.variable} ${body.variable}`}>{children}</body></html>;
+  return <html lang="fr"><body className={`${display.variable} ${body.variable}`}>{children}<ScrollReveal/></body></html>;
 }
