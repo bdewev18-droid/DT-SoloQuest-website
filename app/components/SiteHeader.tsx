@@ -1,0 +1,2 @@
+import Link from "next/link";
+export function SiteHeader(){return <nav className="nav shell"><Link className="brand" href="/"><span className="brandMark">D20</span><span>SOLO<br/>QUEST</span></Link><div className="navLinks"><Link href="/modes/minion-rush">Minion Rush</Link><Link href="/modes/naxarus">Naxarus</Link><Link href="/historique">Historique</Link><Link href="/jouer">Jouer</Link></div><Link className="button small" href="/espace-testeur">Espace testeur</Link></nav>}

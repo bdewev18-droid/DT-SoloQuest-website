@@ -1,0 +1,2 @@
+import {ModePage} from "../../components/ModePage";
+export default function Page(){return <ModePage name="Naxarus" kicker="Boss · Combat narratif" intro="Entrez dans un duel tendu face à Naxarus. Son automate tactique répond à vos choix tandis que la narration transforme chaque lancer en scène de combat." points={["Sélectionnez votre héros et préparez votre affrontement.","Observez l’automate lancer, conserver et relancer ses dés.","Résolvez les attaques et les effets guidés par l’application.","Découvrez un récit dynamique construit à partir de l’issue du combat."]}/>}
