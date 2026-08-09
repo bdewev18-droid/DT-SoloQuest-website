@@ -1,8 +1,9 @@
 .navSide{font-size:14px}
 .artHero::before{content:"";position:absolute;inset:-30px;background:url('/home_background_v4.png') center 42%/cover;filter:blur(24px);opacity:.42}
-.artHero>img{object-fit:contain!important;object-position:center 46%!important;transform:scale(1.02)!important}
+.artHero>img{object-fit:cover!important;object-position:center 24%!important;transform:translateY(var(--hero-shift,0px)) scale(1.1)!important;transition:transform .08s linear}
 .modeTile.naxTile{background:radial-gradient(circle at 50% 30%,#4b2964,#16101e 68%)}
-.modeTile.naxTile>img{object-fit:contain!important;object-position:center 32%!important;transform:scale(.78)!important}
+.modeTile.naxTile>img{object-fit:contain!important;object-position:center 32%!important;transform:scale(.54)!important}
+.testerLink{color:#ff9a48}.loginLink{display:flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.38);padding:10px 14px}.loginLink span{width:16px;height:16px;display:grid;place-items:center;border:1px solid currentColor;border-radius:50%;font-size:6px;color:#fff}
 .revealReady{opacity:0;transform:translateY(42px);transition:opacity .75s cubic-bezier(.2,.7,.2,1) var(--reveal-delay,0ms),transform .75s cubic-bezier(.2,.7,.2,1) var(--reveal-delay,0ms)}
 .revealReady.revealed{opacity:1;transform:none}
 .systemStory{display:grid;grid-template-columns:.8fr 1.2fr;align-items:center;gap:80px;margin-top:70px}
@@ -11,5 +12,5 @@
 .systemStoryCopy h3{font:800 32px var(--font-display);text-transform:uppercase;margin:0 0 16px}
 .systemStoryCopy p{color:#b5bdc8;line-height:1.75;font-size:14px}
 @media(max-width:900px){.systemStory{grid-template-columns:1fr;gap:40px}.navSide{font-size:12px}}
-@media(max-width:540px){.artHero>img{transform:scale(1.03)}.systemStory .screenCrop{height:560px}}
+@media(max-width:540px){.artHero>img{transform:translateY(var(--hero-shift,0px)) scale(1.1)!important}.systemStory .screenCrop{height:560px}.testerLink{display:none!important}}
 @media(prefers-reduced-motion:reduce){.revealReady{opacity:1;transform:none;transition:none}}

@@ -10,9 +10,8 @@ export function SiteHeader(){
         <img src="/app_icon.png" alt="Solo Quest" width="106" height="106" />
       </a>
       <div className="navSide navRight">
-        <a href="/installer">Android</a>
-        <a href="/jouer">Jouer</a>
-        <a className="navCta" href="/espace-testeur">Espace testeur</a>
+        <a className="testerLink" href="/inscription">Devenir testeur</a>
+        <a className="loginLink" href="/connexion"><span aria-hidden="true">●</span> Login</a>
       </div>
     </nav>
   </header>
