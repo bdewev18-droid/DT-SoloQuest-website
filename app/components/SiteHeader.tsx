@@ -1,21 +1,18 @@
-import Image from "next/image";
-import {HardLink as Link} from "./HardLink";
-
 export function SiteHeader(){
   return <header className="siteHeader">
     <nav className="mainNav shell" aria-label="Navigation principale">
       <div className="navSide navLeft">
-        <Link href="/modes/minion-rush">Minion Rush</Link>
-        <Link href="/modes/naxarus">Naxarus</Link>
-        <Link href="/historique">Historique</Link>
+        <a href="/modes/minion-rush">Minion Rush</a>
+        <a href="/modes/naxarus">Naxarus</a>
+        <a href="/historique">Historique</a>
       </div>
-      <Link className="centerLogo" href="/" aria-label="Solo Quest — accueil">
-        <Image src="/app_icon.png" alt="Solo Quest" width={106} height={106} priority />
-      </Link>
+      <a className="centerLogo" href="/" aria-label="Solo Quest — accueil">
+        <img src="/app_icon.png" alt="Solo Quest" width="106" height="106" />
+      </a>
       <div className="navSide navRight">
-        <Link href="/installer">Android</Link>
-        <Link href="/jouer">Jouer</Link>
-        <Link className="navCta" href="/espace-testeur">Espace testeur</Link>
+        <a href="/installer">Android</a>
+        <a href="/jouer">Jouer</a>
+        <a className="navCta" href="/espace-testeur">Espace testeur</a>
       </div>
     </nav>
   </header>

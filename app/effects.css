@@ -1,8 +1,8 @@
 .navSide{font-size:14px}
 .artHero::before{content:"";position:absolute;inset:-30px;background:url('/home_background_v4.png') center 42%/cover;filter:blur(24px);opacity:.42}
-.artHero>img{object-fit:contain;object-position:center 46%;transform:scale(1.08)}
+.artHero>img{object-fit:contain!important;object-position:center 46%!important;transform:scale(1.02)!important}
 .modeTile.naxTile{background:radial-gradient(circle at 50% 30%,#4b2964,#16101e 68%)}
-.modeTile.naxTile>img{object-fit:contain;object-position:center 32%;transform:scale(.86)}
+.modeTile.naxTile>img{object-fit:contain!important;object-position:center 32%!important;transform:scale(.78)!important}
 .revealReady{opacity:0;transform:translateY(42px);transition:opacity .75s cubic-bezier(.2,.7,.2,1) var(--reveal-delay,0ms),transform .75s cubic-bezier(.2,.7,.2,1) var(--reveal-delay,0ms)}
 .revealReady.revealed{opacity:1;transform:none}
 .systemStory{display:grid;grid-template-columns:.8fr 1.2fr;align-items:center;gap:80px;margin-top:70px}
