@@ -5,6 +5,7 @@ import "./effects.css";
 import { ScrollReveal } from "./components/ScrollReveal";
 import { AuthProvider } from "./components/AuthProvider";
 import { ContentManager } from "./components/ContentManager";
+import { PrivateSiteGate } from "./components/PrivateSiteGate";
 
 const display = Cinzel({ variable: "--font-display", subsets: ["latin"] });
 const body = Inter({ variable: "--font-body", subsets: ["latin"] });
@@ -16,8 +17,9 @@ export const metadata: Metadata = {
   openGraph: { title: "Solo Quest", description: "Your hero. Their turn to play.", images: ["/og.png"] },
   twitter: { card: "summary_large_image", title: "Solo Quest", description: "A Dice Throne solo adventure.", images: ["/og.png"] },
   icons: { icon: "/app_icon.png", shortcut: "/app_icon.png" },
+  robots: { index: false, follow: false, noarchive: true, nosnippet: true, noimageindex: true },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body className={`${display.variable} ${body.variable}`}><AuthProvider>{children}<ContentManager/><ScrollReveal/></AuthProvider></body></html>;
+  return <html lang="en"><body className={`${display.variable} ${body.variable}`}><AuthProvider><PrivateSiteGate>{children}<ContentManager/><ScrollReveal/></PrivateSiteGate></AuthProvider></body></html>;
 }
