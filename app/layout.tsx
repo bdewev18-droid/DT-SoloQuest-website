@@ -4,6 +4,7 @@ import "./globals.css";
 import "./effects.css";
 import { ScrollReveal } from "./components/ScrollReveal";
 import { AuthProvider } from "./components/AuthProvider";
+import { ContentManager } from "./components/ContentManager";
 
 const display = Cinzel({ variable: "--font-display", subsets: ["latin"] });
 const body = Inter({ variable: "--font-body", subsets: ["latin"] });
@@ -18,5 +19,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body className={`${display.variable} ${body.variable}`}><AuthProvider>{children}<ScrollReveal/></AuthProvider></body></html>;
+  return <html lang="en"><body className={`${display.variable} ${body.variable}`}><AuthProvider>{children}<ContentManager/><ScrollReveal/></AuthProvider></body></html>;
 }
