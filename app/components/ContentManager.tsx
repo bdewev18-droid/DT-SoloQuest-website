@@ -23,7 +23,7 @@ export function ContentManager(){
   },[]);return null;
 }
 
-export type HeroSettings={desktopPosition:number;desktopZoom:number;mobilePosition:number;mobileZoom:number};
-export const defaultHeroSettings:HeroSettings={desktopPosition:4,desktopZoom:105,mobilePosition:24,mobileZoom:105};
-export function applyHeroSettings(target:HTMLElement,settings:HeroSettings){target.style.setProperty("--home-position-desktop",`${settings.desktopPosition}%`);target.style.setProperty("--home-scale-desktop",String(settings.desktopZoom/100));target.style.setProperty("--home-position-mobile",`${settings.mobilePosition}%`);target.style.setProperty("--home-scale-mobile",String(settings.mobileZoom/100))}
+export type HeroSettings={desktopPosition:number;desktopZoom:number;mobilePosition:number;mobileZoom:number;desktopButtonBottom:number;mobileButtonBottom:number};
+export const defaultHeroSettings:HeroSettings={desktopPosition:4,desktopZoom:105,mobilePosition:24,mobileZoom:105,desktopButtonBottom:48,mobileButtonBottom:24};
+export function applyHeroSettings(target:HTMLElement,settings:HeroSettings){target.style.setProperty("--home-position-desktop",`${settings.desktopPosition}%`);target.style.setProperty("--home-scale-desktop",String(settings.desktopZoom/100));target.style.setProperty("--home-position-mobile",`${settings.mobilePosition}%`);target.style.setProperty("--home-scale-mobile",String(settings.mobileZoom/100));target.style.setProperty("--home-button-bottom-desktop",`${settings.desktopButtonBottom}px`);target.style.setProperty("--home-button-bottom-mobile",`${settings.mobileButtonBottom}px`)}
 export function SiteSettings(){useEffect(()=>{let cancelled=false;supabase.from("site_content_live").select("published").eq("page_path","/__home_image").maybeSingle().then(({data})=>{if(!cancelled&&data?.published)applyHeroSettings(document.documentElement,{...defaultHeroSettings,...data.published} as HeroSettings)});return()=>{cancelled=true}},[]);return null}
