@@ -26,17 +26,20 @@ export function ReportWorkspace(){
   const toggleVote=async(id:string)=>{const voted=votes.some(v=>v.feedback_id===id&&v.user_id===uid);if(voted)await supabase.from("tester_feedback_votes").delete().eq("feedback_id",id).eq("user_id",uid);else await supabase.from("tester_feedback_votes").insert({feedback_id:id,user_id:uid});await load()};
   const addComment=async(e:FormEvent<HTMLFormElement>)=>{e.preventDefault();if(!active)return;const form=e.currentTarget;const body=String(new FormData(form).get("body")||"").trim();if(!body)return;const {error}=await supabase.from("tester_feedback_comments").insert({feedback_id:active.id,user_id:uid,body});if(!error){form.reset();await load()}};
   const capture=async()=>{try{
-    setNotice("Choose “This tab” in the sharing window. Only the game area will be kept.");
+    setNotice("Choose “This tab” in the sharing window. Only the left game column will be kept.");
     const stream=await navigator.mediaDevices.getDisplayMedia({video:{displaySurface:"browser"},audio:false,preferCurrentTab:true,selfBrowserSurface:"include"} as DisplayMediaStreamOptions);
-    const video=document.createElement("video");video.srcObject=stream;await video.play();await new Promise(r=>setTimeout(r,450));
-    const rect=frame.current?.getBoundingClientRect();if(!rect)throw new Error("Game area unavailable.");
-    const scaleX=video.videoWidth/window.innerWidth;const scaleY=video.videoHeight/window.innerHeight;
-    const sx=Math.max(0,rect.left*scaleX);const sy=Math.max(0,rect.top*scaleY);
-    const sw=Math.min(video.videoWidth-sx,rect.width*scaleX);const sh=Math.min(video.videoHeight-sy,rect.height*scaleY);
+    const target=frame.current?.parentElement;if(!target)throw new Error("Game area unavailable.");
+    const track=stream.getVideoTracks()[0] as MediaStreamTrack&{cropTo?:(target:unknown)=>Promise<void>};
+    const CropTargetApi=(window as typeof window&{CropTarget?:{fromElement:(element:Element)=>Promise<unknown>}}).CropTarget;
+    let cropped=false;if(track.cropTo&&CropTargetApi){await track.cropTo(await CropTargetApi.fromElement(target));cropped=true}
+    const video=document.createElement("video");video.srcObject=stream;await video.play();await new Promise(r=>setTimeout(r,500));
+    const rect=target.getBoundingClientRect();const scaleX=video.videoWidth/window.innerWidth;const scaleY=video.videoHeight/window.innerHeight;
+    const sx=cropped?0:Math.max(0,rect.left*scaleX);const sy=cropped?0:Math.max(0,rect.top*scaleY);
+    const sw=cropped?video.videoWidth:Math.min(video.videoWidth-sx,rect.width*scaleX);const sh=cropped?video.videoHeight:Math.min(video.videoHeight-sy,rect.height*scaleY);
     const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(sw));canvas.height=Math.max(1,Math.round(sh));
     canvas.getContext("2d")!.drawImage(video,sx,sy,sw,sh,0,0,canvas.width,canvas.height);
     stream.getTracks().forEach(t=>t.stop());
-    canvas.toBlob(blob=>{if(blob){setShot(new File([blob],`solo-quest-zone-${Date.now()}.png`,{type:"image/png"}));setNotice("Game-area capture ready.")}},"image/png");
+    canvas.toBlob(blob=>{if(blob){setShot(new File([blob],`solo-quest-left-column-${Date.now()}.png`,{type:"image/png"}));setNotice("Left game-column capture ready.")}},"image/png");
   }catch(error){setNotice(error instanceof Error&&error.message ? error.message : "Screen capture cancelled.")}};
   if(!profile&&!isAdmin)return <ProfileSetup onSave={saveProfile} busy={busy} notice={notice}/>;
   return <div className="testerWorkspace shell">
