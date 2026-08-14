@@ -28,3 +28,17 @@
 .imageControls{margin:20px 0;padding:20px;background:#0b1119;border:1px solid var(--line)}.imageControls h3{font:700 17px var(--font-display);text-transform:uppercase;margin:0 0 8px}.imageControls>p{font-size:11px!important;margin-bottom:20px}.cmsRange{display:grid;gap:7px;margin-top:15px}.cmsRange>span{font-size:9px;text-transform:uppercase;color:#aeb7c2;font-weight:900}.cmsRange>div{display:grid;grid-template-columns:1fr 48px;gap:12px;align-items:center}.cmsRange input{accent-color:var(--orange);width:100%}.cmsRange output{font:800 11px var(--font-body);color:var(--orange);text-align:right}
 .heroBetaButton{bottom:var(--home-button-bottom-desktop,48px)}
 @media(max-width:900px){.heroBetaButton{bottom:var(--home-button-bottom-mobile,24px)}}
+.modeTile.naxTile>img{object-fit:cover!important;object-position:center 38%!important;transform:none!important}
+.historyVisual{margin:0;background:#090d13;border:1px solid var(--line);padding:14px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.historyVisual img{display:block;width:100%;height:auto;max-height:760px;object-fit:cover;object-position:top;border-radius:3px}
+.historyVisual figcaption{color:#8f99a5;font-size:10px;line-height:1.55;padding:13px 4px 2px}
+.scoreRules{margin-top:32px;background:#111a25;border:1px solid var(--line);padding:24px}
+.scoreRules h3{font:700 18px var(--font-display);text-transform:uppercase;margin:0 0 16px}
+.scoreRules ul{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--line)}
+.scoreRules li{position:relative;display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:center;background:#0b1119;padding:13px 16px}
+.scoreRules li:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--orange)}
+.scoreRules li b{font:800 14px var(--font-display);text-transform:uppercase;color:#fff}
+.scoreRules li span{color:#aeb7c2;font-size:12px}
+.scoreRules>p{font-size:11px!important;line-height:1.65!important;margin:16px 0 0;color:#929ca8!important}
+.scoreRules .levelOne:before{background:#4cc977}.scoreRules .levelTwo:before{background:#498eea}.scoreRules .levelThree:before{background:#b44bf0}.scoreRules .viseer:before{background:#f2cf4c}.scoreRules .levelFour:before{background:#f28a32}
+@media(max-width:540px){.historyVisual{padding:8px}.historyVisual img{max-height:640px}.scoreRules{padding:18px}.scoreRules li{grid-template-columns:86px 1fr;padding:12px}.scoreRules li b{font-size:12px}}
