@@ -12,7 +12,7 @@ export function SiteHeader(){
     <div className="navSide navLeft"><a href="/modes/minion-rush">Minion Rush</a><a href="/modes/naxarus">Naxarus</a></div>
     <a className="centerLogo" href="/" aria-label="Solo Quest — home"><img src="/app_icon.png" alt="Solo Quest" width="106" height="106"/></a>
     <div className="navSide navRight">
-      {!loading&&approved&&<><a href="/jouer">Play</a><a href="/espace-testeur">Tester Space</a></>}
+      {!loading&&approved&&<a href="/espace-testeur">Tester Space</a>}
       {!loading&&isAdmin&&<a href="/admin">Admin</a>}
       {!loading&&!session&&<a className="loginLink" href="/connexion"><span aria-hidden="true">●</span> Login</a>}
       {!loading&&session&&<button className="logoutLink" onClick={signOut} type="button">Log out</button>}
@@ -20,7 +20,7 @@ export function SiteHeader(){
     <button className="burger" type="button" aria-label={open?"Close menu":"Open menu"} aria-expanded={open} onClick={()=>setOpen(!open)}><span/><span/><span/></button>
     <div className={`mobileMenu ${open?"open":""}`} aria-hidden={!open}>
       <div className="mobileMenuInner"><a href="/modes/minion-rush">Minion Rush</a><a href="/modes/naxarus">Naxarus</a>
-      {!loading&&approved&&<><a href="/jouer">Play</a><a href="/espace-testeur">Tester Space</a></>}
+      {!loading&&approved&&<a href="/espace-testeur">Tester Space</a>}
       {!loading&&isAdmin&&<a href="/admin">Administration</a>}
       {!loading&&!session&&<a href="/connexion">Login</a>}
       {!loading&&session&&<button onClick={signOut} type="button">Log out</button>}</div>
