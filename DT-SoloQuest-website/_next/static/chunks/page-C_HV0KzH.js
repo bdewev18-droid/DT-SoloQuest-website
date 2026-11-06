@@ -1,0 +1,1 @@
+import{r as e}from"./rolldown-runtime-ClqHwmF2.js";import{i as t,r as n}from"./framework-C3YMEXeR.js";var r=e(n(),1),i=t();function a(){return(0,r.useEffect)(()=>{location.replace(`/espace-testeur`)},[]),(0,i.jsx)(`main`,{className:`accessState`,children:(0,i.jsx)(`p`,{children:`Opening the tester workspace…`})})}export{a as default};

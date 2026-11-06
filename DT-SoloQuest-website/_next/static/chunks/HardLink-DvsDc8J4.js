@@ -1,0 +1,1 @@
+import{i as e}from"./framework-C3YMEXeR.js";var t=e(),n=`/DT-SoloQuest-website`;function r({href:e,children:r,...i}){let a=e;return a&&a.startsWith(`/`)&&!a.startsWith(n)&&(a=`${n}${a}`),(0,t.jsx)(`a`,{href:a,...i,children:r})}export{r as t};

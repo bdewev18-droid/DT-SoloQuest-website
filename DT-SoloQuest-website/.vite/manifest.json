@@ -1,0 +1,203 @@
+{
+  "_AuthProvider-C4Ot2rD3.js": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/AuthProvider-C4Ot2rD3.js",
+    "name": "AuthProvider",
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "_supabase-BQP32KKF.js",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "_HardLink-DvsDc8J4.js": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/HardLink-DvsDc8J4.js",
+    "name": "HardLink",
+    "imports": [
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "_framework-C3YMEXeR.js": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/framework-C3YMEXeR.js",
+    "name": "framework",
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js"
+    ]
+  },
+  "_rolldown-runtime-ClqHwmF2.js": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/rolldown-runtime-ClqHwmF2.js",
+    "name": "rolldown-runtime"
+  },
+  "_supabase-BQP32KKF.js": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/supabase-BQP32KKF.js",
+    "name": "supabase"
+  },
+  "app/admin/page.tsx": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/page-bprN7bR1.js",
+    "name": "page",
+    "src": "app/admin/page.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "app/components/SiteHeader.tsx",
+      "app/components/ContentManager.tsx",
+      "app/components/ProtectedPage.tsx",
+      "_supabase-BQP32KKF.js",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "app/components/ContentManager.tsx": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/ContentManager-B0otmbh3.js",
+    "name": "ContentManager",
+    "src": "app/components/ContentManager.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "_supabase-BQP32KKF.js",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "app/components/PrivateSiteGate.tsx": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/PrivateSiteGate-DKzH_1b0.js",
+    "name": "PrivateSiteGate",
+    "src": "app/components/PrivateSiteGate.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "_AuthProvider-C4Ot2rD3.js",
+      "_supabase-BQP32KKF.js",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "app/components/ProtectedPage.tsx": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/ProtectedPage-CzmlWcSt.js",
+    "name": "ProtectedPage",
+    "src": "app/components/ProtectedPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "_AuthProvider-C4Ot2rD3.js",
+      "_HardLink-DvsDc8J4.js",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "app/components/ScrollReveal.tsx": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/ScrollReveal-BlwyNtSH.js",
+    "name": "ScrollReveal",
+    "src": "app/components/ScrollReveal.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "app/components/SiteHeader.tsx": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/SiteHeader-CFm_k-Gg.js",
+    "name": "SiteHeader",
+    "src": "app/components/SiteHeader.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "_AuthProvider-C4Ot2rD3.js",
+      "_HardLink-DvsDc8J4.js",
+      "_supabase-BQP32KKF.js",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "app/connexion/page.tsx": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/page-Mz8Taeqr.js",
+    "name": "page",
+    "src": "app/connexion/page.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "_AuthProvider-C4Ot2rD3.js",
+      "app/components/SiteHeader.tsx",
+      "_supabase-BQP32KKF.js",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "app/espace-testeur/page.tsx": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/page-DNi_KDVQ.js",
+    "name": "page",
+    "src": "app/espace-testeur/page.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "_AuthProvider-C4Ot2rD3.js",
+      "app/components/SiteHeader.tsx",
+      "app/components/ProtectedPage.tsx",
+      "_supabase-BQP32KKF.js",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "app/inscription/page.tsx": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/page-Dw1RnWKK.js",
+    "name": "page",
+    "src": "app/inscription/page.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "_AuthProvider-C4Ot2rD3.js",
+      "app/components/SiteHeader.tsx",
+      "_supabase-BQP32KKF.js",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "app/jouer/page.tsx": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/page-C_HV0KzH.js",
+    "name": "page",
+    "src": "app/jouer/page.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "node_modules/vinext/dist/shims/image.js": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/image-vhiV1pgY.js",
+    "name": "image",
+    "src": "node_modules/vinext/dist/shims/image.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "virtual:vinext-app-browser-entry",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "node_modules/vinext/dist/shims/layout-segment-context.js": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/layout-segment-context-DMGxfjap.js",
+    "name": "layout-segment-context",
+    "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "virtual:vinext-app-browser-entry",
+      "_framework-C3YMEXeR.js"
+    ]
+  },
+  "virtual:vinext-app-browser-entry": {
+    "file": "DT-SoloQuest-website/_next/static/chunks/index-DZk75yed.js",
+    "name": "index",
+    "src": "virtual:vinext-app-browser-entry",
+    "isEntry": true,
+    "imports": [
+      "_rolldown-runtime-ClqHwmF2.js",
+      "_framework-C3YMEXeR.js"
+    ],
+    "dynamicImports": [
+      "virtual:vinext-app-browser-entry",
+      "node_modules/vinext/dist/shims/layout-segment-context.js",
+      "app/components/SiteHeader.tsx",
+      "app/inscription/page.tsx",
+      "node_modules/vinext/dist/shims/image.js",
+      "app/components/PrivateSiteGate.tsx",
+      "app/admin/page.tsx",
+      "app/components/ProtectedPage.tsx",
+      "app/components/ContentManager.tsx",
+      "app/components/ScrollReveal.tsx",
+      "app/jouer/page.tsx",
+      "app/connexion/page.tsx",
+      "app/espace-testeur/page.tsx",
+      "_AuthProvider-C4Ot2rD3.js"
+    ]
+  }
+}
