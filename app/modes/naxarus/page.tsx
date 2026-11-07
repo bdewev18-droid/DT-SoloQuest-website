@@ -1,10 +1,124 @@
-import Image from "next/image";import {HardLink as Link} from "../../components/HardLink";import {SiteHeader} from "../../components/SiteHeader";import {GameScreen} from "../../components/GameScreen";
-export default function Page(){return <main><SiteHeader/>
-  <section className="modeHero naxHero"><Image src="/naxarus.webp" alt="Naxarus the Devourer" fill priority sizes="100vw"/><div className="naxOverlay"/><div className="shell"><p className="kicker">Boss mode</p><h1>Naxarus</h1><p>One opponent. Sixty-five health points. A narrative battle where the dragon goes first.</p><div className="heroNumbers"><div><b>65</b><small>dragon HP</small></div><div><b>50</b><small>hero HP</small></div><div><b>1</b><small>decisive duel</small></div></div></div></section>
-  <section className="boardNotice"><div className="shell"><strong>Your board remains essential</strong><p>Play your cards and roll your dice on your real board. The app becomes the dragon’s board and tracks everything needed for battle.</p></div></section>
-  <section className="naxIntro shell"><div><p className="kicker">Before the duel</p><h2>Choose your champion</h2><p>Every character is available. Pick the hero whose board, cards and tokens you know best, then prepare yourself: Naxarus goes first.</p></div><div className="screensFan"><GameScreen src="/screens/perso-01.jpg" alt="Hero selection preview"/><GameScreen src="/screens/perso-02.jpg" alt="Full hero catalog"/></div></section>
-  <section className="bossCombat"><div className="shell bossGrid"><GameScreen src="/screens/naxarus-01.jpg" alt="Main battle screen against Naxarus"/><div><p className="kicker">The heart of battle</p><h2>A dragon that truly plays</h2><p>The automation controls Naxarus’s attacks and defenses. It rolls the dice without help from the AI and follows its strategy without cheating.</p><div className="combatFacts"><article><b>01</b><h3>The automation acts</h3><p>Dice, rerolls, dragon attacks and defenses.</p></article><article><b>02</b><h3>The AI interprets</h3><p>Results, damage, poison, bleeding and other effects.</p></article><article><b>03</b><h3>The chat explains</h3><p>Every action becomes a clear, readable battle story.</p></article></div></div></div></section>
-  <section className="balanceSection shell"><div><span>DRAGON</span><b>65 HP</b><p>Naxarus opens the battle. His attacks are controlled by the automation and explained by the AI.</p></div><i>VS</i><div><span>HERO</span><b>50 HP</b><p>You manage your board, cards and dice. Tokens may stay on your board or be tracked in the app.</p></div></section>
-  <section className="modeHistory"><div className="shell historyGrid"><div><p className="kicker">Your Naxarus chronicles</p><h2>Compare every champion</h2><p>The history ranks your heroes by score while keeping the number of battles, remaining health and play time visible for every run.</p><div className="scoreRules"><h3>Naxarus scoring</h3><ul><li><b>100 points</b><span>Victory</span></li><li><b>50 points</b><span>Draw</span></li></ul></div></div><figure className="historyVisual"><Image src="/screens/histo-naxarus.jpg" alt="Naxarus history ranking heroes by score, battles, remaining health and play time" width={921} height={2048} sizes="(max-width: 900px) 90vw, 42vw"/><figcaption>Rank heroes by best score, then compare their battles, remaining health and play time.</figcaption></figure></div></section>
-  <section className="naxConclusion"><div className="shell"><p className="kicker">After the battle</p><h2>Every choice leaves a mark.</h2><p>At the end of the duel, a summary lists your successes and failures. Whether Naxarus falls or not, you know exactly what shaped the battle.</p><Link className="button light" href="/jouer">Face Naxarus</Link></div></section>
-</main>}
+import Image from "next/image";
+import { HardLink as Link } from "../../components/HardLink";
+import { SiteHeader } from "../../components/SiteHeader";
+import { GameScreen } from "../../components/GameScreen";
+import { withBase } from "../../components/base-path";
+
+export default function Page() {
+  return (
+    <main>
+      <SiteHeader />
+      <section className="modeHero naxHero">
+        <Image
+          src={withBase("/naxarus.webp")}
+          alt="Naxarus the Devourer"
+          fill
+          priority
+          sizes="100vw"
+        />
+        <div className="naxOverlay" />
+        <div className="shell">
+          <p className="kicker">Boss mode</p>
+          <h1>Naxarus</h1>
+          <p>One opponent. Sixty-five health points. A narrative battle where the dragon goes first.</p>
+          <div className="heroNumbers">
+            <div><b>65</b><small>dragon HP</small></div>
+            <div><b>50</b><small>hero HP</small></div>
+            <div><b>1</b><small>decisive duel</small></div>
+          </div>
+        </div>
+      </section>
+      <section className="boardNotice">
+        <div className="shell">
+          <strong>Your board remains essential</strong>
+          <p>Play your cards and roll your dice on your real board. The app becomes the dragon’s board and tracks everything needed for battle.</p>
+        </div>
+      </section>
+      <section className="naxIntro shell">
+        <div>
+          <p className="kicker">Before the duel</p>
+          <h2>Choose your champion</h2>
+          <p>Every character is available. Pick the hero whose board, cards and tokens you know best, then prepare yourself: Naxarus goes first.</p>
+        </div>
+        <div className="screensFan">
+          <GameScreen src="/screens/perso-01.jpg" alt="Hero selection preview" />
+          <GameScreen src="/screens/perso-02.jpg" alt="Full hero catalog" />
+        </div>
+      </section>
+      <section className="bossCombat">
+        <div className="shell bossGrid">
+          <GameScreen src="/screens/naxarus-01.jpg" alt="Main battle screen against Naxarus" />
+          <div>
+            <p className="kicker">The heart of battle</p>
+            <h2>A dragon that truly plays</h2>
+            <p>The automation controls Naxarus’s attacks and defenses. It rolls the dice without help from the AI and follows its strategy without cheating.</p>
+            <div className="combatFacts">
+              <article>
+                <b>01</b>
+                <h3>The automation acts</h3>
+                <p>Dice, rerolls, dragon attacks and defenses.</p>
+              </article>
+              <article>
+                <b>02</b>
+                <h3>The AI interprets</h3>
+                <p>Results, damage, poison, bleeding and other effects.</p>
+              </article>
+              <article>
+                <b>03</b>
+                <h3>The chat explains</h3>
+                <p>Every action becomes a clear, readable battle story.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="balanceSection shell">
+        <div>
+          <span>DRAGON</span>
+          <b>65 HP</b>
+          <p>Naxarus opens the battle. His attacks are controlled by the automation and explained by the AI.</p>
+        </div>
+        <i>VS</i>
+        <div>
+          <span>HERO</span>
+          <b>50 HP</b>
+          <p>You manage your board, cards and dice. Tokens may stay on your board or be tracked in the app.</p>
+        </div>
+      </section>
+      <section className="modeHistory">
+        <div className="shell historyGrid">
+          <div>
+            <p className="kicker">Your Naxarus chronicles</p>
+            <h2>Compare every champion</h2>
+            <p>The history ranks your heroes by score while keeping the number of battles, remaining health and play time visible for every run.</p>
+            <div className="scoreRules">
+              <h3>Naxarus scoring</h3>
+              <ul>
+                <li><b>100 points</b><span>Victory</span></li>
+                <li><b>50 points</b><span>Draw</span></li>
+              </ul>
+            </div>
+          </div>
+          <figure className="historyVisual">
+            <Image
+              src={withBase("/screens/histo-naxarus.jpg")}
+              alt="Naxarus history ranking heroes by score, battles, remaining health and play time"
+              width={921}
+              height={2048}
+              sizes="(max-width: 900px) 90vw, 42vw"
+            />
+            <figcaption>Rank heroes by best score, then compare their battles, remaining health and play time.</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section className="naxConclusion">
+        <div className="shell">
+          <p className="kicker">After the battle</p>
+          <h2>Every choice leaves a mark.</h2>
+          <p>At the end of the duel, a summary lists your successes and failures. Whether Naxarus falls or not, you know exactly what shaped the battle.</p>
+          <Link className="button light" href="/jouer">Face Naxarus</Link>
+        </div>
+      </section>
+    </main>
+  );
+}

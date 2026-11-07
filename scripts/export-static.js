@@ -102,6 +102,33 @@ async function main() {
     fs.copyFileSync(rootIndex, path.join(staticDir, "404.html"));
   }
 
+  // Post-process HTML, CSS, JS files to ensure all asset paths have basePath prefixed
+  if (cleanBase) {
+    console.log(`Rewriting asset URLs with basePath /${cleanBase}...`);
+    const assetPattern = new RegExp(
+      `(?<!/${cleanBase})/(screens|personnages|home_background_v4\\.png|naxarus\\.webp|naxarus_head\\.png|app_icon\\.png|favicon\\.svg|og\\.png|file\\.svg|globe\\.svg|window\\.svg)`,
+      "g"
+    );
+
+    function processDir(dir) {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          processDir(fullPath);
+        } else if (/\.(html|js|css)$/.test(entry.name)) {
+          let content = fs.readFileSync(fullPath, "utf8");
+          if (assetPattern.test(content)) {
+            content = content.replace(assetPattern, `/${cleanBase}/$1`);
+            fs.writeFileSync(fullPath, content, "utf8");
+          }
+        }
+      }
+    }
+
+    processDir(staticDir);
+  }
+
   // If cleanBase exists, also ensure dist/static/<cleanBase> has copies of all static files
   // so URLs with the base prefix also resolve if requested directly
   if (cleanBase) {
