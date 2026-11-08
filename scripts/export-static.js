@@ -18,7 +18,9 @@ const routes = [
   "/installer",
   "/jouer",
   "/modes/minion-rush",
+  "/modes/boss-battle",
   "/modes/naxarus",
+  "/proposer",
   "/admin",
   "/espace-testeur",
 ];
@@ -106,7 +108,7 @@ async function main() {
   if (cleanBase) {
     console.log(`Rewriting asset URLs with basePath /${cleanBase}...`);
     const assetPattern = new RegExp(
-      `(?<!/${cleanBase})/(screens|personnages|home_background_v4\\.png|naxarus\\.webp|naxarus_head\\.png|app_icon\\.png|favicon\\.svg|og\\.png|file\\.svg|globe\\.svg|window\\.svg)`,
+      `(?<!/${cleanBase})/(screens|personnages|home_background_v4\\.png|naxarus\\.webp|naxarus_head\\.png|ourokhor\\.jpg|app_icon\\.png|favicon\\.svg|og\\.png|file\\.svg|globe\\.svg|window\\.svg)`,
       "g"
     );
 

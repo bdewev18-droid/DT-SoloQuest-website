@@ -85,15 +85,15 @@ export default function Home() {
               <b>Explore the mode →</b>
             </div>
           </Link>
-          <Link className="modeTile naxTile" href="/modes/naxarus">
-            <Image src={withBase("/naxarus.webp")} alt="Naxarus the Devourer" fill sizes="50vw" />
+          <Link className="modeTile naxTile" href="/modes/boss-battle">
+            <Image src={withBase("/naxarus.webp")} alt="Boss Battle — Naxarus & Ourokhor" fill sizes="50vw" />
             <div className="tileShade" />
             <div className="tileContent">
               <span className="tileNo">02</span>
-              <p>Boss · Narrative duel</p>
-              <h3>Naxarus</h3>
-              <small>65 health points. The dragon goes first.</small>
-              <b>Challenge the dragon →</b>
+              <p>Boss Battle · 1 boss par mois</p>
+              <h3>Boss Battle</h3>
+              <small>Naxarus (65 PV), Ourokhor le serpent & propositions communautaires chaque mois.</small>
+              <b>Découvrir les boss & voter →</b>
             </div>
           </Link>
         </div>

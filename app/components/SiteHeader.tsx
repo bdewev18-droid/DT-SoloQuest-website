@@ -50,12 +50,15 @@ export function SiteHeader() {
       <nav className="mainNav shell" aria-label="Main navigation">
         <div className="navSide navLeft">
           <Link href="/modes/minion-rush">Minion Rush</Link>
-          <Link href="/modes/naxarus">Naxarus</Link>
+          <Link href="/modes/boss-battle">Boss Battle</Link>
         </div>
         <Link className="centerLogo" href="/" aria-label="Solo Quest — home">
           <img src={`${basePath}/app_icon.png`} alt="Solo Quest" width="106" height="106" />
         </Link>
         <div className="navSide navRight">
+          <Link className="proposeMonsterLink" href="/proposer" title="Proposer un minion ou un boss pour l'app">
+            <span className="sparkle">✦</span> Proposer un monstre
+          </Link>
           {!loading && approved && <Link href="/espace-testeur">Tester Space</Link>}
           {!loading && isAdmin && <Link href="/admin">Admin</Link>}
           {!loading && !session && (
@@ -108,7 +111,10 @@ export function SiteHeader() {
         <div className={`mobileMenu ${open ? "open" : ""}`} aria-hidden={!open}>
           <div className="mobileMenuInner">
             <Link href="/modes/minion-rush">Minion Rush</Link>
-            <Link href="/modes/naxarus">Naxarus</Link>
+            <Link href="/modes/boss-battle">Boss Battle</Link>
+            <Link className="mobileProposeLink" href="/proposer">
+              ✦ Proposer un monstre (Minion / Boss)
+            </Link>
             {!loading && approved && <Link href="/espace-testeur">Tester Space</Link>}
             {!loading && isAdmin && <Link href="/admin">Administration</Link>}
             {!loading && !session && <Link href="/connexion">Login</Link>}
