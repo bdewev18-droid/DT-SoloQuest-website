@@ -90,10 +90,10 @@ export default function Home() {
             <div className="tileShade" />
             <div className="tileContent">
               <span className="tileNo">02</span>
-              <p>Boss Battle · 1 boss par mois</p>
+              <p>Boss Battle · 1 new boss every month</p>
               <h3>Boss Battle</h3>
-              <small>Naxarus (65 PV), Ourokhor le serpent & propositions communautaires chaque mois.</small>
-              <b>Découvrir les boss & voter →</b>
+              <small>Naxarus (65 HP), Ourokhor the Serpent & community boss entries every month.</small>
+              <b>Face the bosses →</b>
             </div>
           </Link>
         </div>

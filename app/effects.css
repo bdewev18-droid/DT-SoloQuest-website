@@ -569,3 +569,295 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
   font-size: 12px;
   color: #4ade80;
 }
+
+/* --- Boss Battle Page: Rules, Profiles & Floor --- */
+.naxRulesSection {
+  padding: 60px 0 40px;
+}
+.bossRulesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 36px;
+}
+.bossRuleCard {
+  background: #0b1118;
+  border: 1px solid var(--line);
+  padding: 26px 22px;
+  border-radius: 8px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.bossRuleCard:hover {
+  border-color: #586b84;
+  transform: translateY(-2px);
+}
+.ruleNumber {
+  font: 900 13px var(--font-display);
+  color: var(--orange);
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+.bossRuleCard h3 {
+  font: 800 18px var(--font-display);
+  margin: 0 0 10px;
+  color: #fff;
+  text-transform: uppercase;
+}
+.bossRuleCard p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #aeb8c4;
+}
+.bossRuleCard p strong {
+  color: #f1f5f9;
+}
+
+/* Boss Roster Profiles */
+.bossShowcaseSection {
+  padding: 40px 0 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.bossProfileCard {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 32px;
+  background: #090e15;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 28px;
+  align-items: center;
+}
+.bossProfileCard.reverse {
+  grid-template-columns: 1fr 360px;
+}
+.bossProfileCard.reverse .bossProfileVisual {
+  order: 2;
+}
+.bossProfileCard.reverse .bossProfileDetails {
+  order: 1;
+}
+@media (max-width: 900px) {
+  .bossProfileCard,
+  .bossProfileCard.reverse {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  .bossProfileCard.reverse .bossProfileVisual {
+    order: 1;
+  }
+  .bossProfileCard.reverse .bossProfileDetails {
+    order: 2;
+  }
+}
+.bossProfileVisual {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.bossImageFrame {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #334255;
+  background: #040609;
+}
+.bossStatBadges {
+  display: flex;
+  gap: 8px;
+  justify-content: space-around;
+  padding: 10px;
+  background: #111a26;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.bossStatBadges span {
+  font-size: 11px;
+  color: #8da0b6;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.bossStatBadges span b {
+  font-size: 18px;
+  color: #ff914d;
+}
+.bossProfileDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.bossArchetype {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.bossProfileDetails h3 {
+  font: 900 28px var(--font-display);
+  margin: 0;
+  color: #fff;
+  text-transform: uppercase;
+}
+.bossLore {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+.bossCombatBreakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(255,255,255,0.1);
+}
+@media (max-width: 650px) {
+  .bossCombatBreakdown {
+    grid-template-columns: 1fr;
+  }
+}
+.combatAspect h4 {
+  font: 800 12px var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #ffc282;
+  margin: 0 0 8px;
+}
+.combatAspect ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.combatAspect li {
+  font-size: 12px;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+.combatAspect li strong {
+  color: #fff;
+}
+.combatAspect p {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0 0 6px;
+}
+
+/* Community Floor Banner */
+.communityBossFloorSection {
+  padding: 20px 0 50px;
+}
+.floorBanner {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 36px;
+  background: linear-gradient(135deg, #182230, #0c121b);
+  border: 1px solid #3c4f66;
+  border-radius: 12px;
+  padding: 36px;
+  align-items: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+@media (max-width: 850px) {
+  .floorBanner {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+}
+.floorContent h2 {
+  font: 900 30px var(--font-display);
+  margin: 6px 0 14px;
+  text-transform: uppercase;
+  color: #fff;
+}
+.floorText {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #e2e8f0;
+  margin: 0 0 8px;
+}
+.floorSubtext {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #94a3b8;
+  margin: 0 0 24px;
+}
+.floorActions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.floorCadenceCard {
+  background: #080d14;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 22px;
+}
+.cadenceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.cadencePill {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--orange);
+  background: rgba(249, 115, 22, 0.15);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.cadenceHeader strong {
+  font-size: 13px;
+  color: #fff;
+}
+.cadenceList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cadenceList li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.checkIcon {
+  color: #4ade80;
+  font-weight: 900;
+  font-size: 13px;
+  margin-top: 1px;
+}
+.cadenceList div {
+  display: flex;
+  flex-direction: column;
+}
+.cadenceList b {
+  font-size: 13px;
+  color: #f1f5f9;
+}
+.cadenceList small {
+  font-size: 11px;
+  color: #8da0b6;
+}

@@ -4,12 +4,12 @@ import { supabase } from "../lib/supabase";
 
 export type ProposalStatus = "unseen" | "in_review" | "validated" | "voting" | "rejected";
 
-export const PROPOSAL_STATUSES: Record<ProposalStatus, { label: string; en: string; color: string; desc: string }> = {
-  unseen: { label: "Non vue", en: "Unseen", color: "var(--amber, #f59e0b)", desc: "Nouvelle proposition reçue, en attente de premier regard." },
-  in_review: { label: "En cours", en: "In Review", color: "var(--cyan, #06b6d4)", desc: "En cours d'analyse et de tests d'équilibrage." },
-  validated: { label: "Validé", en: "Validated", color: "var(--green, #10b981)", desc: "Accepté ! Prêt pour le pack minions ou l'intégration." },
-  voting: { label: "Passera en vote", en: "Voting", color: "var(--fire, #f97316)", desc: "Sélectionné comme boss soumis au vote mensuel de la communauté." },
-  rejected: { label: "Rejeté", en: "Rejected", color: "var(--red, #ef4444)", desc: "Refusé ou nécessite une refonte majeure." }
+export const PROPOSAL_STATUSES: Record<ProposalStatus, { label: string; color: string; desc: string }> = {
+  unseen: { label: "Unseen", color: "var(--amber, #f59e0b)", desc: "New submission received, awaiting initial review." },
+  in_review: { label: "In Review", color: "var(--cyan, #06b6d4)", desc: "Currently under evaluation and playtest balancing." },
+  validated: { label: "Validated", color: "var(--green, #10b981)", desc: "Approved! Ready for inclusion in the game or community pack." },
+  voting: { label: "Queued for Boss Battle", color: "var(--fire, #f97316)", desc: "Scheduled for the upcoming monthly Boss Battle slot." },
+  rejected: { label: "Rejected", color: "var(--red, #ef4444)", desc: "Declined or requires a major gameplay redesign." }
 };
 
 export type CommunityProposal = {
@@ -60,7 +60,7 @@ export function CommunityProposalsAdmin() {
 
       let list: CommunityProposal[] = (data || []) as CommunityProposal[];
 
-      // Récupère aussi le fallback local
+      // Local storage fallback
       if (typeof window !== "undefined") {
         const local = JSON.parse(localStorage.getItem("dts_community_proposals") || "[]") as CommunityProposal[];
         if (local.length > 0) {
@@ -78,7 +78,7 @@ export function CommunityProposalsAdmin() {
         setSelectedId(list[0].id);
       }
     } catch (err) {
-      console.error("Erreur lors du chargement des propositions:", err);
+      console.error("Error loading submissions:", err);
     } finally {
       setLoading(false);
     }
@@ -119,20 +119,18 @@ export function CommunityProposalsAdmin() {
   const updateStatus = async (newStatus: ProposalStatus) => {
     if (!active) return;
     setSaving(true);
-    setNotice("Mise à jour du statut…");
+    setNotice("Updating status…");
 
     try {
-      // Met à jour dans Supabase
       const { error } = await supabase
         .from("community_proposals")
         .update({ status: newStatus, updated_at: new Date().toISOString() })
         .eq("id", active.id);
 
       if (error) {
-        console.warn("Échec Supabase (fallback local) :", error.message);
+        console.warn("Supabase update error, falling back to local storage:", error.message);
       }
 
-      // Met à jour en local
       setProposals(prev =>
         prev.map(p => (p.id === active.id ? { ...p, status: newStatus } : p))
       );
@@ -143,9 +141,9 @@ export function CommunityProposalsAdmin() {
         localStorage.setItem("dts_community_proposals", JSON.stringify(updatedLocal));
       }
 
-      setNotice(`Statut mis à jour : ${PROPOSAL_STATUSES[newStatus].label} (${PROPOSAL_STATUSES[newStatus].en})`);
+      setNotice(`Status updated: ${PROPOSAL_STATUSES[newStatus].label}`);
     } catch (err: any) {
-      setNotice(`Erreur : ${err.message}`);
+      setNotice(`Error: ${err.message}`);
     } finally {
       setSaving(false);
     }
@@ -154,7 +152,7 @@ export function CommunityProposalsAdmin() {
   const saveAdminNotes = async () => {
     if (!active) return;
     setSaving(true);
-    setNotice("Enregistrement des notes admin…");
+    setNotice("Saving admin notes…");
 
     try {
       const { error } = await supabase
@@ -163,7 +161,7 @@ export function CommunityProposalsAdmin() {
         .eq("id", active.id);
 
       if (error) {
-        console.warn("Échec Supabase (fallback local) :", error.message);
+        console.warn("Supabase update error, falling back to local storage:", error.message);
       }
 
       setProposals(prev =>
@@ -176,9 +174,9 @@ export function CommunityProposalsAdmin() {
         localStorage.setItem("dts_community_proposals", JSON.stringify(updatedLocal));
       }
 
-      setNotice("Notes enregistrées avec succès.");
+      setNotice("Notes saved successfully.");
     } catch (err: any) {
-      setNotice(`Erreur : ${err.message}`);
+      setNotice(`Error: ${err.message}`);
     } finally {
       setSaving(false);
     }
@@ -196,46 +194,46 @@ export function CommunityProposalsAdmin() {
 
   const getRankLabel = (rank: string | null) => {
     switch (rank) {
-      case "green": return "Vert (Facile)";
-      case "blue": return "Bleu (Modéré)";
-      case "purple": return "Violet (Difficile)";
-      case "orange": return "Orange (Légendaire)";
+      case "green": return "Green (Tier 1 · Easy)";
+      case "blue": return "Blue (Tier 2 · Moderate)";
+      case "purple": return "Purple (Tier 3 · Hard)";
+      case "orange": return "Orange (Tier 4 · Elite)";
       default: return "";
     }
   };
 
   return (
     <section className="communityProposalsAdmin">
-      {/* Header & Filtres */}
+      {/* Header & Controls */}
       <div className="proposalsAdminHeader">
         <div>
-          <p className="eyebrow"><span />Modération & Équilibrage</p>
-          <h2>Propositions de la communauté</h2>
+          <p className="eyebrow"><span />Moderation &amp; Balancing</p>
+          <h2>Community Monster Submissions</h2>
           <p className="proposalsIntro">
-            Analysez les fiches envoyées par les joueurs pour le mode Rush (Minions) et le vote mensuel (Boss).
-            Contactez les créateurs par email pour finaliser l'équilibrage.
+            Inspect combat sheets submitted by community players for Minion Rush and the monthly Boss Battle rotation.
+            Email creators directly to coordinate balancing adjustments.
           </p>
         </div>
         <div className="proposalsControls">
           <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
-            <option value="all">Tous types ({proposals.length})</option>
-            <option value="boss">Boss uniquement ({proposals.filter(p => p.type === "boss").length})</option>
-            <option value="minion">Minions uniquement ({proposals.filter(p => p.type === "minion").length})</option>
+            <option value="all">All Classifications ({proposals.length})</option>
+            <option value="boss">Bosses only ({proposals.filter(p => p.type === "boss").length})</option>
+            <option value="minion">Minions only ({proposals.filter(p => p.type === "minion").length})</option>
           </select>
           <button className="button wire mini" type="button" onClick={loadProposals} disabled={loading}>
-            {loading ? "Chargement…" : "↻ Rafraîchir"}
+            {loading ? "Loading…" : "↻ Refresh"}
           </button>
         </div>
       </div>
 
-      {/* Barre des statuts */}
+      {/* Status Overview Tabs */}
       <div className="proposalsStatusTabs">
         <button
           className={`statusTabBtn ${statusFilter === "all" ? "active" : ""}`}
           onClick={() => setStatusFilter("all")}
         >
           <b>{countsByStatus.all || 0}</b>
-          <span>Tous</span>
+          <span>All</span>
         </button>
         {(Object.keys(PROPOSAL_STATUSES) as ProposalStatus[]).map(key => {
           const conf = PROPOSAL_STATUSES[key];
@@ -247,24 +245,23 @@ export function CommunityProposalsAdmin() {
             >
               <b>{countsByStatus[key] || 0}</b>
               <span>{conf.label}</span>
-              <small>({conf.en})</small>
             </button>
           );
         })}
       </div>
 
-      {/* Grille principale */}
+      {/* Main Grid */}
       <div className="proposalsGrid">
-        {/* Liste latérale */}
+        {/* Left Column: Submissions List */}
         <div className="proposalsList">
           <div className="proposalsListHeader">
-            <span>Monstre & Créateur</span>
-            <span>Statut</span>
+            <span>Monster &amp; Creator</span>
+            <span>Status</span>
           </div>
 
           {filtered.length === 0 ? (
             <div className="emptyProposals">
-              <p>Aucune proposition correspondant aux critères.</p>
+              <p>No submissions matching the selected filters.</p>
             </div>
           ) : (
             filtered.map(p => {
@@ -287,12 +284,12 @@ export function CommunityProposalsAdmin() {
                   </div>
                   <strong className="proposalCardTitle">{p.monster_name}</strong>
                   <div className="proposalCardMeta">
-                    <span>Par <b>{p.creator_name}</b></span>
-                    <small>{new Date(p.created_at).toLocaleDateString("fr-FR")}</small>
+                    <span>By <b>{p.creator_name}</b></span>
+                    <small>{new Date(p.created_at).toLocaleDateString("en-US")}</small>
                   </div>
                   {p.attacks && (
                     <div className="proposalCardSnippet">
-                      {p.attacks.length} attaque(s) · {p.health} PV · {p.cp} PC
+                      {p.attacks.length} attack(s) · {p.health} HP · {p.cp} CP
                     </div>
                   )}
                 </button>
@@ -301,50 +298,50 @@ export function CommunityProposalsAdmin() {
           )}
         </div>
 
-        {/* Détail de la proposition */}
+        {/* Right Column: Inspect Sheet */}
         {active ? (
           <div className="panel proposalDetailPanel">
-            {/* Entête du détail */}
+            {/* Header */}
             <div className="proposalDetailHeader">
               <div>
                 <div className="proposalDetailBadges">
                   <span className={`typeBadge ${active.type}`}>
-                    {active.type === "boss" ? "👑 BOSS DU MOIS" : "⚔️ MINION RUSH"}
+                    {active.type === "boss" ? "👑 BOSS BATTLE" : "⚔️ MINION RUSH"}
                   </span>
                   {active.type === "minion" && active.minion_rank && (
                     <span className={getRankBadgeClass(active.minion_rank)}>
-                      Rang {getRankLabel(active.minion_rank)}
+                      {getRankLabel(active.minion_rank)}
                     </span>
                   )}
                   <span className={`statusPill status-${active.status}`}>
-                    {PROPOSAL_STATUSES[active.status]?.label} ({PROPOSAL_STATUSES[active.status]?.en})
+                    {PROPOSAL_STATUSES[active.status]?.label}
                   </span>
                 </div>
                 <h2>{active.monster_name}</h2>
                 <div className="creatorContactBar">
-                  <span>Proposé par <strong>{active.creator_name}</strong> ({active.creator_email})</span>
-                  <span>· Reçu le {new Date(active.created_at).toLocaleDateString("fr-FR")} à {new Date(active.created_at).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}</span>
+                  <span>Proposed by <strong>{active.creator_name}</strong> ({active.creator_email})</span>
+                  <span>· Received on {new Date(active.created_at).toLocaleDateString("en-US")}</span>
                   <a
                     className="button wire mini emailBtn"
-                    href={`mailto:${active.creator_email}?subject=Dice Throne Solo - Votre proposition de monstre : ${encodeURIComponent(active.monster_name)}&body=Bonjour ${encodeURIComponent(active.creator_name)},%0D%0A%0D%0ANous avons bien examiné votre proposition pour ${encodeURIComponent(active.monster_name)}.%0D%0A%0D%0A...`}
+                    href={`mailto:${active.creator_email}?subject=Solo Quest - Your monster submission: ${encodeURIComponent(active.monster_name)}&body=Hi ${encodeURIComponent(active.creator_name)},%0D%0A%0D%0AThank you for submitting ${encodeURIComponent(active.monster_name)} to Solo Quest! We have reviewed your combat sheet and...`}
                   >
-                    ✉️ Écrire au créateur
+                    ✉️ Email Creator
                   </a>
                 </div>
               </div>
 
               {active.image_url && (
                 <div className="proposalImageThumb">
-                  <a href={active.image_url} target="_blank" rel="noreferrer" title="Agrandir l'image">
+                  <a href={active.image_url} target="_blank" rel="noreferrer" title="Open full image">
                     <img src={active.image_url} alt={active.monster_name} />
                   </a>
                 </div>
               )}
             </div>
 
-            {/* Actions de Statut */}
+            {/* Status Selector */}
             <div className="statusActionBox">
-              <span className="statusActionTitle">Changer le statut de traitement :</span>
+              <span className="statusActionTitle">Update Treatment Status:</span>
               <div className="statusActionBtns">
                 {(Object.keys(PROPOSAL_STATUSES) as ProposalStatus[]).map(st => {
                   const conf = PROPOSAL_STATUSES[st];
@@ -358,54 +355,48 @@ export function CommunityProposalsAdmin() {
                       disabled={saving}
                     >
                       <b>{conf.label}</b>
-                      <small>({conf.en})</small>
                     </button>
                   );
                 })}
               </div>
               <p className="statusDescription">
                 ℹ️ <em>{PROPOSAL_STATUSES[active.status]?.desc}</em>
-                {active.status === "voting" && (
-                  <strong style={{ color: "var(--fire)", marginLeft: 6 }}>
-                    Ce boss est maintenant disponible dans le vote mensuel de la page Boss Battle !
-                  </strong>
-                )}
               </p>
             </div>
 
-            {/* Fiche technique de combat */}
+            {/* Technical Combat Sheet */}
             <div className="proposalCombatSheet">
-              {/* Concept & Description */}
+              {/* Lore & Concept */}
               <div className="sheetSection">
-                <h4>Parti pris créatif & Concept</h4>
+                <h4>Creative Direction &amp; Lore</h4>
                 <p className="sheetText">{active.concept_description}</p>
               </div>
 
-              {/* Stats principales */}
+              {/* Stats */}
               <div className="sheetStatsGrid">
                 <div className="statItem">
-                  <span>Points de Vie (PV)</span>
-                  <strong>{active.health} PV</strong>
+                  <span>Health Points (HP)</span>
+                  <strong>{active.health} HP</strong>
                 </div>
                 <div className="statItem">
-                  <span>Points de Combat (PC)</span>
-                  <strong>{active.cp} PC</strong>
+                  <span>Combat Points (CP)</span>
+                  <strong>{active.cp} CP</strong>
                 </div>
                 <div className="statItem">
-                  <span>Dés de Défense</span>
-                  <strong>{active.defense_dice} dés</strong>
+                  <span>Defense Dice</span>
+                  <strong>{active.defense_dice} Dice</strong>
                 </div>
               </div>
 
-              {/* Objectif de lancé */}
+              {/* Roll Objective */}
               <div className="sheetSection">
-                <h4>🎯 Objectif de lancé du monstre</h4>
+                <h4>🎯 Automated Roll Objective</h4>
                 <p className="sheetCallout">{active.roll_objective}</p>
               </div>
 
-              {/* Attaques 1 à 6 */}
+              {/* Attacks */}
               <div className="sheetSection">
-                <h4>⚔️ Tableau des Attaques ({active.attacks?.length || 0})</h4>
+                <h4>⚔️ Attack Table ({active.attacks?.length || 0})</h4>
                 <div className="attacksTable">
                   {active.attacks && active.attacks.length > 0 ? (
                     active.attacks.map((atk, idx) => (
@@ -417,55 +408,55 @@ export function CommunityProposalsAdmin() {
                           {atk.effects && <span className="attackEffects">{atk.effects}</span>}
                         </div>
                         <div className="attackMeta">
-                          <span className="attackDamage">{atk.damage} DÉGÂTS</span>
+                          <span className="attackDamage">{atk.damage} DMG</span>
                           {atk.undefendable && (
-                            <span className="undefendableTag">INDEFENDABLE</span>
+                            <span className="undefendableTag">UNDEFENDABLE</span>
                           )}
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p>Aucune attaque détaillée.</p>
+                    <p>No attacks defined.</p>
                   )}
                 </div>
               </div>
 
-              {/* Passif & Défense */}
+              {/* Passive & Defense */}
               <div className="sheetDualGrid">
                 <div className="sheetBlock">
-                  <h4>✨ Capacité Passive</h4>
-                  <p>{active.passive_description || "Aucun passif particulier."}</p>
+                  <h4>✨ Passive Ability</h4>
+                  <p>{active.passive_description || "No passive ability."}</p>
                 </div>
                 <div className="sheetBlock">
-                  <h4>🛡️ Plan de Défense ({active.defense_dice} dés)</h4>
-                  <p>{active.defense_description || "Défense standard."}</p>
+                  <h4>🛡️ Defense Plan ({active.defense_dice} dice)</h4>
+                  <p>{active.defense_description || "Standard defense."}</p>
                 </div>
               </div>
 
-              {/* Contraintes spécifiques */}
+              {/* Constraints */}
               {active.special_constraints && (
                 <div className="sheetSection">
-                  <h4>⚠️ Contraintes & Règles Spécifiques</h4>
+                  <h4>⚠️ Special Constraints &amp; Custom Rules</h4>
                   <p className="sheetText">{active.special_constraints}</p>
                 </div>
               )}
             </div>
 
-            {/* Notes d'administration internes */}
+            {/* Internal Admin Notes */}
             <div className="adminNotesSection">
               <label>
-                <strong>Notes & Échanges internes</strong>
-                <small>Consignez ici les retours de test, idées d'ajustements de dégâts ou résumé des emails avec le créateur.</small>
+                <strong>Admin Internal Notes &amp; Follow-up</strong>
+                <small>Record playtesting observations, recommended damage tweaks, or summaries of creator discussions.</small>
                 <textarea
                   rows={4}
                   value={adminNotes}
                   onChange={e => setAdminNotes(e.target.value)}
-                  placeholder="Ex : Proposé 8 dégâts au lieu de 10 pour éviter le one-shot tour 1. En attente de confirmation du joueur..."
+                  placeholder="e.g. Suggested lowering attack 2 damage from 10 to 8 to avoid early KO. Awaiting creator feedback..."
                 />
               </label>
               <div className="adminNotesActions">
                 <button className="button fire mini" type="button" onClick={saveAdminNotes} disabled={saving}>
-                  {saving ? "Enregistrement…" : "💾 Enregistrer les notes"}
+                  {saving ? "Saving…" : "💾 Save Notes"}
                 </button>
                 {notice && <span className="adminNotice">{notice}</span>}
               </div>
@@ -473,8 +464,8 @@ export function CommunityProposalsAdmin() {
           </div>
         ) : (
           <div className="panel proposalEmptyPanel">
-            <h3>Sélectionnez une proposition</h3>
-            <p>Choisissez un monstre dans la colonne de gauche pour inspecter sa fiche, modifier son statut ou le mettre au vote.</p>
+            <h3>Select a submission</h3>
+            <p>Choose a monster from the list on the left to inspect its combat sheet, adjust its status, or email the creator.</p>
           </div>
         )}
       </div>

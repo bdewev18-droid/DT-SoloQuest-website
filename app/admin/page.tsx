@@ -12,7 +12,7 @@ const pages=[
   {path:"/",label:"Homepage"},
   {path:"/modes/minion-rush",label:"Minion Rush"},
   {path:"/modes/boss-battle",label:"Boss Battle"},
-  {path:"/proposer",label:"Proposer un monstre"},
+  {path:"/proposer",label:"Propose monster"},
   {path:"/connexion",label:"Login"},
   {path:"/inscription",label:"Become a tester"},
   {path:"/installer",label:"Android installation"},
@@ -183,7 +183,7 @@ export default function Page(){
             <button className={tab==="testers"?"active":""} onClick={()=>setTab("testers")}>Beta testers</button>
             <button className={tab==="backlog"?"active":""} onClick={()=>setTab("backlog")}>Backlog</button>
             <button className={tab==="proposals"?"active":""} onClick={()=>setTab("proposals")}>
-              Propositions monstres {unseenProposalsCount>0&&<span className="unseenBadge">{unseenProposalsCount}</span>}
+              Community Monsters {unseenProposalsCount>0&&<span className="unseenBadge">{unseenProposalsCount}</span>}
             </button>
           </div>
 
