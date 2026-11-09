@@ -861,3 +861,397 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
   font-size: 11px;
   color: #8da0b6;
 }
+
+/* --- Community Forge Form Styles (Interactive Dice, Tiers & Defense) --- */
+.forgeFormContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px;
+}
+@media (max-width: 700px) {
+  .forgeFormContainer {
+    padding: 20px;
+  }
+}
+.forgeStepSection {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 28px;
+  margin-bottom: 32px;
+}
+.forgeStepSection h3 {
+  font: 800 22px var(--font-display);
+  text-transform: uppercase;
+  margin: 6px 0 20px;
+  color: #fff;
+}
+.fieldLabel {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  color: #cbd5e1;
+}
+.forgeInput,
+.forgeSelect,
+.forgeTextarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: #090d14;
+  border: 1px solid var(--line);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.15s;
+}
+.forgeInput:focus,
+.forgeSelect:focus,
+.forgeTextarea:focus {
+  border-color: var(--orange);
+  outline: none;
+}
+.forgeInput.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.forgeFileInput {
+  width: 100%;
+  padding: 10px;
+  background: #090d14;
+  border: 1px solid var(--line);
+  color: #fff;
+  border-radius: 4px;
+}
+.forgeTwoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 650px) {
+  .forgeTwoCol {
+    grid-template-columns: 1fr;
+  }
+}
+.forgeThreeCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 750px) {
+  .forgeThreeCol {
+    grid-template-columns: 1fr;
+  }
+}
+.typeSelectBox {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  background: #090d14;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.typeSelectBox.selected.boss {
+  background: rgba(255, 98, 38, 0.12);
+  border-color: var(--orange);
+}
+.typeSelectBox.selected.minion {
+  background: rgba(76, 201, 119, 0.12);
+  border-color: #4ade80;
+}
+.typeSelectBox strong {
+  display: block;
+  font-size: 15px;
+  color: #fff;
+}
+.typeSelectBox small {
+  color: #8da0b6;
+  font-size: 12px;
+}
+.tierCardsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+@media (max-width: 600px) {
+  .tierCardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.tierCardBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tierCardBtn:hover {
+  transform: translateY(-2px);
+}
+.tierCardImg {
+  width: 52px;
+  height: auto;
+  border-radius: 4px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+}
+.tierCardName {
+  font: 800 13px var(--font-display);
+  text-transform: uppercase;
+}
+.tierCardSub {
+  font-size: 11px;
+  color: #8da0b6;
+}
+.infiniteCpToggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #ff914d;
+  font-weight: 800;
+  cursor: pointer;
+}
+.artworkPreviewBox {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background: #080c13;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.artworkPreviewImg {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--orange);
+}
+.artworkSuccessText {
+  font-size: 12px;
+  color: #4ade80;
+  font-weight: 700;
+}
+.attackForgeCard {
+  background: #080c13;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.attackCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.attackCardIndex {
+  font: 800 13px var(--font-display);
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.attackCardRemoveBtn {
+  background: transparent;
+  border: 0;
+  color: #f87171;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+}
+.attackTopRow {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.undefendableCheck {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #f87171;
+  cursor: pointer;
+}
+.diceSelectorModule {
+  background: #0d141f;
+  border: 1px solid #253344;
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.diceSelectorTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.moduleSectionTitle {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #cbd5e1;
+}
+.straightPresetsGroup {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.straightPresetBtn {
+  padding: 4px 10px;
+  background: #172435;
+  border: 1px solid #36485d;
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.straightPresetBtn:hover {
+  background: var(--orange);
+  color: #000;
+  border-color: #ff914d;
+}
+.dicePickerControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.diceCountPicker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #8da0b6;
+}
+.diceCountBtn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  background: #121c29;
+  border: 1px solid #314257;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 12px;
+}
+.diceCountBtn.active {
+  background: var(--orange);
+  color: #000;
+  border-color: #ff914d;
+}
+.diceHint {
+  font-size: 11px;
+  color: #8da0b6;
+  font-style: italic;
+}
+.interactiveDiceRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+.interactiveDieBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: #131d2b;
+  border: 2px solid #334459;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.interactiveDieBtn:hover {
+  border-color: var(--orange);
+  transform: translateY(-2px);
+  background: #19273a;
+}
+.dieFaceImg {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+}
+.dieFaceNum {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.tokensModule {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.selectedTokensPills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.tokenPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: #172435;
+  border: 1px solid #364b63;
+  color: #ffc282;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 4px;
+}
+.tokenPillRemove {
+  background: transparent;
+  border: 0;
+  color: #f87171;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 0;
+}
+.defenseLineRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: #090e15;
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+.defenseLineNum {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--orange);
+  min-width: 24px;
+}
+.mathChallengeBox {
+  background: #080c13;
+  border: 1px solid var(--line);
+  padding: 16px;
+  border-radius: 6px;
+}
+.mathInput {
+  width: 160px;
+  font-weight: 800;
+}
