@@ -1532,3 +1532,31 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
   bottom: 5%;
   z-index: 4;
 }
+
+/* --- HP Section 2: Intro Grid with Physical Board Visual --- */
+.introBand {
+  padding: 68px 0 88px !important;
+}
+.introGrid {
+  grid-template-columns: .92fr 1.08fr !important;
+  gap: 56px !important;
+  align-items: center !important;
+}
+@media (max-width: 900px) {
+  .introGrid {
+    grid-template-columns: 1fr !important;
+    gap: 36px !important;
+  }
+}
+.introBoardVisual {
+  max-width: 500px;
+  width: 100%;
+  margin-bottom: 22px;
+}
+.introBoardVisual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: transparent;
+  filter: drop-shadow(0 20px 38px rgba(0, 0, 0, 0.58));
+}

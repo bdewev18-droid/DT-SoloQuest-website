@@ -107,7 +107,7 @@ async function main() {
   if (cleanBase) {
     console.log(`Rewriting asset URLs with basePath /${cleanBase}...`);
     const assetPattern = new RegExp(
-      `(?<!/${cleanBase})/(dice_faces|ranks|screens|personnages|home_background_v4\\.png|naxarus\\.webp|naxarus_head\\.png|ourokhor\\.jpg|app_icon\\.png|favicon\\.svg|file\\.svg|globe\\.svg|window\\.svg)`,
+      `(?<!/${cleanBase})/(dice_faces|ranks|screens|personnages|home_background_v4\\.png|physical_board\\.webp|naxarus\\.webp|naxarus_head\\.png|ourokhor\\.jpg|app_icon\\.png|favicon\\.svg|file\\.svg|globe\\.svg|window\\.svg)`,
       "g"
     );
 

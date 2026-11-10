@@ -17,9 +17,6 @@ export default function Home() {
           sizes="100vw"
         />
         <div className="heroFade" />
-        <Link className="heroBetaButton button fire recruitmentZone" href="/inscription">
-          Become a Beta Tester
-        </Link>
       </section>
       <section className="introBand cutBottom">
         <div className="shell introGrid">
@@ -31,6 +28,16 @@ export default function Home() {
             </h1>
           </div>
           <div className="introCopy">
+            <div className="introBoardVisual">
+              <Image
+                src={withBase("/physical_board.webp")}
+                alt="Physical Dice Throne Necromancer hero board, dice, dials and cards"
+                width={1000}
+                height={729}
+                sizes="(max-width: 900px) 92vw, 520px"
+                priority
+              />
+            </div>
             <p>
               Solo Quest adds a real opponent to your physical Dice Throne games. You keep your board, cards and dice. The app only plays for your enemies.
             </p>
