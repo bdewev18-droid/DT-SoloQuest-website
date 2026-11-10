@@ -86,9 +86,9 @@ export default function Home() {
             <div className="tileShade" />
             <div className="tileContent">
               <span className="tileNo">01</span>
-              <p>Campaign · Progression</p>
+              <p>Campaign · 3 Game Modes</p>
               <h3>Minion Rush</h3>
-              <small>82 enemies. A path to forge. Up to 15 battles.</small>
+              <small>77 validated minions. 3 modes (Free, Normal, Hard). 13 enemies per run.</small>
               <b>Explore the mode →</b>
             </div>
           </Link>
@@ -115,7 +115,7 @@ export default function Home() {
             </h2>
           </div>
           <div className="systemStory">
-            <GameScreen src="/screens/minion-06.jpg" alt="Minion Rush battle with live narration" />
+            <GameScreen src="/screens/minion-06.webp" alt="Minion Rush battle with live narration" framed />
             <div className="systemStoryCopy">
               <h3>The battle comes alive</h3>
               <p>
@@ -143,7 +143,7 @@ export default function Home() {
         </div>
       </section>
       <section className="heroChoice shell">
-        <GameScreen src="/screens/perso-02.jpg" alt="Choose from every Dice Throne hero" />
+        <GameScreen src="/screens/perso-02.webp" alt="Choose from every Dice Throne hero" framed />
         <div>
           <p className="kicker">Your hero awaits</p>
           <h2>Every character.<br />Every season.</h2>

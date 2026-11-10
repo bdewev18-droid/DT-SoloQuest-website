@@ -1560,3 +1560,27 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
   background: transparent;
   filter: drop-shadow(0 20px 38px rgba(0, 0, 0, 0.58));
 }
+
+/* --- SubHero Eyebrow & Heading Rhythm Fix --- */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin: 0 0 18px !important;
+}
+.eyebrow span {
+  width: 6px;
+  height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.subHero h1 {
+  margin: 0 0 18px !important;
+}

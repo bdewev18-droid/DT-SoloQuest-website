@@ -40,9 +40,9 @@ export default function Page() {
           </h1>
           <p>Choose your path, defeat a randomly drawn army and survive the final battle.</p>
           <div className="heroNumbers">
-            <div><b>82</b><small>enemies in the game</small></div>
-            <div><b>13</b><small>normal battles</small></div>
-            <div><b>15</b><small>hard battles</small></div>
+            <div><b>77</b><small>validated enemies</small></div>
+            <div><b>13</b><small>enemies per run</small></div>
+            <div><b>3</b><small>game modes (Free · Normal · Hard)</small></div>
           </div>
         </div>
       </section>
@@ -57,7 +57,7 @@ export default function Page() {
         <div>
           <p className="kicker">A branching campaign</p>
           <h2>Your road to the summit</h2>
-          <p>Progress across a complete map, choose your battles and collect the points you need. Each run randomly selects opponents from a roster of 82 monsters.</p>
+          <p>Progress across a complete map, choose your battles and collect the points you need. Each run randomly selects opponents from a roster of 77 validated minions.</p>
           <Link className="button fire" href="/jouer">Start a game</Link>
         </div>
       </section>
@@ -71,16 +71,16 @@ export default function Page() {
             <GameScreen src="/screens/minion-01.jpg" alt="Normal Minion Rush difficulty" />
             <GameScreen src="/screens/minion-02.jpg" alt="Hard Minion Rush difficulty" />
             <div className="duoCopy">
-              <h3>Normal or hard?</h3>
-              <p>Normal mode requires 13 victories. Hard mode extends the journey to 15 enemies and makes every decision more demanding.</p>
+              <h3>Free, Normal, or Hard</h3>
+              <p>Choose from 3 game modes: <strong>Normal</strong> (balanced 33-point goal), <strong>Hard</strong> (demanding 52-point goal featuring Viseer), or <strong>Free</strong> mode where you freely configure your enemy roster. Defeat 13 enemies across the map to complete Minion Rush.</p>
             </div>
           </div>
         </div>
       </section>
       <section className="journey shell">
-        <Step n="02" title="Prepare your hero" text="Choose any integrated character. Your physical board remains your command center." screen="/screens/perso-02.jpg" />
+        <Step n="02" title="Prepare your hero" text="Choose any integrated character. Your physical board remains your command center." screen="/screens/perso-02.webp" />
         <Step n="03" title="Discover your target" text="Before each battle, review the monster profile, abilities and dangers ahead." screen="/screens/minion-05.jpg" />
-        <Step n="04" title="Attack from your board" text="Roll your own dice and play your cards. The app opens the narration and keeps track of the battle." screen="/screens/minion-06.jpg" />
+        <Step n="04" title="Attack from your board" text="Roll your own dice and play your cards. The app opens the narration and keeps track of the battle." screen="/screens/minion-06.webp" />
         <Step n="05" title="Let the enemy defend" text="The automation rolls the enemy dice. The AI interprets the result, resolves tokens and explains everything in chat." screen="/screens/minion-07.jpg" />
         <Step n="06" title="Keep the final say" text="The automation statistically selects rerolls. You may still force a reroll or edit a die before the AI resolves the turn." screen="/screens/minion-08.jpg" />
       </section>
@@ -109,7 +109,7 @@ export default function Page() {
         <div className="shell">
           <div className="sectionTitle">
             <p className="kicker">An unpredictable army</p>
-            <h2>Meet 82 monsters</h2>
+            <h2>Meet 77 validated minions</h2>
           </div>
           <div className="galleryRow">
             <GameScreen src="/screens/minion-12.jpg" alt="Minion Rush enemy example" />
