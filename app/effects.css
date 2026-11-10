@@ -1584,3 +1584,138 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
 .subHero h1 {
   margin: 0 0 18px !important;
 }
+
+/* --- Minion Rush Page: 4-Mode Grid, Phases Breakdown & Dual Stage --- */
+.difficultyFourGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+  align-items: start;
+}
+@media (max-width: 1120px) {
+  .difficultyFourGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}
+@media (max-width: 650px) {
+  .difficultyFourGrid {
+    grid-template-columns: 1fr;
+  }
+}
+.diffModeCard {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: rgba(8, 12, 19, 0.72);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px;
+}
+.diffModeCard .screenMockup img {
+  height: 480px !important;
+  max-height: none;
+}
+.diffModeCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.diffTag {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.diffTag.normal {
+  background: rgba(59, 130, 246, 0.18);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+.diffTag.packs {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.45);
+}
+.diffTag.free {
+  background: rgba(53, 223, 121, 0.16);
+  color: #70e79d;
+  border: 1px solid rgba(53, 223, 121, 0.4);
+}
+.diffTag.hard {
+  background: rgba(233, 45, 62, 0.18);
+  color: #ff8181;
+  border: 1px solid rgba(233, 45, 62, 0.45);
+}
+.diffModeCopy h3 {
+  font: 800 18px/1.2 var(--font-display);
+  text-transform: uppercase;
+  margin: 4px 0 0;
+  color: #fff;
+}
+.diffModeCopy p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #aeb8c4;
+}
+.diffModeCopy p strong {
+  color: #f1f5f9;
+}
+
+.phaseBreakdownList {
+  list-style: none;
+  padding: 0;
+  margin: 22px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.phaseBreakdownList li {
+  background: #0c121b;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--orange);
+  padding: 12px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #cbd5e1;
+}
+.phaseBreakdownList li b {
+  color: #fff;
+  display: block;
+  margin-bottom: 3px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dualScreenStage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: center;
+}
+@media (max-width: 600px) {
+  .dualScreenStage {
+    grid-template-columns: 1fr;
+  }
+}
+.dualScreenStage .screenMockup img {
+  height: 520px !important;
+}
+.galleryRow .screenMockup img {
+  height: 520px !important;
+}
+.tokenCard {
+  display: flex;
+  flex-direction: column;
+}
+.tokenCard .screenCrop {
+  height: 520px;
+}
