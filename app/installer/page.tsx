@@ -43,7 +43,7 @@ export default function Page() {
             Android displays a standard warning for apps installed outside the Play Store. This is expected for an APK release.
           </p>
           <div className="autoUpdateBox" style={{ marginTop: 18 }}>
-            <strong>🔄 Automatic Updates on Startup</strong>
+            <strong className="autoUpdateTitle">🔄 Automatic Updates on Startup</strong>
             <p>
               You only need to install the APK once. The app checks for updates automatically every time it launches—no need to repeat this process for future updates.
             </p>

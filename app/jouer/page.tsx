@@ -35,18 +35,6 @@ export default function PlayPage() {
               </p>
             </div>
 
-            <ul className="playFeatureList">
-              <li>
-                <strong>Apple / iOS Compatible:</strong> Recommended option for iPhone and iPad users.
-              </li>
-              <li>
-                <strong>Zero Setup:</strong> Opens directly in a dedicated browser tab with your saved progress.
-              </li>
-              <li>
-                <strong>iOS Home Screen Tip:</strong> In Safari, tap <em>Share → &ldquo;Add to Home Screen&rdquo;</em> to launch Solo Quest like a native full-screen app.
-              </li>
-            </ul>
-
             <div className="playCardActions">
               <a
                 className="button fire"
@@ -60,6 +48,18 @@ export default function PlayPage() {
                 Opens in a new tab ({WEB_GAME_URL.replace("https://", "")})
               </small>
             </div>
+
+            <ul className="playFeatureList">
+              <li>
+                <strong>Apple / iOS Compatible:</strong> Recommended option for iPhone and iPad users.
+              </li>
+              <li>
+                <strong>Zero Setup:</strong> Opens directly in a dedicated browser tab with your saved progress.
+              </li>
+              <li>
+                <strong>iOS Home Screen Tip:</strong> In Safari, tap <em>Share → &ldquo;Add to Home Screen&rdquo;</em> to launch Solo Quest like a native full-screen app.
+              </li>
+            </ul>
           </article>
 
           {/* Option 2: Download Android APK */}
@@ -93,30 +93,35 @@ export default function PlayPage() {
 
             {/* Auto-update highlight */}
             <div className="autoUpdateBox">
-              <strong>🔄 Self-Updating on Startup</strong>
+              <strong className="autoUpdateTitle">🔄 Self-Updating on Startup</strong>
               <p>
                 You only need to install the APK <strong>once</strong>. Whenever a new version is released, the app automatically checks and updates itself directly on startup—no need to repeat these steps again.
               </p>
             </div>
 
-            {/* Android Unknown Sources Guide */}
-            <div className="apkGuideBox">
-              <h3>How to enable APK installation (Unknown Sources) on Android</h3>
-              <ol className="steps">
-                <li>
-                  Tap <strong>Download Latest APK</strong> above to download <code>app-release.apk</code> from GitHub Releases.
-                </li>
-                <li>
-                  Open the downloaded file from your notification bar or your device&apos;s <strong>Files / Downloads</strong> app.
-                </li>
-                <li>
-                  If prompted for permission, tap <strong>Settings</strong> and toggle <strong>&ldquo;Allow from this source&rdquo;</strong> ON (or open <em>Settings → Apps → Special app access → Install unknown apps</em> and authorize your browser).
-                </li>
-                <li>
-                  Confirm <strong>Install</strong> and launch <strong>Solo Quest</strong>!
-                </li>
-              </ol>
-            </div>
+            {/* Collapsible Android Unknown Sources Guide */}
+            <details className="apkGuideDetails">
+              <summary className="apkGuideSummary">
+                <span>How to enable APK installation (Unknown Sources) on Android</span>
+                <span className="apkGuideChevron" aria-hidden="true">▾</span>
+              </summary>
+              <div className="apkGuideBody">
+                <ol className="steps">
+                  <li>
+                    Tap <strong>Download Latest APK</strong> above to save <code>app-release.apk</code> from GitHub Releases.
+                  </li>
+                  <li>
+                    Open the downloaded file from your notification bar or your device&apos;s <strong>Files / Downloads</strong> app.
+                  </li>
+                  <li>
+                    If prompted for permission, tap <strong>Settings</strong> and toggle <strong>&ldquo;Allow from this source&rdquo;</strong> ON (or open <em>Settings → Apps → Special app access → Install unknown apps</em> and authorize your browser).
+                  </li>
+                  <li>
+                    Confirm <strong>Install</strong> and launch <strong>Solo Quest</strong>!
+                  </li>
+                </ol>
+              </div>
+            </details>
           </article>
         </div>
 

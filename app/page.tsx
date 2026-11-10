@@ -62,7 +62,7 @@ export default function Home() {
           </ul>
         </div>
         <div className="phoneStage">
-          <GameScreen src="/screens/hp-02.jpg" alt="App home screen with Minion Rush and Naxarus" />
+          <GameScreen src="/screens/hp-02.webp" alt="App home screen with Minion Rush and Boss Battle" framed />
           <div className="stageLabel">
             <b>2</b>
             <span>solo modes<br />in one app</span>

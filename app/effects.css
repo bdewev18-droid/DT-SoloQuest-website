@@ -664,7 +664,7 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
 }
 .bossImageFrame {
   position: relative;
-  aspect-ratio: 16 / 11;
+  aspect-ratio: 4 / 4.6;
   border-radius: 6px;
   overflow: hidden;
   border: 1px solid #334255;
@@ -1318,7 +1318,7 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-  align-items: stretch;
+  align-items: start;
 }
 @media (max-width: 900px) {
   .playSplitGrid {
@@ -1328,7 +1328,7 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
 .playOptionCard {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
   padding: 36px;
   border-radius: 8px;
   background: linear-gradient(155deg, #131c27, #0b1017);
@@ -1402,7 +1402,6 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: auto;
 }
 .playCardActions .button {
   width: 100%;
@@ -1419,7 +1418,7 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
   border-radius: 6px;
   padding: 16px 18px;
 }
-.autoUpdateBox strong {
+.autoUpdateBox .autoUpdateTitle {
   display: block;
   color: #70e79d;
   font-size: 13px;
@@ -1433,15 +1432,48 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
   line-height: 1.55;
   color: #cbd5e1;
 }
-.apkGuideBox h3 {
-  font: 800 14px/1.3 var(--font-display);
+.apkGuideDetails {
+  background: #080d14;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.apkGuideSummary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  font: 800 12px/1.3 var(--font-display);
   text-transform: uppercase;
   color: #ffc282;
-  margin: 0 0 12px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
 }
-.apkGuideBox .steps li {
+.apkGuideSummary::-webkit-details-marker {
+  display: none;
+}
+.apkGuideSummary:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+.apkGuideChevron {
+  transition: transform 0.2s ease;
+  font-size: 14px;
+}
+.apkGuideDetails[open] .apkGuideChevron {
+  transform: rotate(180deg);
+}
+.apkGuideBody {
+  padding: 0 18px 18px;
+  border-top: 1px solid var(--line);
+}
+.apkGuideBody .steps {
+  margin-top: 8px;
+}
+.apkGuideBody .steps li {
   font-size: 13px;
-  padding: 12px 0 12px 34px;
+  padding: 11px 0 11px 34px;
 }
 .playTesterCallout {
   display: flex;
@@ -1463,4 +1495,40 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
 .playTesterCallout p {
   margin: 0;
   max-width: 660px;
+}
+
+/* --- Framed Phone Mockups (.webp / .png with transparent RGBA background) --- */
+.gameScreen.isFramed {
+  display: grid;
+  place-items: center;
+  background: transparent;
+}
+.screenMockup {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.screenMockup img {
+  display: block;
+  width: auto !important;
+  height: 620px !important;
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  background: transparent !important;
+  filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.72));
+}
+@media (max-width: 540px) {
+  .screenMockup img {
+    height: 520px !important;
+  }
+}
+.phoneStage .stageLabel {
+  right: 2%;
+  bottom: 5%;
+  z-index: 4;
 }

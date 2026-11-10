@@ -114,9 +114,9 @@ export default function BossBattlePage() {
               <Image
                 src={withBase("/naxarus.webp")}
                 alt="Naxarus the Devourer"
-                width={700}
-                height={500}
-                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                width={636}
+                height={727}
+                style={{ objectFit: "cover", objectPosition: "50% 12%", width: "100%", height: "100%" }}
               />
             </div>
             <div className="bossStatBadges">
@@ -172,9 +172,9 @@ export default function BossBattlePage() {
               <Image
                 src={withBase("/ourokhor.jpg")}
                 alt="Ourokhor the Ancient Serpent"
-                width={700}
-                height={500}
-                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                width={768}
+                height={1376}
+                style={{ objectFit: "cover", objectPosition: "50% 6%", width: "100%", height: "100%" }}
               />
             </div>
             <div className="bossStatBadges">
