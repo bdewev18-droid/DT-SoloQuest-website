@@ -56,11 +56,16 @@ export function SiteHeader() {
           <img src={`${basePath}/app_icon.png`} alt="Solo Quest" width="106" height="106" />
         </Link>
         <div className="navSide navRight">
+          <Link href="/jouer">Play</Link>
           {!loading && approved && <Link href="/espace-testeur">Tester Space</Link>}
           {!loading && isAdmin && <Link href="/admin">Admin</Link>}
           {!loading && !session && (
             <Link className="loginLink" href="/connexion">
-              <span aria-hidden="true">●</span> Login
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              Login
             </Link>
           )}
           {!loading && session && headerProfile && (
@@ -109,6 +114,7 @@ export function SiteHeader() {
           <div className="mobileMenuInner">
             <Link href="/modes/minion-rush">Minion Rush</Link>
             <Link href="/modes/boss-battle">Boss Battle</Link>
+            <Link href="/jouer">Play</Link>
             {!loading && approved && <Link href="/espace-testeur">Tester Space</Link>}
             {!loading && isAdmin && <Link href="/admin">Administration</Link>}
             {!loading && !session && <Link href="/connexion">Login</Link>}
