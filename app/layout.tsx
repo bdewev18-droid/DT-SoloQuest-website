@@ -5,7 +5,6 @@ import "./effects.css";
 import { ScrollReveal } from "./components/ScrollReveal";
 import { AuthProvider } from "./components/AuthProvider";
 import { ContentManager, SiteSettings } from "./components/ContentManager";
-import { PrivateSiteGate } from "./components/PrivateSiteGate";
 import { SiteFooter } from "./components/SiteFooter";
 
 const display = Cinzel({ variable: "--font-display", subsets: ["latin"] });
@@ -40,13 +39,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body className={`${display.variable} ${body.variable}`}>
         <AuthProvider>
-          <PrivateSiteGate>
-            {children}
-            <SiteSettings />
-            <ContentManager />
-            <ScrollReveal />
-            <SiteFooter />
-          </PrivateSiteGate>
+          {children}
+          <SiteSettings />
+          <ContentManager />
+          <ScrollReveal />
+          <SiteFooter />
         </AuthProvider>
       </body>
     </html>

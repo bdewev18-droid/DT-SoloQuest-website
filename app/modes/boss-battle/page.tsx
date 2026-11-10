@@ -73,9 +73,9 @@ export default function BossBattlePage() {
 
           <article className="bossRuleCard">
             <span className="ruleNumber">02</span>
-            <h3>Massive Health Pools (60 to 70+ HP)</h3>
+            <h3>Massive HP &amp; Infinite CP (∞)</h3>
             <p>
-              While standard minions fall in 2 to 3 rounds, bosses are titans built for long wars of attrition. With <strong>60 to 70+ HP</strong>, you must pace your Combat Points (CP), preserve defensive cards for telegraphed nukes, and stack status effects to wear them down.
+              While standard minions fall in 2 to 3 rounds, bosses are titans built for long wars of attrition. With <strong>60 to 70+ HP</strong> and <strong>Infinite Combat Points (∞)</strong>, you must pace your own resources carefully to outlast them.
             </p>
           </article>
 
@@ -121,7 +121,7 @@ export default function BossBattlePage() {
             </div>
             <div className="bossStatBadges">
               <span><b>65</b> HP</span>
-              <span><b>4</b> CP</span>
+              <span><b>∞</b> CP</span>
               <span><b>3</b> Defense Dice</span>
             </div>
           </div>
@@ -179,7 +179,7 @@ export default function BossBattlePage() {
             </div>
             <div className="bossStatBadges">
               <span><b>70</b> HP</span>
-              <span><b>5</b> CP</span>
+              <span><b>∞</b> CP</span>
               <span><b>4</b> Defense Dice</span>
             </div>
           </div>
@@ -231,11 +231,11 @@ export default function BossBattlePage() {
               The Solo Quest boss catalog is an evolving community battleground. Each month, an original boss designed by a community player joins the official roster.
             </p>
             <p className="floorSubtext">
-              Proposals are carefully reviewed and playtested by our team to guarantee balanced math, exciting counter-play, and seamless integration with the automated dice engine. Have an epic concept? Submit your monster today!
+              Proposals are reviewed and playtested by our team to guarantee balanced math, exciting counter-play, and seamless integration with the automated dice engine. Boss submissions and balancing tools are built directly inside the Solo Quest app.
             </p>
             <div className="floorActions">
-              <Link className="button fire" href="/proposer">
-                Propose a Boss to the Team →
+              <Link className="button fire recruitmentZone" href="/inscription">
+                Become a Beta Tester →
               </Link>
               <Link className="button wire" href="/modes/minion-rush">
                 Explore Minion Rush Mode
@@ -363,8 +363,8 @@ export default function BossBattlePage() {
             <Link className="button light" href="/jouer">
               Face the Bosses
             </Link>
-            <Link className="button wire" href="/proposer">
-              Propose a Monster
+            <Link className="button wire recruitmentZone" href="/inscription">
+              Become a Beta Tester
             </Link>
           </div>
         </div>

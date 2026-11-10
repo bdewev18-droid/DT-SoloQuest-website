@@ -1,2 +1,105 @@
-"use client";import {FormEvent,useState} from "react";import {SiteHeader} from "../components/SiteHeader";import {useAuth} from "../components/AuthProvider";import {supabase} from "../lib/supabase";
-export default function Page(){const {session,profile,refreshProfile}=useAuth();const [message,setMessage]=useState("");const [busy,setBusy]=useState(false);const login=async()=>{await supabase.auth.signInWithOAuth({provider:"google",options:{redirectTo:`${location.origin}/inscription`}})};const submit=async(e:FormEvent<HTMLFormElement>)=>{e.preventDefault();if(!session)return;setBusy(true);setMessage("");const f=new FormData(e.currentTarget);const display_name=String(f.get("display_name")||"");const {error:p}=await supabase.from("tester_profiles").upsert({id:session.user.id,email:session.user.email,display_name,status:"pending"});const {error:a}=await supabase.from("tester_applications").upsert({user_id:session.user.id,experience:f.get("experience"),motivation:f.get("motivation")},{onConflict:"user_id"});if(p||a)setMessage("The tester database still needs to be initialized by the administrator.");else{await refreshProfile();setMessage("Application saved. You can return to it with your Google account.")}setBusy(false)};return <main className="subPage"><SiteHeader/><section className="subHero shell"><p className="eyebrow"><span/>Private beta</p><h1>Join the quest</h1><p className="lead">Your application is linked to your Google account and stored separately from game data.</p></section><section className="contentGrid shell">{!session?<article className="panel"><h2>First step</h2><p>Sign in with Google to save and retrieve your application.</p><button className="button fire" onClick={login}>Continue with Google</button></article>:<form className="panel form" onSubmit={submit}><span className="statusBadge">{profile?.status==="approved"?"Approved account":"Application"}</span><label>Nickname<input name="display_name" required defaultValue={profile?.display_name||session.user.user_metadata?.full_name||""}/></label><label>Email<input value={session.user.email||""} readOnly/></label><label>Your Dice Throne experience<select name="experience" required defaultValue=""><option value="" disabled>Choose</option><option>New to the game</option><option>A few games</option><option>Regular player</option></select></label><label>Why would you like to test?<textarea name="motivation" required placeholder="Tell us about the way you play…"/></label><button className="button fire" disabled={busy}>{busy?"Saving…":"Save my application"}</button>{message&&<p className="formNotice">{message}</p>}</form>}<aside className="panel"><h2>What happens next?</h2><p>Your application is marked as pending. Once approved, Android, Play and Tester Space will automatically appear in the navigation.</p></aside></section></main>}
+"use client";
+import { FormEvent, useState } from "react";
+import { SiteHeader } from "../components/SiteHeader";
+import { useAuth } from "../components/AuthProvider";
+import { withBase } from "../components/base-path";
+import { supabase } from "../lib/supabase";
+
+export default function Page() {
+  const { session, profile, refreshProfile } = useAuth();
+  const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const login = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${location.origin}${withBase("/inscription")}` },
+    });
+  };
+
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!session) return;
+    setBusy(true);
+    setMessage("");
+    const f = new FormData(e.currentTarget);
+    const display_name = String(f.get("display_name") || "");
+    const { error: p } = await supabase
+      .from("tester_profiles")
+      .upsert({ id: session.user.id, email: session.user.email, display_name, status: "pending" });
+    const { error: a } = await supabase
+      .from("tester_applications")
+      .upsert(
+        { user_id: session.user.id, experience: f.get("experience"), motivation: f.get("motivation") },
+        { onConflict: "user_id" }
+      );
+    if (p || a) {
+      setMessage("The tester database still needs to be initialized by the administrator.");
+    } else {
+      await refreshProfile();
+      setMessage("Application saved. You can return to it with your Google account.");
+    }
+    setBusy(false);
+  };
+
+  return (
+    <main className="subPage">
+      <SiteHeader />
+      <section className="subHero shell">
+        <p className="eyebrow"><span />Private beta</p>
+        <h1>Join the quest</h1>
+        <p className="lead">Your application is linked to your Google account and stored separately from game data.</p>
+      </section>
+      <section className="contentGrid shell">
+        {!session ? (
+          <article className="panel">
+            <h2>First step</h2>
+            <p>Sign in with Google to save and retrieve your application.</p>
+            <button className="button fire" onClick={login}>Continue with Google</button>
+          </article>
+        ) : (
+          <form className="panel form" onSubmit={submit}>
+            <span className="statusBadge">
+              {profile?.status === "approved" ? "Approved account" : "Application"}
+            </span>
+            <label>
+              Nickname
+              <input
+                name="display_name"
+                required
+                defaultValue={profile?.display_name || session.user.user_metadata?.full_name || ""}
+              />
+            </label>
+            <label>
+              Email
+              <input value={session.user.email || ""} readOnly />
+            </label>
+            <label>
+              Your Dice Throne experience
+              <select name="experience" required defaultValue="">
+                <option value="" disabled>Choose</option>
+                <option>New to the game</option>
+                <option>A few games</option>
+                <option>Regular player</option>
+              </select>
+            </label>
+            <label>
+              Why would you like to test?
+              <textarea name="motivation" required placeholder="Tell us about the way you play…" />
+            </label>
+            <button className="button fire" disabled={busy}>
+              {busy ? "Saving…" : "Save my application"}
+            </button>
+            {message && <p className="formNotice">{message}</p>}
+          </form>
+        )}
+        <aside className="panel">
+          <h2>What happens next?</h2>
+          <p>
+            Your application is marked as pending. Once approved, Android, Play and Tester Space will automatically appear in the navigation.
+          </p>
+        </aside>
+      </section>
+    </main>
+  );
+}

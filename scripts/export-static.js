@@ -20,7 +20,6 @@ const routes = [
   "/modes/minion-rush",
   "/modes/boss-battle",
   "/modes/naxarus",
-  "/proposer",
   "/admin",
   "/espace-testeur",
 ];

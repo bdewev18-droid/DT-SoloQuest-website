@@ -56,7 +56,6 @@ export function SiteHeader() {
           <img src={`${basePath}/app_icon.png`} alt="Solo Quest" width="106" height="106" />
         </Link>
         <div className="navSide navRight">
-          <Link href="/proposer">Propose a Monster</Link>
           {!loading && approved && <Link href="/espace-testeur">Tester Space</Link>}
           {!loading && isAdmin && <Link href="/admin">Admin</Link>}
           {!loading && !session && (
@@ -110,7 +109,6 @@ export function SiteHeader() {
           <div className="mobileMenuInner">
             <Link href="/modes/minion-rush">Minion Rush</Link>
             <Link href="/modes/boss-battle">Boss Battle</Link>
-            <Link href="/proposer">Propose a Monster</Link>
             {!loading && approved && <Link href="/espace-testeur">Tester Space</Link>}
             {!loading && isAdmin && <Link href="/admin">Administration</Link>}
             {!loading && !session && <Link href="/connexion">Login</Link>}

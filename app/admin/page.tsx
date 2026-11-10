@@ -6,13 +6,11 @@ import {ContentMap,HeroSettings,SiteFeatureSettings,applyContent,applyHeroSettin
 import {TesterManager} from "../components/TesterManager";
 import {supabase} from "../lib/supabase";
 import {AdminBacklog} from "../components/AdminBacklog";
-import {CommunityProposalsAdmin} from "../components/CommunityProposalsAdmin";
 
 const pages=[
   {path:"/",label:"Homepage"},
   {path:"/modes/minion-rush",label:"Minion Rush"},
   {path:"/modes/boss-battle",label:"Boss Battle"},
-  {path:"/proposer",label:"Propose monster"},
   {path:"/connexion",label:"Login"},
   {path:"/inscription",label:"Become a tester"},
   {path:"/installer",label:"Android installation"},
@@ -21,7 +19,7 @@ const pages=[
 ];
 
 export default function Page(){
-  const [tab,setTab]=useState<"content"|"testers"|"backlog"|"proposals">("content");
+  const [tab,setTab]=useState<"content"|"testers"|"backlog">("content");
   const [page,setPage]=useState("/");
   const [values,setValues]=useState<ContentMap>({});
   const valuesRef=useRef<ContentMap>({});
@@ -33,7 +31,6 @@ export default function Page(){
   const [notice,setNotice]=useState("");
   const [loading,setLoading]=useState(true);
   const frame=useRef<HTMLIFrameElement>(null);
-  const [unseenProposalsCount,setUnseenProposalsCount]=useState(0);
 
   useEffect(()=>{valuesRef.current=values},[values]);
   useEffect(()=>{settingsRef.current=settings},[settings]);
@@ -41,22 +38,10 @@ export default function Page(){
   useEffect(()=>{
     Promise.all([
       supabase.from("site_content").select("draft,published").eq("page_path","/__home_image").maybeSingle(),
-      supabase.from("site_content").select("draft,published").eq("page_path","/__site_features").maybeSingle(),
-      supabase.from("community_proposals").select("id", { count: "exact" }).eq("status", "unseen")
-    ]).then(([hero,siteFeatures,proposalsRes])=>{
+      supabase.from("site_content").select("draft,published").eq("page_path","/__site_features").maybeSingle()
+    ]).then(([hero,siteFeatures])=>{
       setSettings({...defaultHeroSettings,...(hero.data?.draft||hero.data?.published||{})} as HeroSettings);
       setFeatures({...defaultSiteFeatureSettings,...(siteFeatures.data?.published||siteFeatures.data?.draft||{})} as SiteFeatureSettings);
-      if (typeof proposalsRes?.count === "number") {
-        setUnseenProposalsCount(proposalsRes.count);
-      } else if (typeof window !== "undefined") {
-        try {
-          const local = JSON.parse(localStorage.getItem("dts_community_proposals") || "[]");
-          const unseen = local.filter((p: any) => p.status === "unseen").length;
-          setUnseenProposalsCount(unseen);
-        } catch {
-          // ignore
-        }
-      }
     });
   },[]);
 
@@ -159,7 +144,7 @@ export default function Page(){
         <section className="subHero shell cmsIgnore">
           <p className="eyebrow"><span/>Administration</p>
           <h1>Control room</h1>
-          <p className="lead">Edit website content, manage testers, review community proposals and run the product backlog.</p>
+          <p className="lead">Edit website content, manage testers and run the product backlog.</p>
         </section>
         <section className="shell adminSection cmsIgnore">
           <section className="panel recruitmentSettings">
@@ -182,9 +167,6 @@ export default function Page(){
             <button className={tab==="content"?"active":""} onClick={()=>setTab("content")}>Website content</button>
             <button className={tab==="testers"?"active":""} onClick={()=>setTab("testers")}>Beta testers</button>
             <button className={tab==="backlog"?"active":""} onClick={()=>setTab("backlog")}>Backlog</button>
-            <button className={tab==="proposals"?"active":""} onClick={()=>setTab("proposals")}>
-              Community Monsters {unseenProposalsCount>0&&<span className="unseenBadge">{unseenProposalsCount}</span>}
-            </button>
           </div>
 
           {tab==="content" ? (
@@ -236,10 +218,8 @@ export default function Page(){
             </div>
           ) : tab==="testers" ? (
             <TesterManager/>
-          ) : tab==="backlog" ? (
-            <AdminBacklog/>
           ) : (
-            <CommunityProposalsAdmin/>
+            <AdminBacklog/>
           )}
         </section>
       </ProtectedPage>
