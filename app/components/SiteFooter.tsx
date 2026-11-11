@@ -1,2 +1,18 @@
-export const SITE_VERSION="1.5.1";
-export function SiteFooter(){return <footer className="siteFooter"><span>Solo Quest Tester Hub</span><span>Site v{SITE_VERSION}</span></footer>}
+"use client";
+
+import { useLanguage } from "./LanguageProvider";
+
+export const SITE_VERSION = "1.6.0";
+
+export function SiteFooter() {
+  const { t } = useLanguage();
+  return (
+    <footer className="siteFooter">
+      <span>{t.footer.hubTitle}</span>
+      <span>
+        {t.footer.versionPrefix}
+        {SITE_VERSION}
+      </span>
+    </footer>
+  );
+}

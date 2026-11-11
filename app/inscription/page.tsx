@@ -4,9 +4,12 @@ import { SiteHeader } from "../components/SiteHeader";
 import { useAuth } from "../components/AuthProvider";
 import { withBase } from "../components/base-path";
 import { supabase } from "../lib/supabase";
+import { useLanguage } from "../components/LanguageProvider";
 
 export default function Page() {
   const { session, profile, refreshProfile } = useAuth();
+  const { t } = useLanguage();
+  const rg = t.register;
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -34,10 +37,10 @@ export default function Page() {
         { onConflict: "user_id" }
       );
     if (p || a) {
-      setMessage("The tester database still needs to be initialized by the administrator.");
+      setMessage(rg.dbNotInitialized);
     } else {
       await refreshProfile();
-      setMessage("Application saved. You can return to it with your Google account.");
+      setMessage(rg.applicationSaved);
     }
     setBusy(false);
   };
@@ -46,24 +49,29 @@ export default function Page() {
     <main className="subPage">
       <SiteHeader />
       <section className="subHero shell">
-        <p className="eyebrow"><span />Private beta</p>
-        <h1>Join the quest</h1>
-        <p className="lead">Your application is linked to your Google account and stored separately from game data.</p>
+        <p className="eyebrow">
+          <span />
+          {rg.eyebrow}
+        </p>
+        <h1>{rg.title}</h1>
+        <p className="lead">{rg.lead}</p>
       </section>
       <section className="contentGrid shell">
         {!session ? (
           <article className="panel">
-            <h2>First step</h2>
-            <p>Sign in with Google to save and retrieve your application.</p>
-            <button className="button fire" onClick={login}>Continue with Google</button>
+            <h2>{rg.firstStepTitle}</h2>
+            <p>{rg.firstStepCopy}</p>
+            <button className="button fire" onClick={login}>
+              {rg.continueGoogle}
+            </button>
           </article>
         ) : (
           <form className="panel form" onSubmit={submit}>
             <span className="statusBadge">
-              {profile?.status === "approved" ? "Approved account" : "Application"}
+              {profile?.status === "approved" ? rg.approvedBadge : rg.applicationBadge}
             </span>
             <label>
-              Nickname
+              {rg.nicknameLabel}
               <input
                 name="display_name"
                 required
@@ -71,33 +79,33 @@ export default function Page() {
               />
             </label>
             <label>
-              Email
+              {rg.emailLabel}
               <input value={session.user.email || ""} readOnly />
             </label>
             <label>
-              Your Dice Throne experience
+              {rg.experienceLabel}
               <select name="experience" required defaultValue="">
-                <option value="" disabled>Choose</option>
-                <option>New to the game</option>
-                <option>A few games</option>
-                <option>Regular player</option>
+                <option value="" disabled>
+                  {rg.experiencePlaceholder}
+                </option>
+                {rg.experienceOptions.map((opt) => (
+                  <option key={opt}>{opt}</option>
+                ))}
               </select>
             </label>
             <label>
-              Why would you like to test?
-              <textarea name="motivation" required placeholder="Tell us about the way you play…" />
+              {rg.motivationLabel}
+              <textarea name="motivation" required placeholder={rg.motivationPlaceholder} />
             </label>
             <button className="button fire" disabled={busy}>
-              {busy ? "Saving…" : "Save my application"}
+              {busy ? rg.savingButton : rg.saveButton}
             </button>
             {message && <p className="formNotice">{message}</p>}
           </form>
         )}
         <aside className="panel">
-          <h2>What happens next?</h2>
-          <p>
-            Your application is marked as pending. Once approved, Android, Play and Tester Space will automatically appear in the navigation.
-          </p>
+          <h2>{rg.nextTitle}</h2>
+          <p>{rg.nextCopy}</p>
         </aside>
       </section>
     </main>

@@ -5,9 +5,12 @@ import { SiteHeader } from "../components/SiteHeader";
 import { useAuth } from "../components/AuthProvider";
 import { withBase } from "../components/base-path";
 import { supabase } from "../lib/supabase";
+import { useLanguage } from "../components/LanguageProvider";
 
 export default function Page() {
   const { session, profile, isAdmin } = useAuth();
+  const { t } = useLanguage();
+  const lg = t.login;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -32,15 +35,11 @@ export default function Page() {
       <main className="subPage">
         <SiteHeader />
         <section className="subHero shell">
-          <p className="kicker">Connected account</p>
-          <h1>Welcome</h1>
-          <p className="lead">
-            {approved
-              ? "Your tester access is active."
-              : "Your Google account is connected. Your application still needs approval."}
-          </p>
+          <p className="kicker">{lg.connectedKicker}</p>
+          <h1>{lg.welcomeTitle}</h1>
+          <p className="lead">{approved ? lg.activeAccess : lg.pendingAccess}</p>
           <Link className="button fire" href={approved ? "/espace-testeur" : "/inscription"}>
-            {approved ? "Open my space" : "Complete my application"}
+            {approved ? lg.openSpace : lg.completeApplication}
           </Link>
         </section>
       </main>
@@ -51,25 +50,25 @@ export default function Page() {
     <main className="subPage">
       <SiteHeader />
       <section className="subHero shell">
-        <p className="kicker">Member access</p>
-        <h1>Login</h1>
-        <p className="lead">Sign in with Google to find your application, feedback and private access.</p>
+        <p className="kicker">{lg.memberKicker}</p>
+        <h1>{lg.title}</h1>
+        <p className="lead">{lg.lead}</p>
       </section>
       <section className="contentGrid shell">
         <article className="panel">
-          <span className="statusBadge">Secure login</span>
-          <h2>Continue with Google</h2>
-          <p>Your Google password is never shared with Solo Quest.</p>
+          <span className="statusBadge">{lg.secureBadge}</span>
+          <h2>{lg.continueGoogle}</h2>
+          <p>{lg.googlePrivacy}</p>
           <button className="button fire" type="button" onClick={login} disabled={busy}>
-            {busy ? "Redirecting…" : "Continue with Google"}
+            {busy ? lg.redirecting : lg.continueGoogle}
           </button>
           {error && <p className="formError">{error}</p>}
         </article>
         <aside className="panel">
-          <h2>Not a tester yet?</h2>
-          <p>Sign in with Google first, then complete your application.</p>
+          <h2>{lg.notTesterTitle}</h2>
+          <p>{lg.notTesterCopy}</p>
           <Link className="button light" href="/inscription">
-            Become a tester
+            {lg.becomeTester}
           </Link>
         </aside>
       </section>

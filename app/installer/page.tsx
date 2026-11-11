@@ -1,30 +1,33 @@
+"use client";
+
 import { SiteHeader } from "../components/SiteHeader";
+import { useLanguage } from "../components/LanguageProvider";
 
 const APK_DOWNLOAD_URL =
   "https://github.com/bdewev18-droid/Dice-throne-Solo/releases/latest/download/app-release.apk";
 
 export default function Page() {
+  const { t } = useLanguage();
+  const ins = t.install;
+
   return (
     <main className="subPage">
       <SiteHeader />
       <section className="subHero shell">
         <p className="eyebrow">
           <span />
-          Android app
+          {ins.eyebrow}
         </p>
-        <h1>Install Solo Quest</h1>
-        <p className="lead">
-          The app is distributed directly via our official GitHub Release outside the Play Store. Follow these steps once—updates happen automatically inside the app.
-        </p>
+        <h1>{ins.title}</h1>
+        <p className="lead">{ins.lead}</p>
       </section>
       <section className="contentGrid shell">
         <article className="panel">
-          <h2>Install the APK</h2>
+          <h2>{ins.panel1Title}</h2>
           <ol className="steps">
-            <li>Download the latest APK using the button below.</li>
-            <li>When prompted, allow installation from this source in Android settings.</li>
-            <li>Open the downloaded file and confirm installation.</li>
-            <li>Launch Solo Quest and log in with your account.</li>
+            {ins.steps.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
           </ol>
           <div style={{ marginTop: 22 }}>
             <a
@@ -33,20 +36,16 @@ export default function Page() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Download Latest APK ↓
+              {ins.downloadCta}
             </a>
           </div>
         </article>
         <article className="panel">
-          <h2>Security &amp; Auto-Updates</h2>
-          <p>
-            Android displays a standard warning for apps installed outside the Play Store. This is expected for an APK release.
-          </p>
+          <h2>{ins.panel2Title}</h2>
+          <p>{ins.panel2Copy}</p>
           <div className="autoUpdateBox" style={{ marginTop: 18 }}>
-            <strong className="autoUpdateTitle">🔄 Automatic Updates on Startup</strong>
-            <p>
-              You only need to install the APK once. The app checks for updates automatically every time it launches—no need to repeat this process for future updates.
-            </p>
+            <strong className="autoUpdateTitle">{ins.autoUpdateTitle}</strong>
+            <p>{ins.autoUpdateCopy}</p>
           </div>
         </article>
       </section>

@@ -17,7 +17,7 @@
 .screenCrop img{height:105.27%!important;transform:translateY(-5%)!important}
 .heroBetaButton{position:absolute;z-index:4;left:50%;bottom:48px;transform:translateX(-50%);font-size:14px;padding:20px 34px;white-space:nowrap}.heroBetaButton:hover{transform:translate(-50%,-3px)}
 .burger,.mobileMenu{display:none}.modeHistory{background:#0d131d;padding:110px 0}.historyGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:center}.historyGrid h2{font:800 clamp(40px,5vw,68px) var(--font-display);text-transform:uppercase;line-height:1;margin:0 0 22px}.historyGrid>div>p:not(.kicker){color:#aeb5bf;line-height:1.75}.historyGrid .panel h3{font:700 22px var(--font-display);text-transform:uppercase}
-@media(max-width:900px){.mainNav{display:flex;justify-content:center}.navSide{display:none}.centerLogo{position:relative}.burger{display:flex;position:absolute;right:0;top:21px;width:48px;height:48px;border:1px solid rgba(255,255,255,.3);background:#0c1017;flex-direction:column;align-items:center;justify-content:center;gap:5px;z-index:52}.burger span{width:21px;height:2px;background:#fff;transition:.25s}.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}.burger[aria-expanded="true"] span:nth-child(2){opacity:0}.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}.mobileMenu{display:block;position:fixed;inset:0;background:rgba(5,7,11,.98);z-index:50;opacity:0;visibility:hidden;transition:.25s;padding:125px 28px 40px}.mobileMenu.open{opacity:1;visibility:visible}.mobileMenuInner{width:min(100%,520px);margin:auto;display:flex;flex-direction:column}.mobileMenu a,.mobileMenu button{display:block!important;border:0;border-bottom:1px solid rgba(255,255,255,.13);background:none;color:#fff;text-align:left;padding:20px 5px;font:800 clamp(20px,6vw,30px) var(--font-display);text-transform:uppercase}.mobileMenu .mobileTester{color:var(--orange)}.historyGrid{grid-template-columns:1fr;gap:35px}.heroBetaButton{bottom:30px}.mainNav .centerLogo{z-index:53}}
+@media(max-width:900px){.mainNav{display:flex;justify-content:center}.navSide{display:none}.centerLogo{position:relative}.burger{display:flex;position:absolute;right:0;top:21px;width:48px;height:48px;border:1px solid rgba(255,255,255,.3);background:#0c1017;flex-direction:column;align-items:center;justify-content:center;gap:5px;z-index:52}.burger span{width:21px;height:2px;background:#fff;transition:.25s}.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}.burger[aria-expanded="true"] span:nth-child(2){opacity:0}.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}.mobileMenu{display:block;position:fixed;inset:0;background:rgba(5,7,11,.98);z-index:50;opacity:0;visibility:hidden;transition:.25s;padding:125px 28px 40px}.mobileMenu.open{opacity:1;visibility:visible}.mobileMenuInner{width:min(100%,520px);margin:auto;display:flex;flex-direction:column}.mobileMenuInner>a,.mobileMenuInner>button{display:block!important;border:0;border-bottom:1px solid rgba(255,255,255,.13);background:none;color:#fff;text-align:left;padding:20px 5px;font:800 clamp(20px,6vw,30px) var(--font-display);text-transform:uppercase}.mobileMenu .mobileTester{color:var(--orange)}.historyGrid{grid-template-columns:1fr;gap:35px}.heroBetaButton{bottom:30px}.mainNav .centerLogo{z-index:53}}
 @media(max-width:540px){.heroBetaButton{font-size:11px;padding:16px 20px;bottom:24px}.mobileMenu{padding-top:105px}}
 @media(prefers-reduced-motion:reduce){.revealReady{opacity:1;transform:none;transition:none}}
 .adminTabs{display:flex;gap:8px;margin-bottom:18px}.adminTabs button,.cmsToolbar button,.resetContent{border:1px solid var(--line);background:#1b2634;color:#fff;padding:13px 17px;text-transform:uppercase;font-size:10px;font-weight:900;letter-spacing:.06em;cursor:pointer}.adminTabs button.active{background:var(--orange);border-color:var(--orange)}.cmsWorkspace{display:grid;grid-template-columns:minmax(360px,.78fr) minmax(520px,1.22fr);gap:18px;align-items:start}.cmsEditor{padding:24px;max-height:calc(100vh - 135px);overflow:auto;position:sticky;top:18px}.cmsToolbar{display:grid;gap:15px;position:sticky;top:-24px;background:#141c27;padding:20px 0 18px;z-index:2;border-bottom:1px solid var(--line)}.cmsToolbar label{display:grid;gap:7px;font-size:10px;text-transform:uppercase;font-weight:900}.cmsToolbar select{width:100%;padding:13px;background:#080d14;color:#fff;border:1px solid var(--line)}.cmsToolbar>div{display:flex;gap:8px}.cmsToolbar .publish{background:#237246}.cmsHint{font-size:12px!important}.cmsFields{display:grid;gap:13px;margin-top:18px}.cmsFields label{display:grid;gap:6px}.cmsFields label span{font-size:9px;text-transform:uppercase;color:#8f9baa;font-weight:900}.cmsFields textarea{width:100%;min-height:72px;resize:vertical;background:#090e15;color:#fff;border:1px solid var(--line);padding:12px;font:13px/1.5 var(--font-body)}.cmsFields textarea:focus{outline:1px solid var(--orange);border-color:var(--orange)}.resetContent{margin-top:20px;background:transparent}.cmsPreview{background:#080b10;border:1px solid var(--line);position:sticky;top:18px}.previewBar{height:47px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;background:#141c27;border-bottom:1px solid var(--line);font-size:10px;text-transform:uppercase;font-weight:900}.previewBar a{color:var(--orange)}.cmsPreview iframe{display:block;width:100%;height:calc(100vh - 135px);border:0;background:#fff}
@@ -1880,5 +1880,125 @@ html[data-recruitment="inactive"] .recruitmentZone{display:none!important}
   .bossHistoryPair {
     grid-template-columns: 1fr;
     gap: 28px;
+  }
+}
+
+/* --- Language Dropdown Switcher --- */
+.langMenu {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.langTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 9px 12px;
+  color: #f7f7f5;
+  font: 800 11px var(--font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.langTrigger svg {
+  color: var(--orange);
+  flex-shrink: 0;
+}
+.langTrigger i {
+  font-style: normal;
+  color: var(--orange);
+  font-size: 12px;
+  line-height: 1;
+}
+.langTrigger:hover,
+.langTrigger[aria-expanded="true"] {
+  border-color: var(--orange);
+  background: rgba(255, 98, 38, 0.14);
+}
+.langDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  min-width: 176px;
+  padding: 6px;
+  background: #111925;
+  border: 1px solid #425168;
+  border-radius: 6px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+  display: grid;
+  gap: 2px;
+}
+.langDropdown button {
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 10px 11px;
+  background: transparent;
+  color: #e6ecf2;
+  border: 0;
+  border-radius: 4px;
+  text-align: left;
+  font: 700 12px var(--font-body);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.langDropdown button:hover {
+  background: #1b2837;
+  color: #fff;
+}
+.langDropdown button.selected {
+  background: rgba(255, 98, 38, 0.16);
+  color: #ffb07d;
+}
+.langFlag {
+  font-size: 14px;
+  line-height: 1;
+}
+.langCode {
+  font: 900 10px var(--font-body);
+  letter-spacing: 0.08em;
+  color: #8b98a8;
+}
+.langDropdown button.selected .langCode {
+  color: var(--orange);
+}
+.langMobileHeader {
+  display: none;
+}
+.mobileLangRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+}
+.mobileLangRow > span {
+  font: 800 clamp(18px, 5vw, 24px) var(--font-display);
+  text-transform: uppercase;
+  color: #cbd5e1;
+}
+@media (max-width: 900px) {
+  .langMobileHeader {
+    display: inline-flex;
+    position: absolute;
+    left: 0;
+    top: 25px;
+    z-index: 52;
+  }
+  .langMobileHeader .langDropdown {
+    right: auto;
+    left: 0;
+  }
+  .langMenu.compact .langTrigger {
+    padding: 8px 10px;
+    min-height: 40px;
   }
 }

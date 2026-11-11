@@ -1,17 +1,22 @@
+"use client";
+
 import Image from "next/image";
 import { HardLink as Link } from "./components/HardLink";
 import { SiteHeader } from "./components/SiteHeader";
 import { GameScreen } from "./components/GameScreen";
 import { withBase } from "./components/base-path";
+import { useLanguage } from "./components/LanguageProvider";
 
 export default function Home() {
+  const { t } = useLanguage();
+
   return (
     <main>
       <SiteHeader />
-      <section className="artHero" aria-label="Solo Quest, a Dice Throne solo adventure">
+      <section className="artHero" aria-label={t.home.heroAria}>
         <Image
           src={withBase("/home_background_v4.png")}
-          alt="Dice Throne Solo Quest heroes facing the four realms"
+          alt={t.home.heroImgAlt}
           fill
           priority
           sizes="100vw"
@@ -21,32 +26,31 @@ export default function Home() {
       <section className="introBand cutBottom">
         <div className="shell introGrid">
           <div>
-            <p className="kicker">Companion app · Web & Android</p>
+            <p className="kicker">{t.home.introKicker}</p>
             <h1>
-              Your board.<br />
-              <span>Our enemy.</span>
+              {t.home.introTitleLine1}
+              <br />
+              <span>{t.home.introTitleLine2}</span>
             </h1>
           </div>
           <div className="introCopy">
             <div className="introBoardVisual">
               <Image
                 src={withBase("/physical_board.webp")}
-                alt="Physical Dice Throne Necromancer hero board, dice, dials and cards"
+                alt={t.home.boardImgAlt}
                 width={1000}
                 height={729}
                 sizes="(max-width: 900px) 92vw, 520px"
                 priority
               />
             </div>
-            <p>
-              Solo Quest adds a real opponent to your physical Dice Throne games. You keep your board, cards and dice. The app only plays for your enemies.
-            </p>
+            <p>{t.home.introCopy}</p>
             <div className="actionRow">
               <Link className="button fire" href="/jouer">
-                Play now
+                {t.home.playNow}
               </Link>
               <Link className="ghostLink" href="#modes">
-                Discover the modes ↓
+                {t.home.discoverModes}
               </Link>
             </div>
           </div>
@@ -54,53 +58,60 @@ export default function Home() {
       </section>
       <section className="showcase shell">
         <div className="showcaseCopy">
-          <p className="kicker">One quest, two paths</p>
+          <p className="kicker">{t.home.showcaseKicker}</p>
           <h2>
-            The physical game<br />
-            stays at the heart.
+            {t.home.showcaseTitleLine1}
+            <br />
+            {t.home.showcaseTitleLine2}
           </h2>
-          <p>
-            Solo Quest does not replace Dice Throne: it gives it a solo campaign. Choose from every integrated hero, set up your board and let the automation take control of the opposing side.
-          </p>
+          <p>{t.home.showcaseCopy}</p>
           <ul className="checkList">
-            <li>Every Dice Throne hero included</li>
-            <li>Dice automation separated from the AI</li>
-            <li>Narration and resolution in chat</li>
+            {t.home.showcaseList.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
           </ul>
         </div>
         <div className="phoneStage">
-          <GameScreen src="/screens/hp-02.webp" alt="App home screen with Minion Rush and Boss Battle" framed />
+          <GameScreen src="/screens/hp-02.webp" alt={t.home.homeScreenAlt} framed />
           <div className="stageLabel">
-            <b>2</b>
-            <span>solo modes<br />in one app</span>
+            <b>{t.home.stageBadgeNum}</b>
+            <span>
+              {t.home.stageBadgeLine1}
+              <br />
+              {t.home.stageBadgeLine2}
+            </span>
           </div>
         </div>
       </section>
       <section className="modeSelect" id="modes">
         <div className="shell sectionTitle">
-          <p className="kicker">Choose your trial</p>
-          <h2>Two modes.<br />Two ways to survive.</h2>
+          <p className="kicker">{t.home.modesKicker}</p>
+          <h2>
+            {t.home.modesTitleLine1}
+            <br />
+            {t.home.modesTitleLine2}
+          </h2>
         </div>
         <div className="modeTiles shell">
           <Link className="modeTile rushTile" href="/modes/minion-rush">
             <div className="tileShade" />
             <div className="tileContent">
-              <span className="tileNo">01</span>
-              <p>Campaign · 3 Game Modes</p>
-              <h3>Minion Rush</h3>
-              <small>77 validated minions. 3 modes (Free, Normal, Hard). 13 enemies per run.</small>
-              <b>Explore the mode →</b>
+              <span className="tileNo">{t.home.rushTileNo}</span>
+              <p>{t.home.rushTileTag}</p>
+              <h3>{t.home.rushTileTitle}</h3>
+              <small>{t.home.rushTileDesc}</small>
+              <b>{t.home.rushTileCta}</b>
             </div>
           </Link>
           <Link className="modeTile naxTile" href="/modes/boss-battle">
-            <Image src={withBase("/naxarus.webp")} alt="Boss Battle — Naxarus & Ourokhor" fill sizes="50vw" />
+            <Image src={withBase("/naxarus.webp")} alt={t.home.bossTileAlt} fill sizes="50vw" />
             <div className="tileShade" />
             <div className="tileContent">
-              <span className="tileNo">02</span>
-              <p>Boss Battle · 1 new boss every month</p>
-              <h3>Boss Battle</h3>
-              <small>Naxarus (65 HP), Ourokhor the Serpent & community boss entries every month.</small>
-              <b>Face the bosses →</b>
+              <span className="tileNo">{t.home.bossTileNo}</span>
+              <p>{t.home.bossTileTag}</p>
+              <h3>{t.home.bossTileTitle}</h3>
+              <small>{t.home.bossTileDesc}</small>
+              <b>{t.home.bossTileCta}</b>
             </div>
           </Link>
         </div>
@@ -108,74 +119,72 @@ export default function Home() {
       <section className="systemSection cutTop">
         <div className="shell">
           <div className="sectionTitle centered">
-            <p className="kicker">A deliberate separation</p>
+            <p className="kicker">{t.home.systemKicker}</p>
             <h2>
-              The automation plays.<br />
-              <span>The AI tells the story.</span>
+              {t.home.systemTitleLine1}
+              <br />
+              <span>{t.home.systemTitleLine2}</span>
             </h2>
           </div>
           <div className="systemStory">
-            <GameScreen src="/screens/minion-06.webp" alt="Minion Rush battle with live narration" framed />
+            <GameScreen src="/screens/minion-06.webp" alt={t.home.systemScreenAlt} framed />
             <div className="systemStoryCopy">
-              <h3>The battle comes alive</h3>
-              <p>
-                Your hero attacks from the physical board while the app keeps track of the duel in chat. The automation remains responsible for enemy dice; the AI only turns the results into clear actions and narration.
-              </p>
+              <h3>{t.home.systemStoryTitle}</h3>
+              <p>{t.home.systemStoryCopy}</p>
             </div>
           </div>
           <div className="systemGrid">
-            <article>
-              <i>01</i>
-              <h3>Impartial automation</h3>
-              <p>It rolls the dice, calculates rerolls and executes the rules. It cannot talk or cheat.</p>
-            </article>
-            <article>
-              <i>02</i>
-              <h3>AI interpretation</h3>
-              <p>It reads the automation results, manages effects and turns each round into a battle story.</p>
-            </article>
-            <article>
-              <i>03</i>
-              <h3>You decide</h3>
-              <p>You trigger every enemy phase and may force a reroll or edit a die before resolution.</p>
-            </article>
+            {t.home.systemPillars.map((pillar) => (
+              <article key={pillar.num}>
+                <i>{pillar.num}</i>
+                <h3>{pillar.title}</h3>
+                <p>{pillar.copy}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
       <section className="heroChoice shell">
-        <GameScreen src="/screens/perso-02.webp" alt="Choose from every Dice Throne hero" framed />
+        <GameScreen src="/screens/perso-02.webp" alt={t.home.heroChoiceAlt} framed />
         <div>
-          <p className="kicker">Your hero awaits</p>
-          <h2>Every character.<br />Every season.</h2>
-          <p>
-            Filter by season, complexity or favorites. Then return to your real game board: your cards, dice and decisions stay in your hands.
-          </p>
+          <p className="kicker">{t.home.heroChoiceKicker}</p>
+          <h2>
+            {t.home.heroChoiceTitleLine1}
+            <br />
+            {t.home.heroChoiceTitleLine2}
+          </h2>
+          <p>{t.home.heroChoiceCopy}</p>
           <Link className="button fire" href="/modes/minion-rush">
-            See the full journey
+            {t.home.heroChoiceCta}
           </Link>
         </div>
       </section>
       <section className="betaCta recruitmentZone">
         <div className="shell">
-          <p className="kicker">Private beta</p>
-          <h2>Help us<br />tame the quest.</h2>
-          <p>Test battles, report bugs and suggest future improvements from your dedicated space.</p>
+          <p className="kicker">{t.home.betaKicker}</p>
+          <h2>
+            {t.home.betaTitleLine1}
+            <br />
+            {t.home.betaTitleLine2}
+          </h2>
+          <p>{t.home.betaCopy}</p>
           <Link className="button light" href="/inscription">
-            Become a Beta Tester
+            {t.home.betaCta}
           </Link>
         </div>
       </section>
       <footer className="darkFooter">
         <div className="shell">
-          <Image src={withBase("/app_icon.png")} alt="Solo Quest" width={72} height={72} />
+          <Image src={withBase("/app_icon.png")} alt={t.common.brand} width={72} height={72} />
           <p>
-            Unofficial companion app for Dice Throne.<br />
-            The physical Dice Throne game is required.
+            {t.footer.unofficial}
+            <br />
+            {t.footer.boardRequired}
           </p>
           <div>
-            <Link href="/installer">Android</Link>
-            <Link href="/jouer">Web version</Link>
-            <Link href="/admin">Administration</Link>
+            <Link href="/installer">{t.footer.android}</Link>
+            <Link href="/jouer">{t.footer.webVersion}</Link>
+            <Link href="/admin">{t.footer.administration}</Link>
           </div>
         </div>
       </footer>

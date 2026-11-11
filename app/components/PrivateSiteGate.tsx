@@ -2,11 +2,14 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./AuthProvider";
 import { supabase } from "../lib/supabase";
+import { useLanguage } from "./LanguageProvider";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export function PrivateSiteGate({ children }: { children: React.ReactNode }) {
   const { session, loading, isAdmin, isTester } = useAuth();
+  const { t } = useLanguage();
+  const pg = t.privateGate;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -24,7 +27,7 @@ export function PrivateSiteGate({ children }: { children: React.ReactNode }) {
     const redirectUrl = `${location.origin}${basePath}/connexion?retour=${encodeURIComponent(`${basePath}/`)}`;
     const { error: e } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: redirectUrl }
+      options: { redirectTo: redirectUrl },
     });
     if (e) {
       setError(e.message);
@@ -41,7 +44,7 @@ export function PrivateSiteGate({ children }: { children: React.ReactNode }) {
   if (loading || ((isAdmin || isTester) && (location.pathname === "/connexion" || location.pathname === connexionPath))) {
     return (
       <main className="privateGate">
-        <div className="privateGateLoader" aria-label="Loading" />
+        <div className="privateGateLoader" aria-label={pg.loadingAria} />
       </main>
     );
   }
@@ -52,22 +55,24 @@ export function PrivateSiteGate({ children }: { children: React.ReactNode }) {
     <main className="privateGate">
       <div className="privateGateGlow" />
       <section className="privateGateCard">
-        <img src={`${basePath}/app_icon.png`} width="210" height="210" alt="Solo Quest" />
+        <img src={`${basePath}/app_icon.png`} width="210" height="210" alt={t.common.brand} />
         {session ? (
           <>
-            <p className="privateGateEyebrow">Private access</p>
-            <h1>Access restricted</h1>
-            <p>This Google account is not on the approved tester list. Contact the administrator if you should have access.</p>
-            <button className="button light" onClick={signOut}>Use another account</button>
+            <p className="privateGateEyebrow">{pg.privateAccess}</p>
+            <h1>{pg.restrictedTitle}</h1>
+            <p>{pg.restrictedCopy}</p>
+            <button className="button light" onClick={signOut}>
+              {pg.useAnotherAccount}
+            </button>
           </>
         ) : (
           <>
-            <p className="privateGateEyebrow">Solo Quest</p>
-            <h1>Private beta</h1>
-            <p>Only approved testers can enter the adventure.</p>
+            <p className="privateGateEyebrow">{t.common.brand}</p>
+            <h1>{pg.privateBetaTitle}</h1>
+            <p>{pg.privateBetaCopy}</p>
             <button className="button fire googleLogin" onClick={login} disabled={busy}>
               <span aria-hidden="true">G</span>
-              {busy ? "Redirecting…" : "Tester login with Google"}
+              {busy ? pg.redirecting : pg.testerLoginGoogle}
             </button>
             {error && <p className="formError">{error}</p>}
           </>

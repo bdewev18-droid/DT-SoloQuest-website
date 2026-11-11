@@ -1,43 +1,35 @@
+"use client";
+
 import Image from "next/image";
 import { HardLink as Link } from "../../components/HardLink";
 import { SiteHeader } from "../../components/SiteHeader";
 import { GameScreen } from "../../components/GameScreen";
 import { withBase } from "../../components/base-path";
+import { useLanguage } from "../../components/LanguageProvider";
 
 export default function BossBattlePage() {
+  const { t } = useLanguage();
+  const bb = t.bossBattle;
+
   return (
     <main>
       <SiteHeader />
 
       {/* Hero Section */}
       <section className="modeHero naxHero">
-        <Image
-          src={withBase("/naxarus.webp")}
-          alt="Boss Battle — Naxarus the Devourer"
-          fill
-          priority
-          sizes="100vw"
-        />
+        <Image src={withBase("/naxarus.webp")} alt={bb.heroImgAlt} fill priority sizes="100vw" />
         <div className="naxOverlay" />
         <div className="shell">
-          <p className="kicker">Apex Solo Challenge</p>
-          <h1>Boss Battle</h1>
-          <p>
-            One titan. Unforgiving rules. Massive health pools. Face legendary adversaries where every roll matters and the boss never hesitates.
-          </p>
+          <p className="kicker">{bb.heroKicker}</p>
+          <h1>{bb.heroTitle}</h1>
+          <p>{bb.heroCopy}</p>
           <div className="heroNumbers">
-            <div>
-              <b>65+</b>
-              <small>Boss HP</small>
-            </div>
-            <div>
-              <b>0</b>
-              <small>Boss rerolls</small>
-            </div>
-            <div>
-              <b>1</b>
-              <small>New boss / month</small>
-            </div>
+            {bb.heroStats.map((stat) => (
+              <div key={stat.label}>
+                <b>{stat.value}</b>
+                <small>{stat.label}</small>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -45,65 +37,39 @@ export default function BossBattlePage() {
       {/* Board Notice */}
       <section className="boardNotice">
         <div className="shell">
-          <strong>Your physical board remains the center of gravity</strong>
-          <p>
-            You play your cards and roll your dice on your real game board. The app acts as the boss&apos;s board, executing turns automatically and narrating the duel in real time.
-          </p>
+          <strong>{bb.boardNoticeTitle}</strong>
+          <p>{bb.boardNoticeCopy}</p>
         </div>
       </section>
 
       {/* Unique Boss Battle Rules */}
       <section className="shell naxRulesSection">
         <div className="sectionTitle centered">
-          <p className="kicker">Different Mechanics</p>
-          <h2>The Boss Battle Protocol</h2>
+          <p className="kicker">{bb.rulesKicker}</p>
+          <h2>{bb.rulesTitle}</h2>
           <p className="lead" style={{ maxWidth: 740, margin: "12px auto 0" }}>
-            Boss Battle is not Minion Rush. Bosses operate on distinct combat rules that fundamentally shift how you approach your dice decisions, card conservation, and defense.
+            {bb.rulesLead}
           </p>
         </div>
 
         <div className="bossRulesGrid">
-          <article className="bossRuleCard">
-            <span className="ruleNumber">01</span>
-            <h3>No Dice Rerolls for the Boss</h3>
-            <p>
-              Unlike heroes who can reroll their dice up to 2 times (3 roll attempts total), <strong>the boss never rerolls</strong>. The automation casts all 5 boss dice in a single, unalterable roll. It instantly evaluates its roll objective and executes the highest matching attack. Fast, brutal, and completely honest.
-            </p>
-          </article>
-
-          <article className="bossRuleCard">
-            <span className="ruleNumber">02</span>
-            <h3>Massive HP &amp; Infinite CP (∞)</h3>
-            <p>
-              While standard minions fall in 2 to 3 rounds, bosses are titans built for long wars of attrition. With <strong>60 to 70+ HP</strong> and <strong>Infinite Combat Points (∞)</strong>, you must pace your own resources carefully to outlast them.
-            </p>
-          </article>
-
-          <article className="bossRuleCard">
-            <span className="ruleNumber">03</span>
-            <h3>The Boss Always Goes First</h3>
-            <p>
-              The moment you enter the arena, you are under siege. Bosses seize the initiative on turn one. You begin the battle on the back foot, needing to survive their opening onslaught before you can assemble your offense.
-            </p>
-          </article>
-
-          <article className="bossRuleCard">
-            <span className="ruleNumber">04</span>
-            <h3>Specialized Defense Reactions</h3>
-            <p>
-              Each boss possesses a bespoke defense roll (rolling 3 to 4 defensive dice). They do not just mitigate incoming damage: their defensive rolls can counter-attack, reflect damage, or poison you on contact.
-            </p>
-          </article>
+          {bb.rules.map((rule) => (
+            <article className="bossRuleCard" key={rule.num}>
+              <span className="ruleNumber">{rule.num}</span>
+              <h3>{rule.title}</h3>
+              <p>{rule.copy}</p>
+            </article>
+          ))}
         </div>
       </section>
 
       {/* Boss Roster Showcase */}
       <section className="shell bossShowcaseSection">
         <div className="sectionTitle centered">
-          <p className="kicker">Apex Adversaries</p>
-          <h2>Legendary Bosses &amp; Unique Styles</h2>
+          <p className="kicker">{bb.rosterKicker}</p>
+          <h2>{bb.rosterTitle}</h2>
           <p className="lead" style={{ maxWidth: 720, margin: "12px auto 0" }}>
-            Every boss is crafted with its own personality, AI attack priority, and combat style. Here are the titans currently stalking the solo arena.
+            {bb.rosterLead}
           </p>
         </div>
 
@@ -113,52 +79,49 @@ export default function BossBattlePage() {
             <div className="bossImageFrame">
               <Image
                 src={withBase("/naxarus.webp")}
-                alt="Naxarus the Devourer"
+                alt={bb.naxarus.alt}
                 width={636}
                 height={727}
                 style={{ objectFit: "cover", objectPosition: "50% 12%", width: "100%", height: "100%" }}
               />
             </div>
             <div className="bossStatBadges">
-              <span><b>65</b> HP</span>
-              <span><b>∞</b> CP</span>
-              <span><b>3</b> Defense Dice</span>
+              <span>
+                <b>65</b> {bb.naxarus.hpLabel}
+              </span>
+              <span>
+                <b>∞</b> {bb.naxarus.cpLabel}
+              </span>
+              <span>
+                <b>3</b> {bb.naxarus.defLabel}
+              </span>
             </div>
           </div>
 
           <div className="bossProfileDetails">
-            <span className="bossArchetype">Dragon of Cinders · Raw Power</span>
-            <h3>Naxarus the Devourer</h3>
-            <p className="bossLore">
-              A gargantuan dragon of ash and flame. Naxarus delivers overwhelming brute force, sweeping physical attacks, and undefendable infernal torrents that bypass conventional armor.
-            </p>
+            <span className="bossArchetype">{bb.naxarus.archetype}</span>
+            <h3>{bb.naxarus.name}</h3>
+            <p className="bossLore">{bb.naxarus.lore}</p>
 
             <div className="bossCombatBreakdown">
               <div className="combatAspect">
-                <h4>⚔️ Attack Arsenal</h4>
+                <h4>{bb.naxarus.attacksTitle}</h4>
                 <ul>
-                  <li>
-                    <strong>Dragon Claws:</strong> 3 White symbols · 6 raw damage.
-                  </li>
-                  <li>
-                    <strong>Tail Sweep:</strong> Small Straight (4 dice) · 8 damage + inflicts Knockdown.
-                  </li>
-                  <li>
-                    <strong>Infernal Breath:</strong> Large Straight (5 dice) · 12 undefendable fire damage + Burn.
-                  </li>
-                  <li>
-                    <strong>Cataclysm:</strong> 5 Dragon symbols · 16 undefendable catastrophic strike.
-                  </li>
+                  {bb.naxarus.attacks.map((atk) => (
+                    <li key={atk.name}>
+                      <strong>{atk.name}</strong> {atk.desc}
+                    </li>
+                  ))}
                 </ul>
               </div>
 
               <div className="combatAspect">
-                <h4>🛡️ Defense &amp; Combat Style</h4>
+                <h4>{bb.naxarus.defenseTitle}</h4>
                 <p>
-                  <strong>Hardened Scale Defense (3 dice):</strong> Cancels 1 damage per Shield symbol rolled. On double Skull symbols, Naxarus retaliates with 1 pure damage straight through your armor.
+                  <strong>{bb.naxarus.defenseP1Title}</strong> {bb.naxarus.defenseP1Desc}
                 </p>
                 <p>
-                  <strong>Style:</strong> High direct damage, frequent undefendable bursts, and immediate punishment if you leave yourself open.
+                  <strong>{bb.naxarus.defenseP2Title}</strong> {bb.naxarus.defenseP2Desc}
                 </p>
               </div>
             </div>
@@ -171,49 +134,49 @@ export default function BossBattlePage() {
             <div className="bossImageFrame">
               <Image
                 src={withBase("/ourokhor.jpg")}
-                alt="Ourokhor the Ancient Serpent"
+                alt={bb.ourokhor.alt}
                 width={768}
                 height={1376}
                 style={{ objectFit: "cover", objectPosition: "50% 6%", width: "100%", height: "100%" }}
               />
             </div>
             <div className="bossStatBadges">
-              <span><b>70</b> HP</span>
-              <span><b>∞</b> CP</span>
-              <span><b>4</b> Defense Dice</span>
+              <span>
+                <b>70</b> {bb.ourokhor.hpLabel}
+              </span>
+              <span>
+                <b>∞</b> {bb.ourokhor.cpLabel}
+              </span>
+              <span>
+                <b>4</b> {bb.ourokhor.defLabel}
+              </span>
             </div>
           </div>
 
           <div className="bossProfileDetails">
-            <span className="bossArchetype">Primordial Serpent · Attrition &amp; Venom</span>
-            <h3>Ourokhor the Serpent</h3>
-            <p className="bossLore">
-              An ancient serpentine horror that has slumbered in the deep marshes for centuries. Ourokhor relies on creeping corruption, constriction that suffocates your CP economy, and stacking venom charges.
-            </p>
+            <span className="bossArchetype">{bb.ourokhor.archetype}</span>
+            <h3>{bb.ourokhor.name}</h3>
+            <p className="bossLore">{bb.ourokhor.lore}</p>
 
             <div className="bossCombatBreakdown">
               <div className="combatAspect">
-                <h4>⚔️ Attack Arsenal</h4>
+                <h4>{bb.ourokhor.attacksTitle}</h4>
                 <ul>
-                  <li>
-                    <strong>Venomous Strike:</strong> 3 Fang symbols · 6 damage + inflicts Poison.
-                  </li>
-                  <li>
-                    <strong>Constricting Coil:</strong> Small Straight (4 dice) · 9 undefendable damage + steals 1 CP.
-                  </li>
-                  <li>
-                    <strong>Toxic Deluge:</strong> Large Straight (5 dice) · 14 damage + inflicts 2 Poison tokens.
-                  </li>
+                  {bb.ourokhor.attacks.map((atk) => (
+                    <li key={atk.name}>
+                      <strong>{atk.name}</strong> {atk.desc}
+                    </li>
+                  ))}
                 </ul>
               </div>
 
               <div className="combatAspect">
-                <h4>🛡️ Defense &amp; Passive Venom Surge</h4>
+                <h4>{bb.ourokhor.defenseTitle}</h4>
                 <p>
-                  <strong>Toxic Scale Defense (4 dice):</strong> Cancels 1 damage per Orange symbol. On double Red symbols, Ourokhor poisons attackers on contact.
+                  <strong>{bb.ourokhor.defenseP1Title}</strong> {bb.ourokhor.defenseP1Desc}
                 </p>
                 <p>
-                  <strong>Venom Surge Gauge:</strong> Every time poison damages the hero, Ourokhor gains venom tokens, progressively unlocking Riposte, Evasive, and additional strike power.
+                  <strong>{bb.ourokhor.defenseP2Title}</strong> {bb.ourokhor.defenseP2Desc}
                 </p>
               </div>
             </div>
@@ -225,58 +188,35 @@ export default function BossBattlePage() {
       <section className="shell communityBossFloorSection">
         <div className="floorBanner">
           <div className="floorContent">
-            <p className="kicker">Community Rotation</p>
-            <h2>1 New Boss Added Every Month</h2>
-            <p className="floorText">
-              The Solo Quest boss catalog is an evolving community battleground. Each month, an original boss designed by a community player joins the official roster.
-            </p>
-            <p className="floorSubtext">
-              Proposals are reviewed and playtested by our team to guarantee balanced math, exciting counter-play, and seamless integration with the automated dice engine. Boss submissions and balancing tools are built directly inside the Solo Quest app.
-            </p>
+            <p className="kicker">{bb.communityKicker}</p>
+            <h2>{bb.communityTitle}</h2>
+            <p className="floorText">{bb.communityText}</p>
+            <p className="floorSubtext">{bb.communitySubtext}</p>
             <div className="floorActions">
               <Link className="button fire recruitmentZone" href="/inscription">
-                Become a Beta Tester →
+                {bb.communityBetaCta}
               </Link>
               <Link className="button wire" href="/modes/minion-rush">
-                Explore Minion Rush Mode
+                {bb.communityRushCta}
               </Link>
             </div>
           </div>
 
           <div className="floorCadenceCard">
             <div className="cadenceHeader">
-              <span className="cadencePill">Floor Guidelines</span>
-              <strong>Monthly Curation</strong>
+              <span className="cadencePill">{bb.cadencePill}</span>
+              <strong>{bb.cadenceTitle}</strong>
             </div>
             <ul className="cadenceList">
-              <li>
-                <span className="checkIcon">✓</span>
-                <div>
-                  <b>60 to 75 HP baseline</b>
-                  <small>Built for a tense 8–15 round duel.</small>
-                </div>
-              </li>
-              <li>
-                <span className="checkIcon">✓</span>
-                <div>
-                  <b>1 to 6 distinct attacks</b>
-                  <small>Clearly defined dice combinations &amp; symbols.</small>
-                </div>
-              </li>
-              <li>
-                <span className="checkIcon">✓</span>
-                <div>
-                  <b>No rerolls on monster dice</b>
-                  <small>Fast, transparent execution every round.</small>
-                </div>
-              </li>
-              <li>
-                <span className="checkIcon">✓</span>
-                <div>
-                  <b>Balanced by the admin team</b>
-                  <small>Email follow-up with creator before launch.</small>
-                </div>
-              </li>
+              {bb.cadenceItems.map((item) => (
+                <li key={item.title}>
+                  <span className="checkIcon">✓</span>
+                  <div>
+                    <b>{item.title}</b>
+                    <small>{item.desc}</small>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -285,29 +225,19 @@ export default function BossBattlePage() {
       {/* Automation vs AI System Section */}
       <section className="bossCombat cutTop">
         <div className="shell bossGrid">
-          <GameScreen src="/screens/naxarus-01.jpg" alt="Main battle screen against Naxarus" />
+          <GameScreen src="/screens/naxarus-01.jpg" alt={bb.combatImgAlt} />
           <div>
-            <p className="kicker">The heart of battle</p>
-            <h2>A boss that truly plays</h2>
-            <p>
-              The automation controls the boss&apos;s attacks and defenses. It rolls the dice without help from the AI and follows its strategy without cheating.
-            </p>
+            <p className="kicker">{bb.combatKicker}</p>
+            <h2>{bb.combatTitle}</h2>
+            <p>{bb.combatCopy}</p>
             <div className="combatFacts">
-              <article>
-                <b>01</b>
-                <h3>The automation acts</h3>
-                <p>Single dice roll, boss attacks, defenses, and token triggers.</p>
-              </article>
-              <article>
-                <b>02</b>
-                <h3>The AI interprets</h3>
-                <p>Calculates damage, poison, burn, and status interactions.</p>
-              </article>
-              <article>
-                <b>03</b>
-                <h3>The chat explains</h3>
-                <p>Every action becomes a clear, readable battle chronicle.</p>
-              </article>
+              {bb.combatFacts.map((fact) => (
+                <article key={fact.num}>
+                  <b>{fact.num}</b>
+                  <h3>{fact.title}</h3>
+                  <p>{fact.copy}</p>
+                </article>
+              ))}
             </div>
           </div>
         </div>
@@ -317,41 +247,29 @@ export default function BossBattlePage() {
       <section className="modeHistory">
         <div className="shell historyGrid">
           <div>
-            <p className="kicker">Your Boss Chronicles</p>
-            <h2>Compare every champion</h2>
-            <p>
-              The history records and ranks your heroes by score while keeping track of total battles, remaining health, and play time visible for every run—in either the classic <strong>List &amp; Podium</strong> view or the <strong>Grid</strong> portrait view.
-            </p>
+            <p className="kicker">{bb.historyKicker}</p>
+            <h2>{bb.historyTitle}</h2>
+            <p>{bb.historyCopy}</p>
             <div className="scoreRules">
-              <h3>Boss Battle scoring</h3>
+              <h3>{bb.historyScoreTitle}</h3>
               <ul>
-                <li>
-                  <b>100 points</b>
-                  <span>Victory</span>
-                </li>
-                <li>
-                  <b>50 points</b>
-                  <span>Draw</span>
-                </li>
+                {bb.historyScores.map((row) => (
+                  <li key={row.label}>
+                    <b>{row.pts}</b>
+                    <span>{row.label}</span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
           <div className="bossHistoryPair">
             <figure className="historyVisualFramed">
-              <GameScreen
-                src="/screens/histo-boss-list.webp"
-                alt="Boss Battle history in List view showing top 3 podium and hero statistics"
-                framed
-              />
-              <figcaption>List &amp; Podium display</figcaption>
+              <GameScreen src="/screens/histo-boss-list.webp" alt={bb.historyListAlt} framed />
+              <figcaption>{bb.historyListCaption}</figcaption>
             </figure>
             <figure className="historyVisualFramed">
-              <GameScreen
-                src="/screens/histo-boss-grid.webp"
-                alt="Boss Battle history in Grid view showing ranked hero portrait cards"
-                framed
-              />
-              <figcaption>Grid portrait display</figcaption>
+              <GameScreen src="/screens/histo-boss-grid.webp" alt={bb.historyGridAlt} framed />
+              <figcaption>{bb.historyGridCaption}</figcaption>
             </figure>
           </div>
         </div>
@@ -360,17 +278,15 @@ export default function BossBattlePage() {
       {/* Conclusion */}
       <section className="naxConclusion">
         <div className="shell">
-          <p className="kicker">Into the arena</p>
-          <h2>Every choice leaves a mark.</h2>
-          <p>
-            At the end of the duel, a full battle summary logs your triumphs and missteps. Whether the boss falls or claims your soul, you know exactly what shaped the fight.
-          </p>
+          <p className="kicker">{bb.endKicker}</p>
+          <h2>{bb.endTitle}</h2>
+          <p>{bb.endCopy}</p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginTop: 24 }}>
             <Link className="button light" href="/jouer">
-              Face the Bosses
+              {bb.endPlayCta}
             </Link>
             <Link className="button wire recruitmentZone" href="/inscription">
-              Become a Beta Tester
+              {bb.endBetaCta}
             </Link>
           </div>
         </div>

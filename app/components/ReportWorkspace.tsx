@@ -1,60 +1,618 @@
 "use client";
-import {FormEvent,useCallback,useEffect,useMemo,useRef,useState} from "react";
-import {useAuth} from "./AuthProvider";
-import {supabase} from "../lib/supabase";
-import {AVATARS,AvatarPicker,avatarUrl} from "./AvatarPicker";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useAuth } from "./AuthProvider";
+import { supabase } from "../lib/supabase";
+import { AVATARS, AvatarPicker, avatarUrl } from "./AvatarPicker";
+import { useLanguage } from "./LanguageProvider";
 
-const GAME_URL="https://bdewev18-droid.github.io/Dice-throne-Solo/";
-const kinds={bug:"Bug",evolution:"Improvement",website:"Website evolution"} as const;
-const statuses={en_attente:"Pending",consulte:"Reviewed",valide:"Validated",rejete:"Rejected",en_cours_dev:"In development",a_tester:"Ready to test",cloture:"Closed"} as const;
-type Profile={user_id:string;display_name:string;avatar_key:string};
-type Report={id:string;user_id:string;kind:keyof typeof kinds;mode:string;subject:string;details:string;status:keyof typeof statuses;admin_comment:string|null;screenshot_url:string|null;admin_screenshot_urls:string[];created_at:string};
-type Vote={feedback_id:string;user_id:string};
-type Comment={id:string;feedback_id:string;user_id:string;body:string;created_at:string};
+const GAME_URL = "https://bdewev18-droid.github.io/Dice-throne-Solo/";
+type KindKey = "bug" | "evolution" | "website";
+type StatusKey = "en_attente" | "consulte" | "valide" | "rejete" | "en_cours_dev" | "a_tester" | "cloture";
+type Profile = { user_id: string; display_name: string; avatar_key: string };
+type Report = {
+  id: string;
+  user_id: string;
+  kind: KindKey;
+  mode: string;
+  subject: string;
+  details: string;
+  status: StatusKey;
+  admin_comment: string | null;
+  screenshot_url: string | null;
+  admin_screenshot_urls: string[];
+  created_at: string;
+};
+type Vote = { feedback_id: string; user_id: string };
+type Comment = { id: string; feedback_id: string; user_id: string; body: string; created_at: string };
 
-function EvidenceGallery({urls,label}:{urls:string[];label:string}){return <div className={`evidenceGallery ${urls.length===1?"single":""}`}>{urls.map((url,index)=><a href={url} target="_blank" rel="noreferrer" key={url}><img src={url} alt={`${label} ${index+1}`}/><span>Open image {index+1}</span></a>)}</div>}
+function EvidenceGallery({ urls, label, openImageLabel }: { urls: string[]; label: string; openImageLabel: string }) {
+  return (
+    <div className={`evidenceGallery ${urls.length === 1 ? "single" : ""}`}>
+      {urls.map((url, index) => (
+        <a href={url} target="_blank" rel="noreferrer" key={url}>
+          <img src={url} alt={`${label} ${index + 1}`} />
+          <span>
+            {openImageLabel} {index + 1}
+          </span>
+        </a>
+      ))}
+    </div>
+  );
+}
 
-export function ReportWorkspace(){
-  const {session,isAdmin}=useAuth(); const uid=session!.user.id;
-  const [profile,setProfile]=useState<Profile|null>(null);const [profiles,setProfiles]=useState<Profile[]>([]);const [reports,setReports]=useState<Report[]>([]);const [votes,setVotes]=useState<Vote[]>([]);const [comments,setComments]=useState<Comment[]>([]);const [selected,setSelected]=useState<string|null>(null);const [reportView,setReportView]=useState<"all"|"mine"|"rejected"|"closed">("all");const [kind,setKind]=useState<"all"|keyof typeof kinds>("all");const [reportKind,setReportKind]=useState<keyof typeof kinds>("bug");const [page,setPage]=useState(1);const [editingProfile,setEditingProfile]=useState(false);const [notice,setNotice]=useState("");const [busy,setBusy]=useState(false);const [shot,setShot]=useState<File|null>(null);const frame=useRef<HTMLIFrameElement>(null);
-  const load=useCallback(async()=>{const [p,r,v,c]=await Promise.all([supabase.from("tester_public_profiles").select("user_id,display_name,avatar_key"),supabase.from("tester_feedback").select("id,user_id,kind,mode,subject,details,status,admin_comment,screenshot_url,admin_screenshot_urls,created_at").order("created_at",{ascending:false}),supabase.from("tester_feedback_votes").select("feedback_id,user_id"),supabase.from("tester_feedback_comments").select("id,feedback_id,user_id,body,created_at").order("created_at")]);setProfiles((p.data||[]) as Profile[]);setProfile(isAdmin?{user_id:uid,display_name:"Admin",avatar_key:"Barbarian.png"}:((p.data||[]).find(x=>x.user_id===uid) as Profile|undefined)||null);setReports((r.data||[]) as Report[]);setVotes((v.data||[]) as Vote[]);setComments((c.data||[]) as Comment[])},[isAdmin,uid]);
-  useEffect(()=>{void load()},[load]);
-  useEffect(()=>{setEditingProfile(new URLSearchParams(window.location.search).get("editProfile")==="1")},[]);
-  const profileMap=useMemo(()=>Object.fromEntries(profiles.map(p=>[p.user_id,p])),[profiles]);
-  const isActive=(r:Report)=>r.status!=="cloture"&&r.status!=="rejete";
-  const viewCounts={all:reports.length,mine:reports.filter(r=>isActive(r)&&r.user_id===uid).length,rejected:reports.filter(r=>r.status==="rejete").length,closed:reports.filter(r=>r.status==="cloture").length};
-  const statusRank=(r:Report)=>r.status==="cloture"?2:r.status==="rejete"?1:0;
-  const visible=reports.filter(r=>{const matchesView=reportView==="all"?true:reportView==="closed"?r.status==="cloture":reportView==="rejected"?r.status==="rejete":isActive(r)&&r.user_id===uid;return matchesView&&(kind==="all"||r.kind===kind)}).sort((a,b)=>reportView==="all"?statusRank(a)-statusRank(b):0);const pageCount=Math.max(1,Math.ceil(visible.length/5));const pagedReports=visible.slice((page-1)*5,page*5);
-  useEffect(()=>{setPage(1);setSelected(null)},[reportView,kind,reports.length]);
-  const active=reports.find(r=>r.id===selected)||null;
-  const saveProfile=async(e:FormEvent<HTMLFormElement>)=>{e.preventDefault();const f=new FormData(e.currentTarget);const display_name=String(f.get("display_name")||"").trim();const avatar_key=String(f.get("avatar_key")||"");if(!AVATARS.includes(avatar_key)){setNotice("Choose an avatar.");return}if(profiles.some(p=>p.avatar_key===avatar_key&&p.user_id!==uid)){setNotice("This avatar is already used by another tester.");return}setBusy(true);const {error}=await supabase.from("tester_public_profiles").upsert({user_id:uid,display_name,avatar_key},{onConflict:"user_id"});setBusy(false);setNotice(error?.code==="23505"?"This avatar has just been selected by another tester. Choose another one.":error?error.message:"Profile saved.");if(!error){await load();setEditingProfile(false);window.history.replaceState({},"","/espace-testeur")}};
-  const uploadShot=async()=>{if(!shot)return null;const ext=shot.name.split(".").pop()?.toLowerCase()||"png";const path=`${uid}/${crypto.randomUUID()}.${ext}`;const {error}=await supabase.storage.from("report-screenshots").upload(path,shot,{contentType:shot.type,upsert:false});if(error)throw error;return supabase.storage.from("report-screenshots").getPublicUrl(path).data.publicUrl};
-  const submit=async(e:FormEvent<HTMLFormElement>)=>{e.preventDefault();const form=e.currentTarget;const f=new FormData(form);setBusy(true);setNotice("Sending feedback…");try{const screenshot_url=await uploadShot();const {error}=await supabase.from("tester_feedback").insert({user_id:uid,kind:f.get("kind"),mode:f.get("mode"),subject:f.get("subject"),details:f.get("details"),screenshot_url});if(error)throw error;form.reset();setShot(null);setNotice("Feedback sent successfully.");await load()}catch(error){setNotice(error instanceof Error?error.message:"Unable to send the feedback.")}finally{setBusy(false)}};
-  const toggleVote=async(id:string)=>{const voted=votes.some(v=>v.feedback_id===id&&v.user_id===uid);if(voted)await supabase.from("tester_feedback_votes").delete().eq("feedback_id",id).eq("user_id",uid);else await supabase.from("tester_feedback_votes").insert({feedback_id:id,user_id:uid});await load()};
-  const addComment=async(e:FormEvent<HTMLFormElement>)=>{e.preventDefault();if(!active)return;const form=e.currentTarget;const body=String(new FormData(form).get("body")||"").trim();if(!body)return;const {error}=await supabase.from("tester_feedback_comments").insert({feedback_id:active.id,user_id:uid,body});if(!error){form.reset();await load()}};
-  const capture=async()=>{try{
-    setNotice("Choose “This tab” in the sharing window. Only the left game column will be kept.");
-    const stream=await navigator.mediaDevices.getDisplayMedia({video:{displaySurface:"browser"},audio:false,preferCurrentTab:true,selfBrowserSurface:"include"} as DisplayMediaStreamOptions);
-    const target=frame.current?.parentElement;if(!target)throw new Error("Game area unavailable.");
-    const track=stream.getVideoTracks()[0] as MediaStreamTrack&{cropTo?:(target:unknown)=>Promise<void>};
-    const CropTargetApi=(window as typeof window&{CropTarget?:{fromElement:(element:Element)=>Promise<unknown>}}).CropTarget;
-    let cropped=false;if(track.cropTo&&CropTargetApi){await track.cropTo(await CropTargetApi.fromElement(target));cropped=true}
-    const video=document.createElement("video");video.srcObject=stream;await video.play();await new Promise(r=>setTimeout(r,500));
-    const rect=target.getBoundingClientRect();const scaleX=video.videoWidth/window.innerWidth;const scaleY=video.videoHeight/window.innerHeight;
-    const sx=cropped?0:Math.max(0,rect.left*scaleX);const sy=cropped?0:Math.max(0,rect.top*scaleY);
-    const sw=cropped?video.videoWidth:Math.min(video.videoWidth-sx,rect.width*scaleX);const sh=cropped?video.videoHeight:Math.min(video.videoHeight-sy,rect.height*scaleY);
-    const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(sw));canvas.height=Math.max(1,Math.round(sh));
-    canvas.getContext("2d")!.drawImage(video,sx,sy,sw,sh,0,0,canvas.width,canvas.height);
-    stream.getTracks().forEach(t=>t.stop());
-    canvas.toBlob(blob=>{if(blob){setShot(new File([blob],`solo-quest-left-column-${Date.now()}.png`,{type:"image/png"}));setNotice("Left game-column capture ready.")}},"image/png");
-  }catch(error){setNotice(error instanceof Error&&error.message ? error.message : "Screen capture cancelled.")}};
-  if((!profile&&!isAdmin)||editingProfile)return <ProfileSetup onSave={saveProfile} busy={busy} notice={notice} disabledAvatars={profiles.filter(p=>p.user_id!==uid).map(p=>p.avatar_key)} initialProfile={profile} editing={editingProfile} onCancel={()=>{setEditingProfile(false);window.history.replaceState({},"","/espace-testeur")}}/>;
-  return <div className="testerWorkspace shell">
-    <section className="reportBoard"><div className="reportBoardHead"><div><p className="eyebrow"><span/>Community backlog</p><h2>Tester reports</h2></div><div className="reportFilters"><div className="reportViewTabs" role="tablist" aria-label="Report lists"><button role="tab" aria-selected={reportView==="all"} className={reportView==="all"?"active":""} onClick={()=>setReportView("all")}>All reports <b>{viewCounts.all}</b></button><button role="tab" aria-selected={reportView==="mine"} className={reportView==="mine"?"active":""} onClick={()=>setReportView("mine")}>My reports <b>{viewCounts.mine}</b></button><button role="tab" aria-selected={reportView==="rejected"} className={reportView==="rejected"?"active":""} onClick={()=>setReportView("rejected")}>Rejected <b>{viewCounts.rejected}</b></button><button role="tab" aria-selected={reportView==="closed"} className={reportView==="closed"?"active":""} onClick={()=>setReportView("closed")}>Closed <b>{viewCounts.closed}</b></button></div><select value={kind} onChange={e=>setKind(e.target.value as typeof kind)}><option value="all">All 3 categories</option>{Object.entries(kinds).map(([k,v])=><option value={k} key={k}>{v}</option>)}</select></div></div>
-      <div className="reportTable"><div className="reportTableHeader"><span>Tester</span><span>Category / subject</span><span>Status</span><span>Likes</span></div>{pagedReports.map(r=>{const p=profileMap[r.user_id]||{display_name:r.user_id===uid?profile?.display_name||"Tester":"Tester",avatar_key:r.user_id===uid?profile?.avatar_key||AVATARS[0]:AVATARS[0]};const count=votes.filter(v=>v.feedback_id===r.id).length;return <button className={selected===r.id?"selected":""} onClick={()=>setSelected(r.id)} key={r.id}><span className="reporter"><img src={avatarUrl(p.avatar_key)} alt=""/><b>{p.display_name}</b></span><span><small>{kinds[r.kind]} · {r.mode}</small><strong>{r.subject}</strong><em>{new Date(r.created_at).toLocaleDateString("en-GB")}</em></span><span className={`reportStatus ${r.status}`}>{statuses[r.status]}</span><span className="voteCount">♥ {count}</span></button>})}</div>{pageCount>1&&<nav className="reportPagination" aria-label="Report pages"><button onClick={()=>setPage(p=>Math.max(1,p-1))} disabled={page===1}>Previous</button><span>Page {page} / {pageCount}</span><button onClick={()=>setPage(p=>Math.min(pageCount,p+1))} disabled={page===pageCount}>Next</button></nav>}
-      {active&&<article className="reportDetail"><button className="closeDetail" onClick={()=>setSelected(null)}>Close</button><p className="eyebrow"><span/>{kinds[active.kind]} · {active.mode}</p><h3>{active.subject}</h3><p>{active.details}</p>{active.screenshot_url&&<section className="reportEvidence"><h4>Tester image</h4><EvidenceGallery urls={[active.screenshot_url]} label="Tester image"/></section>}<div className="detailMeta"><button className={votes.some(v=>v.feedback_id===active.id&&v.user_id===uid)?"voted":""} onClick={()=>toggleVote(active.id)}>♥ Like · +1 ({votes.filter(v=>v.feedback_id===active.id).length})</button><span className={`reportStatus ${active.status}`}>{statuses[active.status]}</span></div>{(active.admin_comment||active.admin_screenshot_urls?.length>0)&&<div className="adminReply"><b>Benji · Admin</b>{active.admin_comment&&<p>{active.admin_comment}</p>}{active.admin_screenshot_urls?.length>0&&<section className="correctionEvidence"><h4>Correction proof</h4><EvidenceGallery urls={active.admin_screenshot_urls} label="Correction proof"/></section>}</div>}<div className="commentThread">{comments.filter(c=>c.feedback_id===active.id).map(c=>{const p=profileMap[c.user_id]||{display_name:c.user_id===uid?profile?.display_name||"Tester":"Benji",avatar_key:c.user_id===uid?profile?.avatar_key||AVATARS[0]:"Barbarian.png"};return <div key={c.id}><img src={avatarUrl(p.avatar_key)} alt=""/><p><b>{p.display_name}</b>{c.body}<small>{new Date(c.created_at).toLocaleString("en-GB")}</small></p></div>})}</div><form className="commentForm" onSubmit={addComment}><input name="body" required maxLength={1500} placeholder="Add a helpful comment…"/><button className="button fire">Comment</button></form></article>}
+export function ReportWorkspace() {
+  const { session, isAdmin } = useAuth();
+  const { t, locale } = useLanguage();
+  const ts = t.testerSpace;
+  const kinds = ts.kinds;
+  const statuses = ts.statuses;
+  const dateLocale = locale === "fr" ? "fr-FR" : "en-GB";
+
+  const uid = session!.user.id;
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [votes, setVotes] = useState<Vote[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [reportView, setReportView] = useState<"all" | "mine" | "rejected" | "closed">("all");
+  const [kind, setKind] = useState<"all" | KindKey>("all");
+  const [reportKind, setReportKind] = useState<KindKey>("bug");
+  const [page, setPage] = useState(1);
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [notice, setNotice] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [shot, setShot] = useState<File | null>(null);
+  const frame = useRef<HTMLIFrameElement>(null);
+
+  const load = useCallback(async () => {
+    const [p, r, v, c] = await Promise.all([
+      supabase.from("tester_public_profiles").select("user_id,display_name,avatar_key"),
+      supabase
+        .from("tester_feedback")
+        .select("id,user_id,kind,mode,subject,details,status,admin_comment,screenshot_url,admin_screenshot_urls,created_at")
+        .order("created_at", { ascending: false }),
+      supabase.from("tester_feedback_votes").select("feedback_id,user_id"),
+      supabase.from("tester_feedback_comments").select("id,feedback_id,user_id,body,created_at").order("created_at"),
+    ]);
+    setProfiles((p.data || []) as Profile[]);
+    setProfile(
+      isAdmin
+        ? { user_id: uid, display_name: "Admin", avatar_key: "Barbarian.png" }
+        : ((p.data || []).find((x) => x.user_id === uid) as Profile | undefined) || null
+    );
+    setReports((r.data || []) as Report[]);
+    setVotes((v.data || []) as Vote[]);
+    setComments((c.data || []) as Comment[]);
+  }, [isAdmin, uid]);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+  useEffect(() => {
+    setEditingProfile(new URLSearchParams(window.location.search).get("editProfile") === "1");
+  }, []);
+
+  const profileMap = useMemo(() => Object.fromEntries(profiles.map((p) => [p.user_id, p])), [profiles]);
+  const isActive = (r: Report) => r.status !== "cloture" && r.status !== "rejete";
+  const viewCounts = {
+    all: reports.length,
+    mine: reports.filter((r) => isActive(r) && r.user_id === uid).length,
+    rejected: reports.filter((r) => r.status === "rejete").length,
+    closed: reports.filter((r) => r.status === "cloture").length,
+  };
+  const statusRank = (r: Report) => (r.status === "cloture" ? 2 : r.status === "rejete" ? 1 : 0);
+  const visible = reports
+    .filter((r) => {
+      const matchesView =
+        reportView === "all"
+          ? true
+          : reportView === "closed"
+            ? r.status === "cloture"
+            : reportView === "rejected"
+              ? r.status === "rejete"
+              : isActive(r) && r.user_id === uid;
+      return matchesView && (kind === "all" || r.kind === kind);
+    })
+    .sort((a, b) => (reportView === "all" ? statusRank(a) - statusRank(b) : 0));
+  const pageCount = Math.max(1, Math.ceil(visible.length / 5));
+  const pagedReports = visible.slice((page - 1) * 5, page * 5);
+
+  useEffect(() => {
+    setPage(1);
+    setSelected(null);
+  }, [reportView, kind, reports.length]);
+
+  const active = reports.find((r) => r.id === selected) || null;
+
+  const saveProfile = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    const display_name = String(f.get("display_name") || "").trim();
+    const avatar_key = String(f.get("avatar_key") || "");
+    if (!AVATARS.includes(avatar_key)) {
+      setNotice(ts.chooseAvatarError);
+      return;
+    }
+    if (profiles.some((p) => p.avatar_key === avatar_key && p.user_id !== uid)) {
+      setNotice(ts.avatarUsedError);
+      return;
+    }
+    setBusy(true);
+    const { error } = await supabase
+      .from("tester_public_profiles")
+      .upsert({ user_id: uid, display_name, avatar_key }, { onConflict: "user_id" });
+    setBusy(false);
+    setNotice(error?.code === "23505" ? ts.avatarTakenError : error ? error.message : ts.profileSaved);
+    if (!error) {
+      await load();
+      setEditingProfile(false);
+      window.history.replaceState({}, "", "/espace-testeur");
+    }
+  };
+
+  const uploadShot = async () => {
+    if (!shot) return null;
+    const ext = shot.name.split(".").pop()?.toLowerCase() || "png";
+    const path = `${uid}/${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage
+      .from("report-screenshots")
+      .upload(path, shot, { contentType: shot.type, upsert: false });
+    if (error) throw error;
+    return supabase.storage.from("report-screenshots").getPublicUrl(path).data.publicUrl;
+  };
+
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const f = new FormData(form);
+    setBusy(true);
+    setNotice(ts.sendingNotice);
+    try {
+      const screenshot_url = await uploadShot();
+      const { error } = await supabase.from("tester_feedback").insert({
+        user_id: uid,
+        kind: f.get("kind"),
+        mode: f.get("mode"),
+        subject: f.get("subject"),
+        details: f.get("details"),
+        screenshot_url,
+      });
+      if (error) throw error;
+      form.reset();
+      setShot(null);
+      setNotice(ts.feedbackSent);
+      await load();
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : ts.feedbackError);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const toggleVote = async (id: string) => {
+    const voted = votes.some((v) => v.feedback_id === id && v.user_id === uid);
+    if (voted) await supabase.from("tester_feedback_votes").delete().eq("feedback_id", id).eq("user_id", uid);
+    else await supabase.from("tester_feedback_votes").insert({ feedback_id: id, user_id: uid });
+    await load();
+  };
+
+  const addComment = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!active) return;
+    const form = e.currentTarget;
+    const body = String(new FormData(form).get("body") || "").trim();
+    if (!body) return;
+    const { error } = await supabase.from("tester_feedback_comments").insert({ feedback_id: active.id, user_id: uid, body });
+    if (!error) {
+      form.reset();
+      await load();
+    }
+  };
+
+  const capture = async () => {
+    try {
+      setNotice(ts.captureGuide);
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video: { displaySurface: "browser" },
+        audio: false,
+        preferCurrentTab: true,
+        selfBrowserSurface: "include",
+      } as DisplayMediaStreamOptions);
+      const target = frame.current?.parentElement;
+      if (!target) throw new Error(ts.gameAreaUnavailable);
+      const track = stream.getVideoTracks()[0] as MediaStreamTrack & { cropTo?: (target: unknown) => Promise<void> };
+      const CropTargetApi = (window as typeof window & { CropTarget?: { fromElement: (element: Element) => Promise<unknown> } })
+        .CropTarget;
+      let cropped = false;
+      if (track.cropTo && CropTargetApi) {
+        await track.cropTo(await CropTargetApi.fromElement(target));
+        cropped = true;
+      }
+      const video = document.createElement("video");
+      video.srcObject = stream;
+      await video.play();
+      await new Promise((r) => setTimeout(r, 500));
+      const rect = target.getBoundingClientRect();
+      const scaleX = video.videoWidth / window.innerWidth;
+      const scaleY = video.videoHeight / window.innerHeight;
+      const sx = cropped ? 0 : Math.max(0, rect.left * scaleX);
+      const sy = cropped ? 0 : Math.max(0, rect.top * scaleY);
+      const sw = cropped ? video.videoWidth : Math.min(video.videoWidth - sx, rect.width * scaleX);
+      const sh = cropped ? video.videoHeight : Math.min(video.videoHeight - sy, rect.height * scaleY);
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(sw));
+      canvas.height = Math.max(1, Math.round(sh));
+      canvas.getContext("2d")!.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+      stream.getTracks().forEach((tr) => tr.stop());
+      canvas.toBlob((blob) => {
+        if (blob) {
+          setShot(new File([blob], `solo-quest-left-column-${Date.now()}.png`, { type: "image/png" }));
+          setNotice(ts.captureReady);
+        }
+      }, "image/png");
+    } catch (error) {
+      setNotice(error instanceof Error && error.message ? error.message : ts.captureCancelled);
+    }
+  };
+
+  if ((!profile && !isAdmin) || editingProfile) {
+    return (
+      <ProfileSetup
+        onSave={saveProfile}
+        busy={busy}
+        notice={notice}
+        disabledAvatars={profiles.filter((p) => p.user_id !== uid).map((p) => p.avatar_key)}
+        initialProfile={profile}
+        editing={editingProfile}
+        onCancel={() => {
+          setEditingProfile(false);
+          window.history.replaceState({}, "", "/espace-testeur");
+        }}
+      />
+    );
+  }
+
+  return (
+    <div className="testerWorkspace shell">
+      <section className="reportBoard">
+        <div className="reportBoardHead">
+          <div>
+            <p className="eyebrow">
+              <span />
+              {ts.communityBacklog}
+            </p>
+            <h2>{ts.testerReports}</h2>
+          </div>
+          <div className="reportFilters">
+            <div className="reportViewTabs" role="tablist" aria-label={ts.reportListsAria}>
+              <button
+                role="tab"
+                aria-selected={reportView === "all"}
+                className={reportView === "all" ? "active" : ""}
+                onClick={() => setReportView("all")}
+              >
+                {ts.allReports} <b>{viewCounts.all}</b>
+              </button>
+              <button
+                role="tab"
+                aria-selected={reportView === "mine"}
+                className={reportView === "mine" ? "active" : ""}
+                onClick={() => setReportView("mine")}
+              >
+                {ts.myReports} <b>{viewCounts.mine}</b>
+              </button>
+              <button
+                role="tab"
+                aria-selected={reportView === "rejected"}
+                className={reportView === "rejected" ? "active" : ""}
+                onClick={() => setReportView("rejected")}
+              >
+                {ts.rejected} <b>{viewCounts.rejected}</b>
+              </button>
+              <button
+                role="tab"
+                aria-selected={reportView === "closed"}
+                className={reportView === "closed" ? "active" : ""}
+                onClick={() => setReportView("closed")}
+              >
+                {ts.closed} <b>{viewCounts.closed}</b>
+              </button>
+            </div>
+            <select value={kind} onChange={(e) => setKind(e.target.value as typeof kind)}>
+              <option value="all">{ts.allCategories}</option>
+              {Object.entries(kinds).map(([k, v]) => (
+                <option value={k} key={k}>
+                  {v}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="reportTable">
+          <div className="reportTableHeader">
+            <span>{ts.colTester}</span>
+            <span>{ts.colSubject}</span>
+            <span>{ts.colStatus}</span>
+            <span>{ts.colLikes}</span>
+          </div>
+          {pagedReports.map((r) => {
+            const p = profileMap[r.user_id] || {
+              display_name: r.user_id === uid ? profile?.display_name || ts.colTester : ts.colTester,
+              avatar_key: r.user_id === uid ? profile?.avatar_key || AVATARS[0] : AVATARS[0],
+            };
+            const count = votes.filter((v) => v.feedback_id === r.id).length;
+            return (
+              <button
+                className={selected === r.id ? "selected" : ""}
+                onClick={() => setSelected(r.id)}
+                key={r.id}
+              >
+                <span className="reporter">
+                  <img src={avatarUrl(p.avatar_key)} alt="" />
+                  <b>{p.display_name}</b>
+                </span>
+                <span>
+                  <small>
+                    {kinds[r.kind]} · {r.mode}
+                  </small>
+                  <strong>{r.subject}</strong>
+                  <em>{new Date(r.created_at).toLocaleDateString(dateLocale)}</em>
+                </span>
+                <span className={`reportStatus ${r.status}`}>{statuses[r.status]}</span>
+                <span className="voteCount">♥ {count}</span>
+              </button>
+            );
+          })}
+        </div>
+        {pageCount > 1 && (
+          <nav className="reportPagination" aria-label={ts.reportPagesAria}>
+            <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
+              {t.common.previous}
+            </button>
+            <span>
+              {ts.pageOf} {page} / {pageCount}
+            </span>
+            <button onClick={() => setPage((p) => Math.min(pageCount, p + 1))} disabled={page === pageCount}>
+              {t.common.next}
+            </button>
+          </nav>
+        )}
+        {active && (
+          <article className="reportDetail">
+            <button className="closeDetail" onClick={() => setSelected(null)}>
+              {t.common.close}
+            </button>
+            <p className="eyebrow">
+              <span />
+              {kinds[active.kind]} · {active.mode}
+            </p>
+            <h3>{active.subject}</h3>
+            <p>{active.details}</p>
+            {active.screenshot_url && (
+              <section className="reportEvidence">
+                <h4>{ts.testerImage}</h4>
+                <EvidenceGallery urls={[active.screenshot_url]} label={ts.testerImage} openImageLabel={ts.openImage} />
+              </section>
+            )}
+            <div className="detailMeta">
+              <button
+                className={votes.some((v) => v.feedback_id === active.id && v.user_id === uid) ? "voted" : ""}
+                onClick={() => toggleVote(active.id)}
+              >
+                {ts.likeAction} ({votes.filter((v) => v.feedback_id === active.id).length})
+              </button>
+              <span className={`reportStatus ${active.status}`}>{statuses[active.status]}</span>
+            </div>
+            {(active.admin_comment || active.admin_screenshot_urls?.length > 0) && (
+              <div className="adminReply">
+                <b>{ts.adminAuthor}</b>
+                {active.admin_comment && <p>{active.admin_comment}</p>}
+                {active.admin_screenshot_urls?.length > 0 && (
+                  <section className="correctionEvidence">
+                    <h4>{ts.correctionProof}</h4>
+                    <EvidenceGallery
+                      urls={active.admin_screenshot_urls}
+                      label={ts.correctionProof}
+                      openImageLabel={ts.openImage}
+                    />
+                  </section>
+                )}
+              </div>
+            )}
+            <div className="commentThread">
+              {comments
+                .filter((c) => c.feedback_id === active.id)
+                .map((c) => {
+                  const p = profileMap[c.user_id] || {
+                    display_name: c.user_id === uid ? profile?.display_name || ts.colTester : "Benji",
+                    avatar_key: c.user_id === uid ? profile?.avatar_key || AVATARS[0] : "Barbarian.png",
+                  };
+                  return (
+                    <div key={c.id}>
+                      <img src={avatarUrl(p.avatar_key)} alt="" />
+                      <p>
+                        <b>{p.display_name}</b>
+                        {c.body}
+                        <small>{new Date(c.created_at).toLocaleString(dateLocale)}</small>
+                      </p>
+                    </div>
+                  );
+                })}
+            </div>
+            <form className="commentForm" onSubmit={addComment}>
+              <input name="body" required maxLength={1500} placeholder={ts.commentPlaceholder} />
+              <button className="button fire">{ts.commentSubmit}</button>
+            </form>
+          </article>
+        )}
+      </section>
+      <section className="playAndReport">
+        <div className="embeddedGame">
+          <div className="gameGuestNotice">
+            <strong>{ts.guestNoticeTitle}</strong>
+            <span>
+              {ts.guestNoticePrefix} <b>{ts.guestNoticeBold}</b> {ts.guestNoticeSuffix}
+            </span>
+          </div>
+          <div className="browserGameBar">
+            <strong>{ts.gameBarTitle}</strong>
+            <a href={GAME_URL} target="_blank" rel="noreferrer">
+              {ts.openFullScreen}
+            </a>
+          </div>
+          <iframe
+            ref={frame}
+            src={GAME_URL}
+            title={ts.iframeTitle}
+            allow="fullscreen; clipboard-read; clipboard-write"
+            allowFullScreen
+          />
+        </div>
+        <form className="panel reportComposer" onSubmit={submit}>
+          <p className="eyebrow">
+            <span />
+            {ts.liveFeedback}
+          </p>
+          <h2>{ts.reportWhatYouSee}</h2>
+          <fieldset className="composerField">
+            <legend>{ts.categoryLabel}</legend>
+            <div className="categoryCards">
+              {Object.entries(kinds).map(([k, v]) => (
+                <label key={k}>
+                  <input
+                    type="radio"
+                    name="kind"
+                    value={k}
+                    checked={reportKind === k}
+                    onChange={() => setReportKind(k as KindKey)}
+                  />
+                  <span>{v}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          {reportKind === "website" ? (
+            <input type="hidden" name="mode" value="App / Account" />
+          ) : (
+            <label className="composerField">
+              <span>{ts.gameModeLabel}</span>
+              <select name="mode">
+                {ts.modeOptions.map((opt) => (
+                  <option key={opt}>{opt}</option>
+                ))}
+              </select>
+            </label>
+          )}
+          <label className="composerField">
+            <span>{ts.subjectLabel}</span>
+            <input name="subject" required maxLength={120} placeholder={ts.subjectPlaceholder} />
+          </label>
+          <label className="composerField">
+            <span>{ts.detailsLabel}</span>
+            <textarea name="details" required maxLength={5000} rows={9} placeholder={ts.detailsPlaceholder} />
+          </label>
+          <div className="captureActions">
+            <button type="button" onClick={capture}>
+              {ts.captureGameArea}
+            </button>
+            <label>
+              {ts.uploadImage}
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={(e) => setShot(e.target.files?.[0] || null)}
+              />
+            </label>
+          </div>
+          {shot && (
+            <div className="selectedShot">
+              <span>
+                {ts.attachedPrefix} {shot.name}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setShot(null);
+                  setNotice(ts.imageRemoved);
+                }}
+              >
+                {ts.removeImage}
+              </button>
+            </div>
+          )}
+          <button className="button fire sendFeedback" disabled={busy}>
+            {busy ? ts.sendingFeedback : ts.sendFeedback}
+          </button>
+          {notice && <p className="formNotice">{notice}</p>}
+        </form>
+      </section>
+    </div>
+  );
+}
+
+function ProfileSetup({
+  onSave,
+  busy,
+  notice,
+  disabledAvatars,
+  initialProfile,
+  editing,
+  onCancel,
+}: {
+  onSave: (e: FormEvent<HTMLFormElement>) => void;
+  busy: boolean;
+  notice: string;
+  disabledAvatars: string[];
+  initialProfile: Profile | null;
+  editing: boolean;
+  onCancel: () => void;
+}) {
+  const { t } = useLanguage();
+  const ts = t.testerSpace;
+  const firstAvailable = initialProfile?.avatar_key || AVATARS.find((key) => !disabledAvatars.includes(key)) || AVATARS[0];
+  const [avatar, setAvatar] = useState(firstAvailable);
+
+  return (
+    <section className="profileSetup shell">
+      <div>
+        <p className="eyebrow">
+          <span />
+          {editing ? ts.profileEditEyebrow : ts.profileNewEyebrow}
+        </p>
+        <h1>{editing ? ts.profileEditTitle : ts.profileNewTitle}</h1>
+        <p>{ts.profileCopy}</p>
+        {editing && (
+          <button className="profileCancel" type="button" onClick={onCancel}>
+            {ts.backToSpace}
+          </button>
+        )}
+      </div>
+      <form className="panel profileForm" onSubmit={onSave}>
+        <label className="profileNameField">
+          <span>{ts.nicknameLabel}</span>
+          <small>{ts.nicknameHint}</small>
+          <input
+            name="display_name"
+            required
+            minLength={2}
+            maxLength={32}
+            placeholder={ts.nicknamePlaceholder}
+            autoComplete="nickname"
+            defaultValue={initialProfile?.display_name || ""}
+          />
+        </label>
+        <input type="hidden" name="avatar_key" value={avatar} />
+        <div className="avatarFieldHead">
+          <span>{ts.chooseHeroLabel}</span>
+          <small>{ts.chooseHeroHint}</small>
+        </div>
+        <AvatarPicker value={avatar} onChange={setAvatar} disabled={disabledAvatars} />
+        <button className="button fire" disabled={busy}>
+          {busy ? t.common.saving : editing ? ts.saveProfile : ts.enterSpace}
+        </button>
+        {notice && <p className="formError">{notice}</p>}
+      </form>
     </section>
-    <section className="playAndReport"><div className="embeddedGame"><div className="gameGuestNotice"><strong>Playing in this window?</strong><span>Use <b>Guest mode</b> in the game below. To use your usual saved game, open it full screen.</span></div><div className="browserGameBar"><strong>Solo Quest · Web game</strong><a href={GAME_URL} target="_blank" rel="noreferrer">Open full screen ↗</a></div><iframe ref={frame} src={GAME_URL} title="Solo Quest browser game" allow="fullscreen; clipboard-read; clipboard-write" allowFullScreen/></div><form className="panel reportComposer" onSubmit={submit}><p className="eyebrow"><span/>Live feedback</p><h2>Report what you see</h2><fieldset className="composerField"><legend>Category</legend><div className="categoryCards">{Object.entries(kinds).map(([k,v])=><label key={k}><input type="radio" name="kind" value={k} checked={reportKind===k} onChange={()=>setReportKind(k as keyof typeof kinds)}/><span>{v}</span></label>)}</div></fieldset>{reportKind==="website"?<input type="hidden" name="mode" value="App / Account"/>:<label className="composerField"><span>Game mode</span><select name="mode"><option>Minion Rush</option><option>Naxarus</option><option>App / Account</option></select></label>}<label className="composerField"><span>Subject</span><input name="subject" required maxLength={120} placeholder="Short summary of the issue"/></label><label className="composerField"><span>Detailed feedback</span><textarea name="details" required maxLength={5000} rows={9} placeholder="What happened? What did you expect? How can we reproduce it?"/></label><div className="captureActions"><button type="button" onClick={capture}>Capture game area</button><label>Upload an image<input type="file" accept="image/png,image/jpeg,image/webp" onChange={e=>setShot(e.target.files?.[0]||null)}/></label></div>{shot&&<div className="selectedShot"><span>Attached: {shot.name}</span><button type="button" onClick={()=>{setShot(null);setNotice("Image removed.")}}>Remove image</button></div>}<button className="button fire sendFeedback" disabled={busy}>{busy?"Sending…":"Send feedback"}</button>{notice&&<p className="formNotice">{notice}</p>}</form></section>
-  </div>}
-
-function ProfileSetup({onSave,busy,notice,disabledAvatars,initialProfile,editing,onCancel}:{onSave:(e:FormEvent<HTMLFormElement>)=>void;busy:boolean;notice:string;disabledAvatars:string[];initialProfile:Profile|null;editing:boolean;onCancel:()=>void}){const firstAvailable=initialProfile?.avatar_key||AVATARS.find(key=>!disabledAvatars.includes(key))||AVATARS[0];const [avatar,setAvatar]=useState(firstAvailable);return <section className="profileSetup shell"><div><p className="eyebrow"><span/>{editing?"Profile settings":"Before your first report"}</p><h1>{editing?"Edit your tester profile":"Choose your tester identity"}</h1><p>Your nickname and hero avatar appear beside reports, likes and comments. Each avatar belongs to one tester only.</p>{editing&&<button className="profileCancel" type="button" onClick={onCancel}>← Back to tester space</button>}</div><form className="panel profileForm" onSubmit={onSave}><label className="profileNameField"><span>Tester nickname</span><small>This name will be visible to the test team.</small><input name="display_name" required minLength={2} maxLength={32} placeholder="Your tester nickname" autoComplete="nickname" defaultValue={initialProfile?.display_name||""}/></label><input type="hidden" name="avatar_key" value={avatar}/><div className="avatarFieldHead"><span>Choose your hero</span><small>Greyed-out heroes are already used.</small></div><AvatarPicker value={avatar} onChange={setAvatar} disabled={disabledAvatars}/><button className="button fire" disabled={busy}>{busy?"Saving…":editing?"Save my profile":"Enter tester space"}</button>{notice&&<p className="formError">{notice}</p>}</form></section>}
+  );
+}

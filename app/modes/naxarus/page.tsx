@@ -3,10 +3,13 @@ import { useEffect } from "react";
 import { SiteHeader } from "../../components/SiteHeader";
 import { HardLink as Link } from "../../components/HardLink";
 import { basePath } from "../../components/base-path";
+import { useLanguage } from "../../components/LanguageProvider";
 
 export default function NaxarusRedirectPage() {
+  const { t } = useLanguage();
+  const nr = t.naxarusRedirect;
+
   useEffect(() => {
-    // Redirection automatique vers Boss Battle
     window.location.replace(`${basePath}/modes/boss-battle`);
   }, []);
 
@@ -15,11 +18,15 @@ export default function NaxarusRedirectPage() {
       <SiteHeader />
       <section className="modeHero" style={{ minHeight: "60vh", display: "grid", placeItems: "center", textAlign: "center" }}>
         <div className="shell">
-          <p className="kicker">Mode Boss Battle</p>
-          <h1>Redirection en cours…</h1>
-          <p style={{ margin: "20px 0" }}>Naxarus a rejoint le nouveau mode <b>Boss Battle</b> multi-boss !</p>
+          <p className="kicker">{nr.kicker}</p>
+          <h1>{nr.title}</h1>
+          <p style={{ margin: "20px 0" }}>
+            {nr.copyPrefix}
+            <b>{nr.copyStrong}</b>
+            {nr.copySuffix}
+          </p>
           <Link className="button fire" href="/modes/boss-battle">
-            Accéder à Boss Battle →
+            {nr.cta}
           </Link>
         </div>
       </section>

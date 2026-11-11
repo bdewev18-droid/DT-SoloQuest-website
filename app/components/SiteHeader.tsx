@@ -4,6 +4,8 @@ import { useAuth } from "./AuthProvider";
 import { supabase } from "../lib/supabase";
 import { avatarUrl } from "./AvatarPicker";
 import { HardLink as Link } from "./HardLink";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useLanguage } from "./LanguageProvider";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
@@ -11,6 +13,7 @@ type HeaderProfile = { display_name: string; avatar_key: string };
 
 export function SiteHeader() {
   const { session, isTester, isAdmin, loading } = useAuth();
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [headerProfile, setHeaderProfile] = useState<HeaderProfile | null>(null);
@@ -47,25 +50,29 @@ export function SiteHeader() {
 
   return (
     <header className="siteHeader">
-      <nav className="mainNav shell" aria-label="Main navigation">
+      <nav className="mainNav shell" aria-label={t.header.navLabel}>
         <div className="navSide navLeft">
-          <Link href="/modes/minion-rush">Minion Rush</Link>
-          <Link href="/modes/boss-battle">Boss Battle</Link>
+          <Link href="/modes/minion-rush">{t.header.minionRush}</Link>
+          <Link href="/modes/boss-battle">{t.header.bossBattle}</Link>
         </div>
-        <Link className="centerLogo" href="/" aria-label="Solo Quest — home">
+        <div className="langMobileHeader">
+          <LanguageSwitcher compact />
+        </div>
+        <Link className="centerLogo" href="/" aria-label={t.header.homeAria}>
           <img src={`${basePath}/app_icon.png`} alt="Solo Quest" width="106" height="106" />
         </Link>
         <div className="navSide navRight">
-          <Link href="/jouer">Play</Link>
-          {!loading && approved && <Link href="/espace-testeur">Tester Space</Link>}
-          {!loading && isAdmin && <Link href="/admin">Admin</Link>}
+          <Link href="/jouer">{t.header.play}</Link>
+          {!loading && approved && <Link href="/espace-testeur">{t.header.testerSpace}</Link>}
+          {!loading && isAdmin && <Link href="/admin">{t.header.admin}</Link>}
+          <LanguageSwitcher />
           {!loading && !session && (
             <Link className="loginLink" href="/connexion">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
-              Login
+              {t.header.login}
             </Link>
           )}
           {!loading && session && headerProfile && (
@@ -85,14 +92,14 @@ export function SiteHeader() {
                   <div className="profileDropdownIdentity">
                     <img src={avatarUrl(headerProfile.avatar_key)} alt="" />
                     <span>
-                      <small>Connected as</small>
+                      <small>{t.header.connectedAs}</small>
                       <b>{headerProfile.display_name}</b>
                     </span>
                   </div>
-                  {!isAdmin && <Link href="/espace-testeur?editProfile=1">Edit my profile</Link>}
-                  {isAdmin && <Link href="/admin">Administration</Link>}
+                  {!isAdmin && <Link href="/espace-testeur?editProfile=1">{t.header.editProfile}</Link>}
+                  {isAdmin && <Link href="/admin">{t.header.administration}</Link>}
                   <button onClick={signOut} type="button">
-                    Log out
+                    {t.header.logOut}
                   </button>
                 </div>
               )}
@@ -102,7 +109,7 @@ export function SiteHeader() {
         <button
           className="burger"
           type="button"
-          aria-label={open ? "Close menu" : "Open menu"}
+          aria-label={open ? t.header.closeMenu : t.header.openMenu}
           aria-expanded={open}
           onClick={() => setOpen(!open)}
         >
@@ -112,12 +119,12 @@ export function SiteHeader() {
         </button>
         <div className={`mobileMenu ${open ? "open" : ""}`} aria-hidden={!open}>
           <div className="mobileMenuInner">
-            <Link href="/modes/minion-rush">Minion Rush</Link>
-            <Link href="/modes/boss-battle">Boss Battle</Link>
-            <Link href="/jouer">Play</Link>
-            {!loading && approved && <Link href="/espace-testeur">Tester Space</Link>}
-            {!loading && isAdmin && <Link href="/admin">Administration</Link>}
-            {!loading && !session && <Link href="/connexion">Login</Link>}
+            <Link href="/modes/minion-rush" onClick={() => setOpen(false)}>{t.header.minionRush}</Link>
+            <Link href="/modes/boss-battle" onClick={() => setOpen(false)}>{t.header.bossBattle}</Link>
+            <Link href="/jouer" onClick={() => setOpen(false)}>{t.header.play}</Link>
+            {!loading && approved && <Link href="/espace-testeur" onClick={() => setOpen(false)}>{t.header.testerSpace}</Link>}
+            {!loading && isAdmin && <Link href="/admin" onClick={() => setOpen(false)}>{t.header.administration}</Link>}
+            {!loading && !session && <Link href="/connexion" onClick={() => setOpen(false)}>{t.header.login}</Link>}
             {!loading && session && headerProfile && (
               <div className="mobileProfile">
                 <img src={avatarUrl(headerProfile.avatar_key)} alt="" />
@@ -125,13 +132,17 @@ export function SiteHeader() {
               </div>
             )}
             {!loading && session && !isAdmin && (
-              <Link href="/espace-testeur?editProfile=1">Edit my profile</Link>
+              <Link href="/espace-testeur?editProfile=1" onClick={() => setOpen(false)}>{t.header.editProfile}</Link>
             )}
             {!loading && session && (
               <button onClick={signOut} type="button">
-                Log out
+                {t.header.logOut}
               </button>
             )}
+            <div className="mobileLangRow">
+              <span>{t.header.languageLabel}</span>
+              <LanguageSwitcher onSelect={() => setOpen(false)} />
+            </div>
           </div>
         </div>
       </nav>

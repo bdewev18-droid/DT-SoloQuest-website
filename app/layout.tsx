@@ -6,6 +6,7 @@ import { ScrollReveal } from "./components/ScrollReveal";
 import { AuthProvider } from "./components/AuthProvider";
 import { ContentManager, SiteSettings } from "./components/ContentManager";
 import { SiteFooter } from "./components/SiteFooter";
+import { LanguageProvider } from "./components/LanguageProvider";
 
 const display = Cinzel({ variable: "--font-display", subsets: ["latin"] });
 const body = Inter({ variable: "--font-body", subsets: ["latin"] });
@@ -38,13 +39,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={`${display.variable} ${body.variable}`}>
-        <AuthProvider>
-          {children}
-          <SiteSettings />
-          <ContentManager />
-          <ScrollReveal />
-          <SiteFooter />
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            {children}
+            <SiteSettings />
+            <ContentManager />
+            <ScrollReveal />
+            <SiteFooter />
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );
