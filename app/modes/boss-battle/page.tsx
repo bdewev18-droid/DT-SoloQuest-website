@@ -320,7 +320,7 @@ export default function BossBattlePage() {
             <p className="kicker">Your Boss Chronicles</p>
             <h2>Compare every champion</h2>
             <p>
-              The history records and ranks your heroes by score while keeping track of total battles, remaining health, and play time visible for every run.
+              The history records and ranks your heroes by score while keeping track of total battles, remaining health, and play time visible for every run—in either the classic <strong>List &amp; Podium</strong> view or the <strong>Grid</strong> portrait view.
             </p>
             <div className="scoreRules">
               <h3>Boss Battle scoring</h3>
@@ -336,18 +336,24 @@ export default function BossBattlePage() {
               </ul>
             </div>
           </div>
-          <figure className="historyVisual">
-            <Image
-              src={withBase("/screens/histo-naxarus.jpg")}
-              alt="Boss Battle history ranking heroes by score, battles, remaining health and play time"
-              width={921}
-              height={2048}
-              sizes="(max-width: 900px) 90vw, 42vw"
-            />
-            <figcaption>
-              Rank heroes by best score, then compare their battles, remaining health, and play time.
-            </figcaption>
-          </figure>
+          <div className="bossHistoryPair">
+            <figure className="historyVisualFramed">
+              <GameScreen
+                src="/screens/histo-boss-list.webp"
+                alt="Boss Battle history in List view showing top 3 podium and hero statistics"
+                framed
+              />
+              <figcaption>List &amp; Podium display</figcaption>
+            </figure>
+            <figure className="historyVisualFramed">
+              <GameScreen
+                src="/screens/histo-boss-grid.webp"
+                alt="Boss Battle history in Grid view showing ranked hero portrait cards"
+                framed
+              />
+              <figcaption>Grid portrait display</figcaption>
+            </figure>
+          </div>
         </div>
       </section>
 

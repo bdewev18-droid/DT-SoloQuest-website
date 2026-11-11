@@ -1,8 +1,6 @@
-import Image from "next/image";
 import { HardLink as Link } from "../../components/HardLink";
 import { SiteHeader } from "../../components/SiteHeader";
 import { GameScreen } from "../../components/GameScreen";
-import { withBase } from "../../components/base-path";
 
 function Step({
   n,
@@ -158,7 +156,7 @@ export default function Page() {
           n="04"
           title="Attack from your board"
           text="Roll your dice and play your cards on your physical board. The app tracks HP, CP, tokens, and live combat narration."
-          screen="/screens/minion-06.webp"
+          screen="/screens/minion-attack-board.webp"
         />
         <Step
           n="05"
@@ -230,49 +228,138 @@ export default function Page() {
             <p className="kicker">Step 10 · Collection &amp; Lore</p>
             <h2>Bestiary: A Wide Array of Minions Across 4 Tiers</h2>
             <p style={{ maxWidth: 720, marginTop: 14 }}>
-              Browse all validated enemies across Levels 1 to 4, track which foes you have already defeated in your personal collection, and propose new community minions.
+              Browse all validated enemies across Levels 1 to 4, track which foes you have already defeated in your personal collection, inspect full ability sheets, and propose new community minions.
             </p>
           </div>
           <div className="galleryRow">
-            <GameScreen src="/screens/minion-12.jpg" alt="Minion Rush enemy card profile" />
+            <GameScreen src="/screens/minion-enemy-card.webp" alt="Chaman Orque enemy card profile" framed />
             <GameScreen src="/screens/minion-bestiary.webp" alt="Bestiary showing defeated enemy collection" framed />
-            <div className="tokenCard">
-              <GameScreen src="/screens/minion-14.jpg" alt="Battle token management" />
-              <h3>Tokens under control</h3>
-              <p>Quick access, manual or automatic management, and an explanation for every effect.</p>
+            <GameScreen src="/screens/minion-bestiary-detail.webp" alt="Zoomed bestiary view showing Rat de la Rue attack and defense tables" framed />
+          </div>
+        </div>
+      </section>
+
+      {/* Step 11: Status Tokens */}
+      <section className="tokenSection">
+        <div className="shell">
+          <div className="sectionTitle">
+            <p className="kicker">Step 11 · Status Tokens</p>
+            <h2>Tokens under control</h2>
+            <p style={{ maxWidth: 760, marginTop: 14 }}>
+              Manage every active alteration cleanly mid-battle without breaking your flow. The token drawer combines fast duel-only controls with a categorized positive &amp; negative glossary and clear automation indicators.
+            </p>
+          </div>
+
+          <div className="tokenOverviewGrid">
+            <article className="tokenInfoBox">
+              <span className="tokenInfoTag">Current Duel Tab · Quick Action</span>
+              <h3>Instant Duel Access</h3>
+              <p>
+                A simplified UX built for speed: the <strong>Duel</strong> tab surfaces only the tokens currently active on the ongoing minion or player, letting you adjust stacks in one tap without searching the full list.
+              </p>
+            </article>
+
+            <article className="tokenInfoBox">
+              <span className="tokenInfoTag">Positive &amp; Negative Tabs</span>
+              <h3>Built-In Token Glossary</h3>
+              <p>
+                Switch between the <strong>Positive</strong> and <strong>Negative</strong> glossaries (or filter with instant search) to check stack limits and tap any token to read its exact rule effect.
+              </p>
+            </article>
+
+            <article className="tokenInfoBox">
+              <span className="tokenInfoTag">67 / 98 Listed Tokens (~68%)</span>
+              <h3>Automatic vs. Manual Dots</h3>
+              <p>
+                Character-exclusive tokens that cannot interact with enemies are omitted; automation focuses on tokens enemies can actually use and trigger in solo combat (<strong>68.4%</strong> of listed tokens, or <strong>69 / 101</strong> across the full catalog).
+              </p>
+              <div className="tokenDotLegend">
+                <span className="tokenDotBadge auto"><i />Green · Handled by app</span>
+                <span className="tokenDotBadge manual"><i />Orange · Manual on board</span>
+              </div>
+            </article>
+          </div>
+
+          <div className="galleryRow">
+            <div className="tokenScreenCard">
+              <GameScreen src="/screens/minion-tokens-duel.webp" alt="Status tokens Current Duel quick access tab" framed />
+              <h3>01 · Current Duel</h3>
+              <p>Quick access scoped strictly to the tokens active between your hero and the current enemy.</p>
+            </div>
+            <div className="tokenScreenCard">
+              <GameScreen src="/screens/minion-tokens-positive.webp" alt="Positive tokens glossary showing green and orange support dots" framed />
+              <h3>02 · Positive Glossary</h3>
+              <p>Browse positive buffs with stack limits and green/orange automation indicators.</p>
+            </div>
+            <div className="tokenScreenCard">
+              <GameScreen src="/screens/minion-tokens-negative.webp" alt="Negative tokens glossary showing green automation dots" framed />
+              <h3>03 · Negative Glossary</h3>
+              <p>Quickly apply and track negative afflictions—with 87.8% (36 / 41) handled automatically.</p>
             </div>
           </div>
         </div>
       </section>
 
       <section className="modeHistory">
-        <div className="shell historyGrid">
-          <div>
-            <p className="kicker">Your Minion Rush chronicles</p>
-            <h2>Every run earns its rank</h2>
-            <p>The history ranks heroes using the score from defeated enemies, while showing battles played, remaining health and play time.</p>
-            <div className="scoreRules minionScoreRules">
-              <h3>Minion Rush scoring</h3>
-              <ul>
-                <li className="levelOne"><b>1 point</b><span>Green enemy · Level 1</span></li>
-                <li className="levelTwo"><b>2 points</b><span>Blue enemy · Level 2</span></li>
-                <li className="levelThree"><b>3 points</b><span>Purple enemy · Level 3</span></li>
-                <li className="viseer"><b>4 points</b><span>Viseer · Hard-mode boss companion</span></li>
-                <li className="levelFour"><b>6 points</b><span>Orange route boss · Level 4</span></li>
-              </ul>
-              <p>Defeat the two route bosses to complete the mode. In hard mode, Viseer joins a boss fight and adds 4 points when defeated.</p>
+        <div className="shell">
+          <div className="historyGrid">
+            <div>
+              <p className="kicker">Your Minion Rush chronicles</p>
+              <h2>Every run earns its rank</h2>
+              <p>
+                The history ranks heroes using the score from defeated enemies, while showing battles played, remaining health, and play time. Tap any hero—such as <strong>Barbarian</strong>—to expand their grouped history and inspect every individual run with its date, defeated enemies, remaining HP, duration, and score.
+              </p>
+              <div className="scoreRules minionScoreRules">
+                <h3>Minion Rush scoring</h3>
+                <ul>
+                  <li className="levelOne"><b>1 point</b><span>Green enemy · Level 1</span></li>
+                  <li className="levelTwo"><b>2 points</b><span>Blue enemy · Level 2</span></li>
+                  <li className="levelThree"><b>3 points</b><span>Purple enemy · Level 3</span></li>
+                  <li className="viseer"><b>4 points</b><span>Viseer · Hard-mode boss companion</span></li>
+                  <li className="levelFour"><b>6 points</b><span>Orange route boss · Level 4</span></li>
+                </ul>
+                <p>Defeat the two route bosses to complete the mode. In hard mode, Viseer joins a boss fight and adds 4 points when defeated.</p>
+              </div>
+            </div>
+            <figure className="historyVisualFramed">
+              <GameScreen
+                src="/screens/histo-minion-grouped.webp"
+                alt="Minion Rush history grouping multiple runs under Barbarian with date, enemies defeated, remaining health and duration"
+                framed
+              />
+              <figcaption>
+                Minion Rush history with per-character grouping: expand a hero to review each recorded run in detail.
+              </figcaption>
+            </figure>
+          </div>
+
+          <div className="historyDisplaysBlock">
+            <div className="historyDisplaysHead">
+              <p className="kicker">Two Display Modes</p>
+              <h3>List &amp; Podium or Hero Grid View</h3>
+              <p>
+                Switch between <strong>Minion Rush</strong> and <strong>Boss</strong> chronicles at any time, and toggle between the classic <strong>List</strong> ranking (with top-3 podium and expandable runs) or the visual <strong>Grid</strong> view showing every hero&apos;s rank badge.
+              </p>
+            </div>
+            <div className="historyDisplaysPair">
+              <figure className="historyVisualFramed">
+                <GameScreen
+                  src="/screens/histo-boss-list.webp"
+                  alt="History Boss mode in List view with top 3 podium and hero table"
+                  framed
+                />
+                <figcaption>List display · Top 3 podium and detailed hero stats table (Boss mode view).</figcaption>
+              </figure>
+              <figure className="historyVisualFramed">
+                <GameScreen
+                  src="/screens/histo-boss-grid.webp"
+                  alt="History Boss mode in Grid view showing ranked hero portrait cards"
+                  framed
+                />
+                <figcaption>Grid display · Visual portrait cards ranked by average or best score (Boss mode view).</figcaption>
+              </figure>
             </div>
           </div>
-          <figure className="historyVisual">
-            <Image
-              src={withBase("/screens/histo-minion.jpg")}
-              alt="Minion Rush history ranking heroes by score, battles, remaining health and play time"
-              width={921}
-              height={2048}
-              sizes="(max-width: 900px) 90vw, 42vw"
-            />
-            <figcaption>Rank heroes by best score, then compare their battles, remaining health and play time.</figcaption>
-          </figure>
         </div>
       </section>
 
