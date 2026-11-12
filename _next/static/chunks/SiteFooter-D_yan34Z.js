@@ -1,0 +1,1 @@
+import{i as e}from"./framework-C3YMEXeR.js";import{useLanguage as t}from"./LanguageProvider-jF6Ngye-.js";var n=e(),r=`1.6.0`;function i(){let{t:e}=t();return(0,n.jsxs)(`footer`,{className:`siteFooter`,children:[(0,n.jsx)(`span`,{children:e.footer.hubTitle}),(0,n.jsxs)(`span`,{children:[e.footer.versionPrefix,r]})]})}export{r as SITE_VERSION,i as SiteFooter};
