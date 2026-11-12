@@ -25,21 +25,29 @@ export function SiteHeader() {
   };
 
   useEffect(() => {
-    if (!session) {
-      setHeaderProfile(null);
-      return;
+    let active = true;
+    if (session && !isAdmin) {
+      supabase
+        .from("tester_public_profiles")
+        .select("display_name,avatar_key")
+        .eq("user_id", session.user.id)
+        .maybeSingle()
+        .then(({ data }) => {
+          if (active) {
+            setHeaderProfile(data as HeaderProfile | null);
+          }
+        });
     }
-    if (isAdmin) {
-      setHeaderProfile({ display_name: "Admin", avatar_key: "Barbarian.png" });
-      return;
-    }
-    supabase
-      .from("tester_public_profiles")
-      .select("display_name,avatar_key")
-      .eq("user_id", session.user.id)
-      .maybeSingle()
-      .then(({ data }) => setHeaderProfile(data as HeaderProfile | null));
+    return () => {
+      active = false;
+    };
   }, [session, isAdmin]);
+
+  const activeProfile = !session
+    ? null
+    : isAdmin
+    ? { display_name: "Admin", avatar_key: "Barbarian.png" }
+    : headerProfile;
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -65,46 +73,48 @@ export function SiteHeader() {
           <Link href="/jouer">{t.header.play}</Link>
           {!loading && approved && <Link href="/espace-testeur">{t.header.testerSpace}</Link>}
           {!loading && isAdmin && <Link href="/admin">{t.header.admin}</Link>}
-          <LanguageSwitcher />
-          {!loading && !session && (
-            <Link className="loginLink" href="/connexion">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              {t.header.login}
-            </Link>
-          )}
-          {!loading && session && headerProfile && (
-            <div className="profileMenu">
-              <button
-                className="profileMenuTrigger profileMenuTriggerIntegrated"
-                type="button"
-                onClick={() => setProfileOpen(!profileOpen)}
-                aria-expanded={profileOpen}
-              >
-                <img src={avatarUrl(headerProfile.avatar_key)} alt="" />
-                <span>{headerProfile.display_name}</span>
-                <i aria-hidden="true">⌄</i>
-              </button>
-              {profileOpen && (
-                <div className="profileDropdown">
-                  <div className="profileDropdownIdentity">
-                    <img src={avatarUrl(headerProfile.avatar_key)} alt="" />
-                    <span>
-                      <small>{t.header.connectedAs}</small>
-                      <b>{headerProfile.display_name}</b>
-                    </span>
+          <div className="navUserStack">
+            <LanguageSwitcher compact />
+            {!loading && !session && (
+              <Link className="loginLink" href="/connexion">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                {t.header.login}
+              </Link>
+            )}
+            {!loading && session && activeProfile && (
+              <div className="profileMenu">
+                <button
+                  className="profileMenuTrigger profileMenuTriggerIntegrated"
+                  type="button"
+                  onClick={() => setProfileOpen(!profileOpen)}
+                  aria-expanded={profileOpen}
+                >
+                  <img src={avatarUrl(activeProfile.avatar_key)} alt="" />
+                  <span>{activeProfile.display_name}</span>
+                  <i aria-hidden="true">⌄</i>
+                </button>
+                {profileOpen && (
+                  <div className="profileDropdown">
+                    <div className="profileDropdownIdentity">
+                      <img src={avatarUrl(activeProfile.avatar_key)} alt="" />
+                      <span>
+                        <small>{t.header.connectedAs}</small>
+                        <b>{activeProfile.display_name}</b>
+                      </span>
+                    </div>
+                    {!isAdmin && <Link href="/espace-testeur?editProfile=1">{t.header.editProfile}</Link>}
+                    {isAdmin && <Link href="/admin">{t.header.administration}</Link>}
+                    <button onClick={signOut} type="button">
+                      {t.header.logOut}
+                    </button>
                   </div>
-                  {!isAdmin && <Link href="/espace-testeur?editProfile=1">{t.header.editProfile}</Link>}
-                  {isAdmin && <Link href="/admin">{t.header.administration}</Link>}
-                  <button onClick={signOut} type="button">
-                    {t.header.logOut}
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            )}
+          </div>
         </div>
         <button
           className="burger"
@@ -125,10 +135,10 @@ export function SiteHeader() {
             {!loading && approved && <Link href="/espace-testeur" onClick={() => setOpen(false)}>{t.header.testerSpace}</Link>}
             {!loading && isAdmin && <Link href="/admin" onClick={() => setOpen(false)}>{t.header.administration}</Link>}
             {!loading && !session && <Link href="/connexion" onClick={() => setOpen(false)}>{t.header.login}</Link>}
-            {!loading && session && headerProfile && (
+            {!loading && session && activeProfile && (
               <div className="mobileProfile">
-                <img src={avatarUrl(headerProfile.avatar_key)} alt="" />
-                <b>{headerProfile.display_name}</b>
+                <img src={avatarUrl(activeProfile.avatar_key)} alt="" />
+                <b>{activeProfile.display_name}</b>
               </div>
             )}
             {!loading && session && !isAdmin && (

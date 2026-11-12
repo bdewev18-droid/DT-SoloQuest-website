@@ -26,8 +26,17 @@ function getClientLocale(): Locale {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (isLocale(saved)) return saved;
-    if (typeof navigator !== "undefined" && navigator.language?.toLowerCase().startsWith("fr")) {
-      return "fr";
+    if (typeof navigator !== "undefined") {
+      const candidates =
+        navigator.languages && navigator.languages.length > 0
+          ? navigator.languages
+          : [navigator.language];
+      for (const raw of candidates) {
+        if (!raw) continue;
+        const clean = raw.toLowerCase();
+        if (clean.startsWith("fr")) return "fr";
+        if (clean.startsWith("en")) return "en";
+      }
     }
   } catch {
     // Ignore storage access errors in restricted browsers.

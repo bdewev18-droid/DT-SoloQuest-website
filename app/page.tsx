@@ -94,6 +94,12 @@ export default function Home() {
         </div>
         <div className="modeTiles shell">
           <Link className="modeTile rushTile" href="/modes/minion-rush">
+            <Image
+              src={withBase("/screens/minion-04.jpg")}
+              alt={t.home.rushTileTitle}
+              fill
+              sizes="50vw"
+            />
             <div className="tileShade" />
             <div className="tileContent">
               <span className="tileNo">{t.home.rushTileNo}</span>

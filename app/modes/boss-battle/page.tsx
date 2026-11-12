@@ -78,11 +78,11 @@ export default function BossBattlePage() {
           <div className="bossProfileVisual">
             <div className="bossImageFrame">
               <Image
-                src={withBase("/naxarus.webp")}
+                src={withBase("/naxarus-portrait.webp")}
                 alt={bb.naxarus.alt}
-                width={636}
-                height={727}
-                style={{ objectFit: "cover", objectPosition: "50% 12%", width: "100%", height: "100%" }}
+                width={720}
+                height={1453}
+                style={{ objectFit: "cover", objectPosition: "center top", width: "100%", height: "100%" }}
               />
             </div>
             <div className="bossStatBadges">
@@ -90,10 +90,10 @@ export default function BossBattlePage() {
                 <b>65</b> {bb.naxarus.hpLabel}
               </span>
               <span>
-                <b>∞</b> {bb.naxarus.cpLabel}
+                <b>0</b> {bb.naxarus.cpLabel}
               </span>
               <span>
-                <b>3</b> {bb.naxarus.defLabel}
+                <b>1</b> {bb.naxarus.defLabel}
               </span>
             </div>
           </div>
@@ -142,13 +142,13 @@ export default function BossBattlePage() {
             </div>
             <div className="bossStatBadges">
               <span>
-                <b>70</b> {bb.ourokhor.hpLabel}
+                <b>50</b> {bb.ourokhor.hpLabel}
               </span>
               <span>
-                <b>∞</b> {bb.ourokhor.cpLabel}
+                <b>0</b> {bb.ourokhor.cpLabel}
               </span>
               <span>
-                <b>4</b> {bb.ourokhor.defLabel}
+                <b>1</b> {bb.ourokhor.defLabel}
               </span>
             </div>
           </div>
