@@ -633,7 +633,7 @@ export const fr: Translations = {
     reportWhatYouSee: "Signaler un retour",
     categoryLabel: "Catégorie",
     gameModeLabel: "Mode de jeu",
-    modeOptions: ["Minion Rush", "Naxarus", "App / Compte"],
+    modeOptions: ["Minion Rush", "BOSS Naxarus", "BOSS Ourokhor", "App / Compte"],
     subjectLabel: "Sujet",
     subjectPlaceholder: "Résumé court du problème",
     detailsLabel: "Description détaillée",

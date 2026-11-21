@@ -631,7 +631,7 @@ export const en = {
     reportWhatYouSee: "Report what you see",
     categoryLabel: "Category",
     gameModeLabel: "Game mode",
-    modeOptions: ["Minion Rush", "Naxarus", "App / Account"],
+    modeOptions: ["Minion Rush", "BOSS Naxarus", "BOSS Ourokhor", "App / Account"],
     subjectLabel: "Subject",
     subjectPlaceholder: "Short summary of the issue",
     detailsLabel: "Detailed feedback",
