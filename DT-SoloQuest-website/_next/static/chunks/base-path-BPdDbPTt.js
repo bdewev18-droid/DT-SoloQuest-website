@@ -1,0 +1,1 @@
+var e=`/DT-SoloQuest-website`;function t(t){return t&&(t.startsWith(`/`)&&!t.startsWith(`/DT-SoloQuest-website`)?`${e}${t}`:t)}export{t as n,e as t};
